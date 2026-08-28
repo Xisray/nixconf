@@ -32,13 +32,10 @@
               "/var/lib/systemd/coredump"
               "/etc/NetworkManager/system-connections"
               "/tmp"
-
-              "/var/lib/zerotier-one"
             ]
             ++ cfg.directories;
             files = [
               "/etc/machine-id"
-              "/etc/lact/config.yaml"
               {
                 file = "/var/keys/secret_file";
                 parentDirectory = {
