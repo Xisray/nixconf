@@ -26,6 +26,12 @@
       hashedPasswordFile = "/persist/passwd";
       initialPassword = "12345";
     };
+
+    xdg.portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    };
+
     preferences.persistance.data.directories = [
       "nixconf"
 
