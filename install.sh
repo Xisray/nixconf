@@ -11,7 +11,7 @@ if [ $# -lt 1 ]; then
   exit 2
 fi
 
-NIX="nix --extra-experimental-features 'nix-command flakes'"
+NIX="nix --extra-experimental-features nix-command --extra-experimental-features flakes"
 HOST=$1
 REV=${2:-main}
 FLAKE="github:Xisray/nixconf/${REV}#${HOST}"
