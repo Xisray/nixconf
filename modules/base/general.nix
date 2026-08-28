@@ -17,13 +17,16 @@
 
     users.users.${config.preferences.user.name} = {
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+      ];
       shell = self.packages.${pkgs.stdenv.hostPlatform.system}.fish;
 
       hashedPasswordFile = "/persist/passwd";
       initialPassword = "12345";
     };
-    persistance.data.directories = [
+    preferences.persistance.data.directories = [
       "nixconf"
 
       "Downloads"

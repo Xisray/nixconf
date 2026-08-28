@@ -12,6 +12,7 @@
       self.nixosModules.niri
       self.nixosModules.firefox
       self.nixosModules.clashVerge
+      self.diskoConfigurations.tanshi
     ];
 
     boot = {

@@ -1,8 +1,11 @@
-{
+{ inputs, ... }: {
   flake.diskoConfigurations.tanshi = {
+    imports = [
+      inputs.disko.nixosModules.disko
+    ];
     disko.devices = {
       disk.main = {
-        device = "nvme-INTEL_SSDPEKNU512GZ_PHKA212405AX512A";
+        device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_PHKA212405AX512A";
         type = "disk";
         content = {
           type = "gpt";

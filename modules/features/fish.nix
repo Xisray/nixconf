@@ -39,19 +39,8 @@
                     end
         				end
 
-                function findf
-                    fd "$argv" | fzf
-                end
-
                 function cd
                     z "$argv"
-                end
-
-                function nvim
-                    set -l file (fzf --preview 'bat --style=numbers --color=always {}')
-                    if test -n "$file"
-                        command nvim "$file"
-                    end
                 end
 
                 # Инициализация zoxide

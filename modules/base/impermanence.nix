@@ -10,7 +10,7 @@
         inputs.impermanence.nixosModules.impermanence
       ];
       config = {
-        fileSystems."/persist".needForBoot = true;
+        fileSystems."/persist".neededForBoot = true;
         programs.fuse.userAllowOther = true;
         boot.tmp.cleanOnBoot = lib.mkDefault true;
         environment.persistence = {
