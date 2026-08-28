@@ -15,6 +15,8 @@
       self.diskoConfigurations.tanshi
     ];
 
+    preferences.hostName = "tanshi";
+
     boot = {
       kernelParams = [ "amd_pstate=active" ];
       loader = {
