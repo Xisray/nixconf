@@ -22,7 +22,7 @@
       loader = {
         systemd-boot.enable = false;
         grub.enable = true;
-        grub.device = "nodev";
+        grub.devices = [ "nodev" ];
         grub.efiSupport = true;
         grub.useOSProber = true;
         efi.canTouchEfiVariables = true;
