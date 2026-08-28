@@ -20,9 +20,8 @@
     boot = {
       kernelParams = [ "amd_pstate=active" ];
       loader = {
-        systemd-boot.enable = false;
         grub.enable = true;
-        grub.devices = [ "nodev" ];
+        grub.device = "nodev";
         grub.efiSupport = true;
         grub.useOSProber = true;
         efi.canTouchEfiVariables = true;
