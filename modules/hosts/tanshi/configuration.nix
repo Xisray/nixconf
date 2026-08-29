@@ -13,6 +13,7 @@
       self.nixosModules.firefox
       self.nixosModules.clashVerge
       self.nixosModules.syncthing
+      self.nixosModules.keepassxc
       self.diskoConfigurations.tanshi
     ];
 
