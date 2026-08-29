@@ -1,5 +1,5 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.fonts = { pkgs, lib, ... }: {
+{ ... }: {
+  flake.nixosModules.fonts = { pkgs, ... }: {
     fonts = {
       packages = with pkgs; [
         nerd-fonts.jetbrains-mono

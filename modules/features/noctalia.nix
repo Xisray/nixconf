@@ -171,6 +171,7 @@
             left = [
               { id = "WiFi"; }
               { id = "Bluetooth"; }
+              { id = "WallpaperSelector"; }
             ];
             right = [
               { id = "Notifications"; }
