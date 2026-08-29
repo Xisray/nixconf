@@ -218,7 +218,7 @@
         };
         wallpaper = {
           enabled = true;
-          directory = "/home/${config.preferences.user.name}/Pictures/Wallpapers/${self.themeName}";
+          directory = "~/Pictures/Wallpapers/${self.themeName}";
         };
         notifications = {
           criticalUrgencyDuration = 15;

@@ -4,6 +4,10 @@
       enable = true;
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
     };
+
+    preferences.persistance.cache.directories = [
+      ".cache/noctalia"
+    ];
   };
 
   perSystem =
