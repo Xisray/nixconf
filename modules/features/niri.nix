@@ -1,5 +1,8 @@
 { self, inputs, ... }: {
   flake.nixosModules.niri = { pkgs, lib, ... }: {
+    # environment.sessionVariables = {
+    #   QT_QPA_PLATFORM = "wayland";
+    # };
     programs.niri = {
       enable = true;
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
@@ -37,7 +40,10 @@
           };
           spawn-at-startup = [
             (lib.getExe self'.packages.noctalia)
-            (lib.getExe pkgs.keepassxc)
+            "clash-verge"
+          ];
+          spawn-sh-at-startup = [
+            "sleep 2 && ${lib.getExe pkgs.keepassxc}"
           ];
           xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
           layout = {

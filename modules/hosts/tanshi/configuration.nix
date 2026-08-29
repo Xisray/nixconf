@@ -7,6 +7,7 @@
       self.nixosModules.impermanence
       self.nixosModules.bluetooth
       self.nixosModules.power
+      self.nixosModules.noctaliaGreeter
       self.nixosModules.git
       self.nixosModules.nixvim
       self.nixosModules.niri

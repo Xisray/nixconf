@@ -10,6 +10,7 @@
         shell_integration = "enabled";
         font_size = 15;
         font_family = "JetBrainsMono Nerd Font";
+        window_padding_width = "0 15";
 
         background = self.theme.base00;
         foreground = self.theme.base07;
