@@ -19,8 +19,10 @@ let
     base0F = "#f0c6c6";
   };
   themeNoHash = builtins.mapAttrs (_: lib.removePrefix "#") theme;
-in {
+  themeName = "catppuccin";
+in
+{
   flake = {
-    inherit theme themeNoHash;
+    inherit theme themeNoHash themeName;
   };
 }

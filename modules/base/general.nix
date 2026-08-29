@@ -24,7 +24,6 @@
       shell = self.packages.${pkgs.stdenv.hostPlatform.system}.fish;
 
       hashedPasswordFile = "/persist/passwd";
-      initialPassword = "12345";
     };
 
     xdg.portal = {
@@ -68,7 +67,6 @@
       builders-use-substitutes = true;
       connect-timeout = 5;
       download-attempts = 3;
-      experimental-features = [ "nix-command" "flakes" ];
       fallback = true;
       http-connections = 16;
       stalled-download-timeout = 30;

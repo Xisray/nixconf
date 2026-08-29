@@ -19,6 +19,7 @@
         settings = {
           prefer-no-csd = _: { };
           input = {
+            focus-follows-mouse = _: { };
             keyboard = {
               xkb = {
                 layout = "us,ru";
@@ -30,30 +31,27 @@
               tap = _: { };
             };
           };
-          workspaces =
-            let
-              settings = {
-                layout.gaps = 5;
-              };
-            in
-            {
-              "w0" = settings;
-              "w1" = settings;
-              "w2" = settings;
-              "w3" = settings;
-              "w4" = settings;
-              "w5" = settings;
-              "w6" = settings;
-              "w7" = settings;
-              "w8" = settings;
-              "w9" = settings;
-            };
-
           spawn-at-startup = [
             (lib.getExe self'.packages.noctalia)
           ];
           xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
-          layout.gaps = 5;
+          layout = {
+            gaps = 16;
+            focus-ring = {
+              width = 2;
+              active-color = self.theme.base07;
+            };
+            struts = {
+              left = 2;
+              right = 2;
+              top = 2;
+              bottom = 0;
+            };
+          };
+          window-rule = {
+            # geometry-corner-radius = 12;
+            # clip-to-geometry = true;
+          };
           binds = {
             "Mod+Return".spawn-sh = lib.getExe self'.packages.kitty;
 
@@ -93,27 +91,25 @@
             "Mod+Ctrl+Up".set-window-height = "+5%";
             "Mod+Ctrl+Down".set-window-height = "-5%";
 
-            "Mod+1".focus-workspace = "w0";
-            "Mod+2".focus-workspace = "w1";
-            "Mod+3".focus-workspace = "w2";
-            "Mod+4".focus-workspace = "w3";
-            "Mod+5".focus-workspace = "w4";
-            "Mod+6".focus-workspace = "w5";
-            "Mod+7".focus-workspace = "w6";
-            "Mod+8".focus-workspace = "w7";
-            "Mod+9".focus-workspace = "w8";
-            "Mod+0".focus-workspace = "w9";
+            "Mod+1".focus-workspace = 1;
+            "Mod+2".focus-workspace = 2;
+            "Mod+3".focus-workspace = 3;
+            "Mod+4".focus-workspace = 4;
+            "Mod+5".focus-workspace = 5;
+            "Mod+6".focus-workspace = 6;
+            "Mod+7".focus-workspace = 7;
+            "Mod+8".focus-workspace = 8;
+            "Mod+9".focus-workspace = 9;
 
-            "Mod+Shift+1".move-column-to-workspace = "w0";
-            "Mod+Shift+2".move-column-to-workspace = "w1";
-            "Mod+Shift+3".move-column-to-workspace = "w2";
-            "Mod+Shift+4".move-column-to-workspace = "w3";
-            "Mod+Shift+5".move-column-to-workspace = "w4";
-            "Mod+Shift+6".move-column-to-workspace = "w5";
-            "Mod+Shift+7".move-column-to-workspace = "w6";
-            "Mod+Shift+8".move-column-to-workspace = "w7";
-            "Mod+Shift+9".move-column-to-workspace = "w8";
-            "Mod+Shift+0".move-column-to-workspace = "w9";
+            "Mod+Shift+1".move-column-to-workspace = 1;
+            "Mod+Shift+2".move-column-to-workspace = 2;
+            "Mod+Shift+3".move-column-to-workspace = 3;
+            "Mod+Shift+4".move-column-to-workspace = 4;
+            "Mod+Shift+5".move-column-to-workspace = 5;
+            "Mod+Shift+6".move-column-to-workspace = 6;
+            "Mod+Shift+7".move-column-to-workspace = 7;
+            "Mod+Shift+8".move-column-to-workspace = 8;
+            "Mod+Shift+9".move-column-to-workspace = 9;
 
             "Mod+S".spawn-sh = "${lib.getExe self'.packages.noctalia} ipc call launcher toggle";
 
@@ -130,6 +126,129 @@
               content.spawn-sh = "${lib.getExe self'.packages.noctalia} ipc call brightness decrease";
             };
           };
+          extraConfig = ''
+            animations {
+              // Uncomment to turn off all animations.
+              //off
+              workspace-switch {
+                spring damping-ratio=0.75 stiffness=1600 epsilon=0.0001
+              }
+
+              window-open {
+                spring damping-ratio=0.5 stiffness=1000 epsilon=0.0003
+                //curve "ease-out-expo"
+              }
+
+            window-close {
+                duration-ms 200
+                curve "linear"
+                custom-shader r"
+                // ── Easing ────────────────────────────────────────────────────────
+                float easeInExpo(float t)   { return t == 0.0 ? 0.0 : pow(2.0, 10.0 * (t - 1.0)); }
+                float easeOutQuad(float t)  { return 1.0 - (1.0 - t) * (1.0 - t); }
+                float easeInQuad(float t)   { return t * t; }
+                float easeOutCubic(float t) { float f = t - 1.0; return f * f * f + 1.0; }
+                float easeInQuart(float t)  { return t * t * t * t; }
+
+                float saturate(float x) {
+                    return clamp(x, 0.0, 1.0);
+                }
+
+                float remap(float t, float a, float b) {
+                    return saturate((t - a) / (b - a));
+                }
+
+                vec2 scaleUV(vec2 uv, vec2 scale) {
+                    return (uv - 0.5) / scale + 0.5;
+                }
+
+                float centerGradient(float x) {
+                    x *= 2.0;
+                    return x < 1.0 ? x : 2.0 - x;
+                }
+
+                vec2 barrelDistort(vec2 uv, float strength) {
+                    vec2 cc = uv - 0.5;
+                    float dist = dot(cc, cc);
+                    return uv + cc * dist * strength;
+                }
+
+                vec4 close_color(vec3 coords_geo, vec3 size_geo) {
+
+                    if (coords_geo.x < 0.0 || coords_geo.x > 1.0 ||
+                        coords_geo.y < 0.0 || coords_geo.y > 1.0)
+                        return vec4(0.0);
+
+                    vec2 uv = (niri_geo_to_tex * coords_geo).xy;
+
+                    if (uv.x < 0.0 || uv.x > 1.0 ||
+                        uv.y < 0.0 || uv.y > 1.0)
+                        return vec4(0.0);
+
+                    float p = niri_clamped_progress;
+                    float inv = 1.0 - p;
+
+                    // Horizontal collapses slightly after vertical for a CRT feel.
+                    float py = remap(inv, 0.30, 1.00);
+                    float px = remap(inv, 0.00, 0.80);
+
+                    float scaleX = mix(0.06, 1.0, easeOutCubic(px));
+                    float scaleY = mix(0.00, 1.0, easeInQuad(py));
+
+                    float barrelStr = (1.0 - easeOutQuad(px)) * 0.20;
+                    vec2 distortedUV = barrelDistort(uv, barrelStr);
+
+                    vec2 sampleUV = scaleUV(distortedUV, vec2(scaleX, scaleY));
+
+                    if (sampleUV.x < 0.0 || sampleUV.x > 1.0 ||
+                        sampleUV.y < 0.0 || sampleUV.y > 1.0)
+                        return vec4(0.0);
+
+                    vec4 color = texture2D(niri_tex, sampleUV);
+
+                    float edgeSoft = mix(0.14, 0.04, easeInQuad(p));
+
+                    float tb = centerGradient(sampleUV.y);
+                    float lr = centerGradient(sampleUV.x);
+
+                    float mask =
+                        smoothstep(0.0, edgeSoft, tb) *
+                        smoothstep(0.0, edgeSoft, lr);
+
+                    color.a *= mask;
+                    color *= easeOutQuad(inv);
+
+                    color *= 1.0 - easeInQuart(remap(p, 0.90, 1.00));
+
+                    return color;
+                }
+                "
+            }
+
+              horizontal-view-movement {
+                spring damping-ratio=0.75 stiffness=800 epsilon=0.0003
+              }
+
+              window-movement {
+                spring damping-ratio=0.6 stiffness=760 epsilon=0.0003
+              }
+
+              window-resize {
+                spring damping-ratio=0.45 stiffness=750 epsilon=0.0001
+              }
+
+              overview-open-close {
+                spring damping-ratio=0.40 stiffness=900 epsilon=0.001
+              }
+
+              recent-windows-close {
+                spring damping-ratio=0.40 stiffness=900 epsilon=0.001
+              }
+
+              // Slow down all animations by this factor. Values below 1 speed them up instead
+              slowdown 1.3
+            }
+          '';
         };
       };
     };
