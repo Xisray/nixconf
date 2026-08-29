@@ -7,6 +7,9 @@
       tunMode = true;
     };
 
+    preferences.persistance.data.directories = [
+      ".local/share/io.github.clash-verge-rev.clash-verge-rev"
+    ];
     preferences.persistance.cache.directories = [
       ".cache/io.github.clash-verge-rev.clash-verge-rev"
     ];

@@ -26,6 +26,9 @@
         }
       ];
       diagnostic.settings.virtual_text = true;
+      extraConfigLua = ''
+        vim.cmd("set completeopt+=noselect") 
+      '';
     };
   };
 }

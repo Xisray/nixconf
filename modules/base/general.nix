@@ -37,6 +37,7 @@
       "Downloads"
       "Documents"
       "Projects"
+      "Pictures"
 
       ".ssh"
     ];

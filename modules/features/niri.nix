@@ -37,6 +37,7 @@
           };
           spawn-at-startup = [
             (lib.getExe self'.packages.noctalia)
+            (lib.getExe pkgs.keepassxc)
           ];
           xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
           layout = {

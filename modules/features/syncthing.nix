@@ -10,6 +10,7 @@
     };
     preferences.persistance.data.directories = [
       ".config/syncthing"
+      "sync"
     ];
     # networking.firewall.allowedTCPPorts = [ 8384 ];
   };

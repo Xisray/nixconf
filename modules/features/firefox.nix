@@ -8,6 +8,7 @@
 
     preferences.persistance.data.directories = [
       ".mozilla"
+      ".config/mozilla"
     ];
 
     preferences.persistance.cache.directories = [

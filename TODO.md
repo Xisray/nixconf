@@ -19,6 +19,7 @@
 - [ ] Логин менеджер
 - [ ] Батарея + Noctalia integration
 - [ ] Браузер
+  - [ ] Keepass Ext
 - [ ] Syncthing
 - [ ] Pass manager
 - [ ] Скриншоты + биндинги
