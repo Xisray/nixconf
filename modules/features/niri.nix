@@ -1,8 +1,5 @@
 { self, inputs, ... }: {
   flake.nixosModules.niri = { pkgs, lib, ... }: {
-    # environment.sessionVariables = {
-    #   QT_QPA_PLATFORM = "wayland";
-    # };
     programs.niri = {
       enable = true;
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
