@@ -1,11 +1,5 @@
-{ self, inputs, ... }: {
-  flake.nixosConfigurations.tanshi = inputs.nixpkgs.lib.nixosSystem {
-    modules = [
-      self.nixosModules.tanshiConfiguration
-    ];
-  };
-
-  flake.nixosModules.tanshiConfiguration = { pkgs, lib, ... }: {
+{ self, ... }: {
+  flake.nixosModules.tanshiConfiguration = { pkgs, hostName, ... }: {
     imports = [
       self.nixosModules.tanshiHardware
       self.nixosModules.preferences
@@ -23,7 +17,7 @@
       self.diskoConfigurations.tanshi
     ];
 
-    preferences.hostName = "tanshi";
+    preferences.hostName = hostName;
 
     boot = {
       kernelParams = [ "amd_pstate=active" ];
