@@ -3,6 +3,7 @@
 		imports = [
 		  #self.homeModules.git
 		  self.homeModules.kitty
+		  self.homeModules.fish
 		];
 	};
 }

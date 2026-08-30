@@ -16,12 +16,6 @@
         })
       ];
       users.${config.preferences.user.name} = self.homeModules.${hostName};
-		#	users.xisray = {
-		#		programs.home-manager.enable = true;
-		#		home.username = "xisray";
-		#		home.homeDirectory = "/home/xisray";
-		#		home.stateVersion = "26.05";
-		#	};
     };
   };
 }
