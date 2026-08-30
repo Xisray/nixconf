@@ -2,11 +2,6 @@
   flake.homeModules.kitty = {
     programs.kitty = {
       enable = true;
-      font = {
-        name = "JetBrainsMono Nerd Font Mono";
-        size = 15;
-      };
-
       settings = {
         enable_audio_bell = "no";
         cursor_shape = "beam";

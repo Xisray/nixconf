@@ -1,27 +1,27 @@
 { self, inputs, ... }: {
-  flake.nixosModules.home = { ... }: {
+  flake.nixosModules.home = { config, hostName, ... }: {
     imports = [
       inputs.home-manager.nixosModules.home-manager
     ];
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
-      #sharedModules = [
-      #  ({ osConfig, ... }: {
-      #    home.stateVersion = osConfig.system.stateVersion;
-      #  })
-      #];
-      #users.xisray = self.homeModules.tanshi;
-			users.xisray = {
-				imports = [
-				  #self.homeModules.git
-				  self.homeModules.kitty
-				];
-				programs.home-manager.enable = true;
-				home.username = "xisray";
-				home.homeDirectory = "/home/xisray";
-				home.stateVersion = "26.05";
-			};
+      sharedModules = [
+        ({ osConfig, ... }: {
+          home = {
+					  username = config.preferences.user.name;
+						homeDirectory = "/home/${config.preferences.user.name}";
+					  stateVersion = osConfig.system.stateVersion;
+					};
+        })
+      ];
+      users.${config.preferences.user.name} = self.homeModules.${hostName};
+		#	users.xisray = {
+		#		programs.home-manager.enable = true;
+		#		home.username = "xisray";
+		#		home.homeDirectory = "/home/xisray";
+		#		home.stateVersion = "26.05";
+		#	};
     };
   };
 }
