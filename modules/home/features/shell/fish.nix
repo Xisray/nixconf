@@ -1,30 +1,19 @@
-{ inputs, ... }: {
+{ ... }: {
   flake.homeModules.fish = {
     programs.fish = {
       enable = true;
       shellAliases = {
+        ls = "lsd";
         ll = "ls -l";
         la = "ls -a";
         lla = "ls -la";
         lt = "ls --tree";
       };
     };
+    programs.zoxide.enableFishIntegration = true;
   };
+
   perSystem = { pkgs, ... }: {
-    #packages.shell = inputs.wrapper-modules.lib.wrapPackage {
-    packages.shell = inputs.wrapper-modules.wrappers.fish.wrap {
-      inherit pkgs;
-      package = pkgs.fish;
-      runtimePkgs = with pkgs; [
-        fzf
-        ripgrep
-        lsd
-        bat
-        zoxide
-        fd
-        btop
-        yazi
-      ];
-    };
+    packages.shell = pkgs.fish;
   };
 }
