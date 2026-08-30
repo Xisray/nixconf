@@ -1,9 +1,9 @@
-{ pkgs, ... }: {
+{ ... }: {
   flake.homeModules.kitty = {
     programs.kitty = {
       enable = true;
       font = {
-        name = "monospace";
+        name = "JetBrainsMono Nerd Font Mono";
         size = 15;
       };
 

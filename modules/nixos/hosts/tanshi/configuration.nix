@@ -30,6 +30,18 @@
 
     preferences.hostName = hostName;
 
+    programs.git = {
+      enable = true;
+      config = {
+        init = {
+          defaultBranch = "main";
+        };
+        user = {
+          name = "Xisray";
+          email = "safixxkir@yandex.ru";
+        };
+      };
+    };
     boot = {
       kernelParams = [ "amd_pstate=active" ];
       loader = {
