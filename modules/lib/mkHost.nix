@@ -1,11 +1,11 @@
-{ self, inputs, ... }: {
-  flake.lib.mkHost = name: {
+{ inputs, ... }: {
+  flake.lib.mkHost = name: module: {
     flake.nixosConfigurations.${name} = inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {
         hostName = name;
-        inherit self inputs;
+        inherit inputs;
       };
-      modules = [ self.nixosModules."${name}Configuration" ];
+      modules = [ module ];
     };
   };
 }

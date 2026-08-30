@@ -1,4 +1,14 @@
-{ self, ... }: {
+{ self, inputs, ... }: {
+  flake.nixosConfigurations.tanshi = inputs.nixpkgs.lib.nixosSystem {
+    specialArgs = {
+      hostName = "tanshi";
+      inherit inputs;
+    };
+    modules = [
+      self.nixosModules.tanshiConfiguration
+    ];
+  };
+
   flake.nixosModules.tanshiConfiguration = { pkgs, hostName, ... }: {
     imports = [
       self.nixosModules.tanshiHardware

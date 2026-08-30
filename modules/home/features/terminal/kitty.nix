@@ -1,5 +1,4 @@
 { pkgs, ... }: {
-  flake.selectedApps.terminal = pkgs.kitty;
   flake.homeModules.kitty = {
     programs.kitty = {
       enable = true;
@@ -16,5 +15,8 @@
         shell_integration = "enabled";
       };
     };
+  };
+  perSystem = { pkgs, ... }: {
+    packages.terminal = pkgs.kitty;
   };
 }
