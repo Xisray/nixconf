@@ -10,10 +10,10 @@
       self.nixosModules.git
       self.nixosModules.nixvim
       self.nixosModules.niri
-      self.nixosModules.firefox
-      self.nixosModules.clashVerge
-      self.nixosModules.syncthing
-      self.nixosModules.keepassxc
+      #self.nixosModules.firefox
+      #self.nixosModules.clashVerge
+      #self.nixosModules.syncthing
+      #self.nixosModules.keepassxc
       self.diskoConfigurations.tanshi
     ];
 

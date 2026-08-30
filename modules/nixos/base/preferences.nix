@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.preferences = { lib, ... }: {
+  flake.nixosModules.preferences = { lib, hostName, ... }: {
     options.preferences = {
       user.name = lib.mkOption {
         type = lib.types.str;
@@ -7,7 +7,7 @@
       };
       hostName = lib.mkOption {
         type = lib.types.str;
-        default = "nixos";
+        default = hostName;
       };
       persistance = {
         nukeRoot.enable = lib.mkEnableOption "Destroy /root on every boot";

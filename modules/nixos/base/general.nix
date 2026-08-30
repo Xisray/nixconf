@@ -2,7 +2,7 @@
   flake.nixosModules.general = { pkgs, config, ... }: {
     imports = [
       self.nixosModules.audio
-      self.nixosModules.fonts
+      self.nixosModules.stylix
     ];
     nix.settings.experimental-features = [
       "nix-command"
@@ -21,7 +21,7 @@
         "wheel"
         "networkmanager"
       ];
-      shell = self.packages.${pkgs.stdenv.hostPlatform.system}.fish;
+      shell = self.packages.${pkgs.system}.shell;
 
       hashedPasswordFile = "/persist/passwd";
     };
