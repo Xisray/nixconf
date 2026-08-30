@@ -1,4 +1,10 @@
 { self, inputs, ... }: {
+  flake.nixosConfigurations.tanshi = inputs.nixpkgs.lib.nixosSystem {
+    modules = [
+      self.nixosModules.tanshiConfiguration
+    ];
+  };
+
   flake.nixosModules.tanshiConfiguration = { pkgs, lib, ... }: {
     imports = [
       self.nixosModules.tanshiHardware
