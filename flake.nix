@@ -13,6 +13,16 @@
 
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixvim.url = "github:nix-community/nixvim";
     noctalia-greeter = {
       url = "github:noctalia-dev/noctalia-greeter";
