@@ -2,11 +2,12 @@
   flake.nixosModules.firefox = { pkgs, lib, ... }: {
     programs.firefox = {
       enable = true;
-      languagePacks = [
-        "ru"
-        "en-US"
-      ];
+      languagePacks = [ "ru" ];
       policies = {
+        Homepage = {
+          Locked = false;
+          StartPage = "previous-session";
+        };
         SkipTermsOfUse = true;
         DisableFirefoxScreenshots = true;
         HttpsOnlyMode = "force_enabled";
