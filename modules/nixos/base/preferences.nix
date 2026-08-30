@@ -9,6 +9,14 @@
         type = lib.types.str;
         default = hostName;
       };
+      shell = lib.mkOption {
+        type = lib.types.enum [
+          "fish"
+          "zsh"
+          "bash"
+        ];
+        default = "bash";
+      };
       persistance = {
         nukeRoot.enable = lib.mkEnableOption "Destroy /root on every boot";
 

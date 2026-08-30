@@ -17,6 +17,7 @@
       self.nixosModules.impermanence
       self.nixosModules.bluetooth
       self.nixosModules.power
+      self.nixosModules.fish
       self.nixosModules.nixvim
       self.nixosModules.niri
       #self.nixosModules.firefox
