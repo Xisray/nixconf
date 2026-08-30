@@ -7,13 +7,14 @@
       self.nixosModules.impermanence
       self.nixosModules.bluetooth
       self.nixosModules.power
-      self.nixosModules.git
+      # self.nixosModules.git
       self.nixosModules.nixvim
       self.nixosModules.niri
       #self.nixosModules.firefox
       #self.nixosModules.clashVerge
       #self.nixosModules.syncthing
       #self.nixosModules.keepassxc
+      self.nixosModules.home
       self.diskoConfigurations.tanshi
     ];
 

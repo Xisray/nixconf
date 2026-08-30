@@ -61,7 +61,7 @@
             # clip-to-geometry = true;
           };
           binds = {
-            "Mod+Return".spawn-sh = lib.getExe self'.packages.kitty;
+            "Mod+Return".spawn-sh = lib.getExe self'.packages.terminal;
 
             "Mod+Q".close-window = _: { };
             "Mod+F".maximize-column = _: { };

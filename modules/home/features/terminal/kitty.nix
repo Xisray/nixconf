@@ -1,4 +1,5 @@
-{ ... }: {
+{ pkgs, ... }: {
+  flake.selectedApps.terminal = pkgs.kitty;
   flake.homeModules.kitty = {
     programs.kitty = {
       enable = true;

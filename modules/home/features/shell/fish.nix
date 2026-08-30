@@ -1,4 +1,5 @@
-{ ... }: {
+{ pkgs, ... }: {
+  flake.selectedApps.shell = pkgs.fish;
   flake.homeModules.fish = {
     programs.fish = {
       enable = true;
