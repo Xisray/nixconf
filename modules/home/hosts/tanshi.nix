@@ -1,9 +1,9 @@
 { self, ... }: {
   flake.homeModules.tanshi = {
-		imports = [
-		  #self.homeModules.git
-		  self.homeModules.kitty
-		  self.homeModules.fish
-		];
-	};
+    imports = [
+      self.homeModules.kitty
+      self.homeModules.fish
+      self.homeModules.git
+    ];
+  };
 }

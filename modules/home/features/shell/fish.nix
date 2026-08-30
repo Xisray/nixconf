@@ -11,7 +11,8 @@
     };
   };
   perSystem = { pkgs, ... }: {
-    packages.shell = inputs.wrapper-modules.lib.wrapPackage {
+    #packages.shell = inputs.wrapper-modules.lib.wrapPackage {
+    packages.shell = inputs.wrapper-modules.wrappers.fish.wrap {
       inherit pkgs;
       package = pkgs.fish;
       runtimePkgs = with pkgs; [

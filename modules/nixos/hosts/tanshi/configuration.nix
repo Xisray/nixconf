@@ -17,7 +17,6 @@
       self.nixosModules.impermanence
       self.nixosModules.bluetooth
       self.nixosModules.power
-      # self.nixosModules.git
       self.nixosModules.nixvim
       self.nixosModules.niri
       #self.nixosModules.firefox
@@ -30,18 +29,6 @@
 
     preferences.hostName = hostName;
 
-    programs.git = {
-      enable = true;
-      config = {
-        init = {
-          defaultBranch = "main";
-        };
-        user = {
-          name = "Xisray";
-          email = "safixxkir@yandex.ru";
-        };
-      };
-    };
     boot = {
       kernelParams = [ "amd_pstate=active" ];
       loader = {
