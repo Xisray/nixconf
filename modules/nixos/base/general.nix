@@ -21,7 +21,7 @@
         "wheel"
         "networkmanager"
       ];
-      shell = self.packages.${pkgs.system}.shell;
+      shell = pkgs.${config.preferences.shell};
 
       hashedPasswordFile = "/persist/passwd";
     };
