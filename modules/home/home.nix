@@ -3,12 +3,12 @@
     imports = [
       inputs.home-manager.nixosModules.home-manager
     ];
+    programs.${config.preferences.shell}.enable = true;
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
       sharedModules = [
         ({ osConfig, ... }: {
-          programs.${osConfig.preferences.shell}.enable = true;
           home = {
             username = config.preferences.user.name;
             homeDirectory = "/home/${config.preferences.user.name}";
@@ -16,6 +16,9 @@
           };
         })
       ];
+      extraSpecialArgs = {
+        nixosConfig = config;
+      };
       users.${config.preferences.user.name} = self.homeModules.${hostName};
     };
   };

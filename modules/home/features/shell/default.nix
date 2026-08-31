@@ -1,8 +1,17 @@
 { self, ... }: {
   flake.homeModules.shell =
-    { config, ... }:
+    {
+      nixosConfig,
+      lib,
+      options,
+      ...
+    }:
     let
-      shell = config.preferences.shell;
+      capitalize = s: lib.toUpper (builtins.substring 0 1 s) + builtins.substring 1 (-1) s;
+      shell = nixosConfig.preferences.shell;
+      integrationOption = "enable${capitalize shell}Integration";
+      enableIntegration = program: { "${integrationOption}" = true; };
+      hasOption = program: lib.hasAttrByPath [ "programs" program integrationOption ] options;
     in
     {
       imports =
@@ -16,11 +25,11 @@
         ${shell} = {
           enable = true;
           shellAliases = {
-            ls = "lsd";
-            ll = "ls -l";
-            la = "ls -a";
-            lla = "ls -la";
-            lt = "ls --tree";
+            #ls = "lsd";
+            #ll = "ls -l";
+            #la = "ls -a";
+            #lla = "ls -la";
+            #lt = "ls --tree";
             grep = "rg";
             cat = "bat --paging=never";
             top = "btop";
@@ -42,9 +51,15 @@
           enable = true;
         };
         ripgrep.enable = true;
-        lsd.enable = true;
+        lsd = {
+          enable = true;
+        };
+        #// lib.optionalAttrs (hasOption "lsd") (enableIntegration "lsd");
         bat.enable = true;
-        zoxide.enable = true;
+        zoxide = {
+          enable = true;
+        };
+        #// lib.optionalAttrs (hasOption "zoxide") (enableIntegration "zoxide");
         fd.enable = true;
         btop.enable = true;
         yazi = {

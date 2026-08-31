@@ -10,5 +10,6 @@
       '';
     };
     programs.zoxide.enableFishIntegration = true;
+    programs.lsd.enableFishIntegration = true;
   };
 }

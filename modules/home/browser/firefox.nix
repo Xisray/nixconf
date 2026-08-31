@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
-  flake.nixosModules.firefox = { pkgs, lib, ... }: {
+  flake.homeModules.firefox = { pkgs, lib, ... }: {
     programs.firefox = {
       enable = true;
       languagePacks = [ "ru" ];
