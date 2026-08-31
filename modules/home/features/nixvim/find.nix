@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
-  flake.nixosModules.nixvim = { pkgs, lib, ... }: {
+  flake.homeModules.nixvim = { pkgs, lib, ... }: {
     programs.nixvim = {
       extraConfigLua = ''
         local ignore_patterns = {

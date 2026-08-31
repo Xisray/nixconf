@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
-  flake.nixosModules.nixvim = { pkgs, lib, ... }: {
-    imports = [ inputs.nixvim.nixosModules.nixvim ];
+  flake.homeModules.nixvim = { pkgs, lib, ... }: {
+    imports = [ inputs.nixvim.homeModules.nixvim ];
     programs.nixvim = {
       enable = true;
       viAlias = true;

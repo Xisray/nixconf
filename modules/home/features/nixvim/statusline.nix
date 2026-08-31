@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
-  flake.nixosModules.nixvim = { pkgs, lib, ... }: {
+  flake.homeModules.nixvim = { pkgs, lib, ... }: {
     programs.nixvim = {
       opts.statusline = "%!v:lua._statusline()";
       autoCmd = [

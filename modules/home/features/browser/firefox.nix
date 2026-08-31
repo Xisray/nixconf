@@ -1,9 +1,17 @@
 { self, inputs, ... }: {
   flake.homeModules.firefox = { pkgs, lib, ... }: {
+    stylix.targets.firefox.profileNames = [ "default" ];
     programs.firefox = {
       enable = true;
       languagePacks = [ "ru" ];
+      profiles = {
+        default = { };
+      };
       policies = {
+        RequestedLocales = [
+          "de"
+          "en-US"
+        ];
         Homepage = {
           Locked = false;
           StartPage = "previous-session";
@@ -536,13 +544,13 @@
       };
     };
 
-    preferences.persistance.data.directories = [
-      ".mozilla"
-      ".config/mozilla"
-    ];
+    #preferences.persistance.data.directories = [
+    #  ".mozilla"
+    #  ".config/mozilla"
+    #];
 
-    preferences.persistance.cache.directories = [
-      ".cache/mozilla"
-    ];
+    #preferences.persistance.cache.directories = [
+    #  ".cache/mozilla"
+    #];
   };
 }

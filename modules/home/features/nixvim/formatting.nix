@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
-  flake.nixosModules.nixvim = { pkgs, lib, ... }: {
+  flake.homeModules.nixvim = { pkgs, lib, ... }: {
     programs.nixvim.extraConfigLua = ''
       -- User-configurable: filetype -> shell command (stdin/stdout)
       _M.formatters = {

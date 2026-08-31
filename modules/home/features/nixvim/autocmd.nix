@@ -1,5 +1,5 @@
 { self, inputs, ... }: {
-  flake.nixosModules.nixvim = { pkgs, lib, ... }: {
+  flake.homeModules.nixvim = { pkgs, lib, ... }: {
     programs.nixvim = {
       autoGroups.highlight_yank.clear = true;
       autoCmd = [
