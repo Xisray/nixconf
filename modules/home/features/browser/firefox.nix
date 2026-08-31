@@ -1,6 +1,8 @@
 { self, inputs, ... }: {
   flake.homeModules.firefox = { pkgs, lib, ... }: {
-    stylix.targets.firefox.profileNames = [ "default" ];
+    stylix.targets.firefox = {
+      profileNames = [ "default" ];
+    };
     programs.firefox = {
       enable = true;
       languagePacks = [ "ru" ];
@@ -9,7 +11,7 @@
       };
       policies = {
         RequestedLocales = [
-          "de"
+          "ru"
           "en-US"
         ];
         Homepage = {
