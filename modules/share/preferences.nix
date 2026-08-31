@@ -3,6 +3,7 @@
     options.preferences = {
       autostart = lib.mkOption {
         type = lib.types.listOf (lib.types.either lib.types.str lib.types.package);
+        default = [ ];
       };
       persistance = {
         data.directories = lib.mkOption {
