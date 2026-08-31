@@ -7,6 +7,7 @@
       self.homeModules.firefox
       self.homeModules.nixvim
       self.homeModules.keepassxc
+      self.homeModules.syncthing
     ];
   };
 }
