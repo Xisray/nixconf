@@ -19,8 +19,7 @@
       self.nixosModules.power
       self.nixosModules.niri
       self.nixosModules.clashVerge
-      #self.nixosModules.syncthing
-      #self.nixosModules.keepassxc
+      self.nixosModules.syncthing
       self.nixosModules.home
       self.diskoConfigurations.tanshi
     ];
