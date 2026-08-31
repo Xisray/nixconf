@@ -4,6 +4,7 @@
     let
       cfg = config.preferences.persistance;
       user = config.preferences.user.name;
+      hmPersistance = config.home-manager.users.${user}.preferences.persistance or { };
     in
     {
       imports = [
@@ -14,13 +15,14 @@
         programs.fuse.userAllowOther = true;
         boot.tmp.cleanOnBoot = lib.mkDefault true;
         environment.persistence = {
-          "/persist/userdata".users."${user}" = {
-            directories = cfg.data.directories;
-            files = cfg.data.files;
+          "/persist/userdata".users.${user} = {
+            directories = cfg.data.directories ++ (hmPersistance.data.directories or [ ]);
+            files = cfg.data.files ++ (hmPersistance.data.files or [ ]);
           };
-          "/persist/usercache".users."${user}" = {
-            directories = cfg.cache.directories;
-            files = cfg.cache.files;
+
+          "/persist/usercache".users.${user} = {
+            directories = cfg.cache.directories ++ (hmPersistance.cache.directories or [ ]);
+            files = cfg.cache.files ++ (hmPersistance.cache.files or [ ]);
           };
           "/persist/system" = {
             hideMounts = true;

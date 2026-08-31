@@ -1,5 +1,8 @@
-{
+{ self, ... }: {
   flake.nixosModules.preferences = { lib, hostName, ... }: {
+    imports = [
+      self.sharedModules.preferences
+    ];
     options.preferences = {
       user.name = lib.mkOption {
         type = lib.types.str;
@@ -35,34 +38,6 @@
         };
 
         files = lib.mkOption {
-          default = [ ];
-          description = ''
-            files to persist
-          '';
-        };
-
-        data.directories = lib.mkOption {
-          default = [ ];
-          description = ''
-            directories to persist
-          '';
-        };
-
-        data.files = lib.mkOption {
-          default = [ ];
-          description = ''
-            files to persist
-          '';
-        };
-
-        cache.directories = lib.mkOption {
-          default = [ ];
-          description = ''
-            directories to persist
-          '';
-        };
-
-        cache.files = lib.mkOption {
           default = [ ];
           description = ''
             files to persist

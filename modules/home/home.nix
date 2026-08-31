@@ -8,6 +8,7 @@
       useGlobalPkgs = true;
       useUserPackages = true;
       sharedModules = [
+        self.sharedModules.preferences
         ({ osConfig, ... }: {
           home = {
             username = config.preferences.user.name;

@@ -546,13 +546,13 @@
       };
     };
 
-    #preferences.persistance.data.directories = [
-    #  ".mozilla"
-    #  ".config/mozilla"
-    #];
+    preferences.persistance.data.directories = [
+      ".mozilla"
+      ".config/mozilla"
+    ];
 
-    #preferences.persistance.cache.directories = [
-    #  ".cache/mozilla"
-    #];
+    preferences.persistance.cache.directories = [
+      ".cache/mozilla"
+    ];
   };
 }
