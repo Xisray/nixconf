@@ -6,6 +6,7 @@
       self.homeModules.git
       self.homeModules.firefox
       self.homeModules.nixvim
+      self.homeModules.keepassxc
     ];
   };
 }

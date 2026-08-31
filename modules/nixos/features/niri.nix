@@ -39,9 +39,9 @@
             (lib.getExe self'.packages.noctalia)
             "clash-verge"
           ];
-          spawn-sh-at-startup = [
-            "sleep 2 && ${lib.getExe pkgs.keepassxc}"
-          ];
+          # spawn-sh-at-startup = [
+          #   "sleep 2 && ${lib.getExe pkgs.keepassxc}"
+          #];
           xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
           layout = {
             gaps = 16;
