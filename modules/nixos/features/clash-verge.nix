@@ -7,6 +7,8 @@
       tunMode = true;
     };
 
+    preferences.autostart = [ "clash-verge" ];
+
     preferences.persistance.data.directories = [
       ".local/share/io.github.clash-verge-rev.clash-verge-rev"
     ];

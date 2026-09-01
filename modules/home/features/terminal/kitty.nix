@@ -1,5 +1,5 @@
 { ... }: {
-  flake.homeModules.kitty = {
+  flake.homeModules.kitty = { pkgs, lib, ... }: {
     programs.kitty = {
       enable = true;
       settings = {
@@ -10,8 +10,6 @@
         shell_integration = "enabled";
       };
     };
-  };
-  perSystem = { pkgs, ... }: {
-    packages.terminal = pkgs.kitty;
+    preferences.binds."Mod+Return".action = lib.getExe pkgs.kitty;
   };
 }

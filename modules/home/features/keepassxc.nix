@@ -22,5 +22,6 @@
       };
       #autostart = true;
     };
+    preferences.autostart = [ "keepassxc" ];
   };
 }
