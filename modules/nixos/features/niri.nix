@@ -126,6 +126,13 @@
               "XF86AudioRaiseVolume".spawn-sh = "wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+";
               "XF86AudioLowerVolume".spawn-sh = "wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-";
               "XF86AudioMute".spawn-sh = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+
+              "Print".spawn-sh = "niri msg action screenshot-screen";
+              "Alt+Print".spawn-sh = "niri msg action screenshot-window";
+              "Ctrl+Print".spawn-sh = "niri msg action screenshot";
+              "Mod+Shift+S".spawn-sh = "niri msg action screenshot";
+
+              "Mod+Shift+E".spawn-sh = "${pkgs.wl-clipboard}/bin/wl-paste | ${lib.getExe pkgs.swappy} -f -";
             };
             extraConfig = ''
               animations {

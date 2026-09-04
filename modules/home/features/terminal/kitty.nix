@@ -3,6 +3,7 @@
     programs.kitty = {
       enable = true;
       settings = {
+        window_padding_width = "0 10";
         enable_audio_bell = "no";
         cursor_shape = "beam";
         cursor_trail = 1;

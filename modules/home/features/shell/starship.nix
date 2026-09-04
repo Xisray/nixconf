@@ -1,32 +1,33 @@
 {
-  flake.homeModules.starship = {
+  flake.homeModules.starship = { lib, ... }: {
     programs.starship = {
       enable = true;
       settings = {
         add_newline = true;
         continuation_prompt = "[▸▹ ](dimmed white)";
 
-        format = ''
-          $username\
-          $directory\
-          $git_branch\
-          $git_status\
-          $git_metrics\
-          $package\
-          $nodejs\
-          $bun\
-          $python\
-          $rust\
-          $golang\
-          $java\
-          $c\
-          $cpp\
-          $lua\
-          $ruby\
-          $php\
-          $docker_context\
-          $cmd_duration\
-          \n$character'';
+        format = lib.concatStrings [
+          "$username"
+          "$directory"
+          "$git_branch"
+          "$git_status"
+          "$git_metrics"
+          "$package"
+          "$nodejs"
+          "$bun"
+          "$python"
+          "$rust"
+          "$golang"
+          "$java"
+          "$c"
+          "$cpp"
+          "$lua"
+          "$ruby"
+          "$php"
+          "$docker_context"
+          "$cmd_duration"
+          "\n$character"
+        ];
 
         character = {
           format = "$symbol ";

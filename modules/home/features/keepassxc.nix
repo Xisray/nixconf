@@ -20,8 +20,11 @@
           Security_HideNotes = true;
         };
       };
-      #autostart = true;
     };
     preferences.autostart = [ "keepassxc" ];
+
+    preferences.persistance.cache.directories = [
+      ".cache/keepassxc"
+    ];
   };
 }
