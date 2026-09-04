@@ -49,6 +49,7 @@
             spawn-at-startup = map toCmd autostart;
             xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
             layout = {
+              always-center-single-column = _: { };
               gaps = 16;
               focus-ring = {
                 width = 2;
@@ -66,8 +67,6 @@
               # clip-to-geometry = true;
             };
             binds = niriBinds // {
-              # "Mod+Return".spawn-sh = lib.getExe self'.packages.terminal;
-
               "Mod+Q".close-window = _: { };
               "Mod+F".maximize-column = _: { };
               "Mod+G".fullscreen-window = _: { };
@@ -124,20 +123,9 @@
               "Mod+Shift+8".move-column-to-workspace = 8;
               "Mod+Shift+9".move-column-to-workspace = 9;
 
-              #"Mod+S".spawn-sh = "${lib.getExe self'.packages.noctalia} ipc call launcher toggle";
-
               "XF86AudioRaiseVolume".spawn-sh = "wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+";
               "XF86AudioLowerVolume".spawn-sh = "wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-";
               "XF86AudioMute".spawn-sh = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-
-              # "XF86MonBrightnessUp" = _: {
-              #   props.allow-when-locked = true;
-              #   content.spawn-sh = "${lib.getExe self'.packages.noctalia} ipc call brightness increase";
-              # };
-              # "XF86MonBrightnessDown" = _: {
-              #   props.allow-when-locked = true;
-              #   content.spawn-sh = "${lib.getExe self'.packages.noctalia} ipc call brightness decrease";
-              # };
             };
             extraConfig = ''
               animations {
@@ -265,9 +253,5 @@
           };
         };
       };
-
-      preferences.persistance.cache.directories = [
-        ".cache/noctalia"
-      ];
     };
 }

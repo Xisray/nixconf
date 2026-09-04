@@ -27,12 +27,12 @@
         environment.persistence = {
           "/persist/userdata".users.${user} = {
             directories = cfg.data.directories ++ hmData.directories;
-            files = cfg.data.files + hmData.files;
+            files = cfg.data.files ++ hmData.files;
           };
 
           "/persist/usercache".users.${user} = {
-            directories = cfg.cache.directories + hmCache.directories;
-            files = cfg.cache.files + hmCache.files;
+            directories = cfg.cache.directories ++ hmCache.directories;
+            files = cfg.cache.files ++ hmCache.files;
           };
           "/persist/system" = {
             hideMounts = true;

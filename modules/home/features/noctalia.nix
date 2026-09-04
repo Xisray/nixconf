@@ -1,304 +1,130 @@
 { self, inputs, ... }: {
-  flake.homeModules.noctalia = {
+  flake.homeModules.noctalia = { lib, pkgs, ... }: {
     preferences.autostart = [ "noctalia" ];
 
-    preferences.binds."Mod+S".action = "noctalia ipc call launcher toggle";
+    preferences.binds."Mod+S".action = "${lib.getExe pkgs.noctalia} msg panel-toggle launcher";
 
-    preferences.binds."XF86MonBrightnessUp" = _: {
+    preferences.binds."XF86MonBrightnessUp" = {
       props.allow-when-locked = true;
-      action = "noctalia ipc call brightness increase";
+      action = "${lib.getExe pkgs.noctalia} msg brightness-up";
     };
-    preferences.binds."XF86MonBrightnessDown" = _: {
+    preferences.binds."XF86MonBrightnessDown" = {
       props.allow-when-locked = true;
-      action = "noctalia ipc call brightness decrease";
+      action = "${lib.getExe pkgs.noctalia} msg brightness-down";
     };
+
+    preferences.persistance.data.directories = [
+      ".local/state/noctalia"
+    ];
+
+    preferences.persistance.cache.directories = [
+      ".cache/noctalia"
+    ];
+
     programs.noctalia = {
       enable = true;
       settings = {
-        appLauncher = {
-          customLaunchPrefixEnabled = false;
-          enableClipboardHistory = false;
-          iconMode = "tabler";
-          pinnedExecs = [ ];
-          position = "center";
-          showCategories = true;
-          sortByMostUsed = true;
-          terminalCommand = "kitty -e";
-          useApp2Unit = false; # ?
-          viewMode = "list";
+        desktop_widgets.enabled = false;
+        dock.enabled = false;
+        shell = {
+          password_style = "random";
+          polkit_agent = true;
         };
-        audio = {
-          mprisBlacklist = [ ];
-          preferredPlayer = "";
-          visualizerType = "none";
-          volumeOverdrive = false;
-          volumeStep = 5;
-        };
-        bar = {
-          position = "top";
-          outerCorners = false;
-          showCapsule = false;
-          rightClickAction = "settings";
-          widgets = {
-            left = [
-              {
-                colorizeDistroLogo = true;
-                enableColorization = true;
-                id = "ControlCenter";
-                useDistroLogo = true;
-              }
-            ];
-            center = [
-              {
-                characterCount = 2;
-                colorizeIcons = false;
-                enableScrollWheel = true;
-                followFocusedScreen = false;
-                hideUnoccupied = true;
-                id = "Workspace";
-                labelMode = "none";
-                showApplications = false;
-                showLabelsOnlyWhenOccupied = true;
-              }
-            ];
-            right = [
-              {
-                blacklist = [ ];
-                chevronColor = "none";
-                colorizeIcons = false;
-                drawerEnabled = true;
-                hidePassive = false;
-                id = "Tray";
-                pinned = [ ];
-              }
-              {
-                hideWhenZero = false;
-                id = "NotificationHistory";
-                showUnreadBadge = true;
-              }
-              {
-                displayMode = "graphic-clean";
-                hideIfIdle = false;
-                hideIfNotDetected = true;
-                id = "Battery";
-                showNoctaliaPerformance = false;
-                showPowerProfiles = false;
-              }
-              {
-                displayMode = "onhover";
-                iconColor = "none";
-                id = "Volume";
-                middleClickCommand = "pwvucontrol || pavucontrol";
-                textColor = "none";
-              }
-              {
-                applyToAllMonitors = false;
-                displayMode = "onhover";
-                iconColor = "none";
-                id = "Brightness";
-                textColor = "none";
-              }
-              {
-                displayMode = "forceOpen";
-                iconColor = "none";
-                id = "KeyboardLayout";
-                showIcon = true;
-                textColor = "none";
-              }
-              {
-                clockColor = "none";
-                customFont = "";
-                formatHorizontal = "HH:mm ddd, MMM dd";
-                formatVertical = "HH mm - dd MM";
-                id = "Clock";
-                tooltipFormat = "HH:mm ddd; MMM dd";
-                useCustomFont = false;
-              }
-            ];
-          };
-        };
-        calendar = {
-          cards = [
-            {
-              enabled = true;
-              id = "calendar-header-card";
-            }
-            {
-              enabled = true;
-              id = "calendar-month-card";
-            }
-            {
-              enabled = false;
-              id = "weather-card";
-            }
+        bar.widgets = {
+          center = [ "date" ];
+          end = [
+            "tray"
+            "network"
+            "bluetooth"
+            "volume"
+            "battery"
+            "notifications"
+          ];
+          margin_ends = 0;
+          radius = 0;
+          start = [
+            "session"
+            "workspaces"
           ];
         };
-        controlCenter = {
-          position = "close_to_bar_button";
-          cards = [
-            {
-              enabled = true;
-              id = "profile-card";
-            }
-            {
-              enabled = true;
-              id = "shortcuts-card";
-            }
-            {
-              enabled = true;
-              id = "audio-card";
-            }
-            {
-              enabled = false;
-              id = "brightness-card";
-            }
-            {
-              enabled = false;
-              id = "weather-card";
-            }
-            {
-              enabled = true;
-              id = "media-sysmon-card";
-            }
+        control_center = {
+          sidebar = "none";
+          sidebar_section = "none";
+          hidden_tabs = [
+            "media"
+            "audio"
+            "monitor"
+            "system"
+            "power"
+            "network"
+            "bluetooth"
+            "weather"
+            "calendar"
+            "notifications"
+            "screen-time"
           ];
-          shortcuts = {
-            left = [
-              { id = "WiFi"; }
-              { id = "Bluetooth"; }
-              { id = "WallpaperSelector"; }
-            ];
-            right = [
-              { id = "Notifications"; }
-              { id = "PowerProfile"; }
-            ];
-          };
-        };
-        desktopWidgets = {
-          enabled = false;
-        };
-        dock = {
-          enabled = false;
-        };
-        general = {
-          telemetryEnabled = false;
-          showChangelogOnStartup = false;
-
-          compactLockScreen = true;
-          lockScreenAnimations = true;
-          passwordChars = true;
-          showSessionButtonsOnLockScreen = false;
-
-          enableShadows = false;
-          enableBlurBehind = false;
-        };
-        ui = {
-          panelBackgroundOpacity = 1.0;
-          tooltipsEnabled = true;
+          shortcuts = [
+            "wifi"
+            "bluetooth"
+            "caffeine"
+            "notification"
+            "power_profile"
+            "wallpaper"
+          ];
         };
 
-        hooks = {
-          enabled = false;
+        widget.brightness = {
+          show_label = false;
         };
-        location = {
-          weatherEnabled = false;
+
+        widget.date = {
+          format = "{::%H:%m %a, %b %d}";
         };
-        nightLight = {
-          autoSchedule = false;
-          dayTemp = "6500";
-          enabled = true;
-          forced = false;
-          manualSunrise = "06:30";
-          manualSunset = "19:30";
-          nightTemp = "4500";
+
+        widget.network = {
+          show_label = false;
         };
-        wallpaper = {
-          enabled = true;
-          directory = "~/Pictures/Wallpapers/${self.themeName}";
+
+        widget.workspaces = {
+          show_labels = false;
         };
-        notifications = {
-          criticalUrgencyDuration = 15;
-          enableKeyboardLayoutToast = false;
-          enableMediaToast = false;
-          enabled = true;
-          location = "top_right";
-          lowUrgencyDuration = 5;
-          normalUrgencyDuration = 8;
-          overlayLayer = true;
-          respectExpireTimeout = false;
-          sounds.enabled = false;
+
+        widget.tray.drawer = true;
+
+        nightlight.enabled = true;
+        weather.enable = false;
+
+        theme.templates = {
+          enable_builtin_templates = false;
+          enable_community_templates = false;
         };
+
+        wallpaper.directory = "~/Pictures/Wallpapers";
         idle = {
-          enabled = true;
-          screenOffTimeout = 300;
-          lockTimeout = 600;
-          suspendTimeout = 1800;
-          fadeDuration = 5;
-          suspendCommand = "systemctl hibernate || loginctl hibernate";
-        };
-        sessionMenu = {
-          enableCountdown = false;
-
-          showKeybinds = true;
-          largeButtonsStyle = true;
-          largeButtonsLayout = "single-row";
-          powerOptions = [
-            {
-              action = "lock";
-              command = "";
-              countdownEnabled = true;
-              enabled = false;
-              keybind = "";
-            }
-            {
-              action = "suspend";
-              command = "";
-              countdownEnabled = true;
-              enabled = false;
-              keybind = "";
-            }
-            {
-              action = "hibernate";
-              command = "";
-              countdownEnabled = true;
-              enabled = true;
-              keybind = "1";
-            }
-            {
-              action = "logout";
-              command = "";
-              countdownEnabled = true;
-              enabled = true;
-              keybind = "2";
-            }
-            {
-              action = "shutdown";
-              command = "";
-              countdownEnabled = true;
-              enabled = true;
-              keybind = "3";
-            }
-            {
-              action = "reboot";
-              command = "";
-              countdownEnabled = true;
-              enabled = true;
-              keybind = "4";
-            }
-            {
-              action = "rebootToUefi";
-              command = "";
-              countdownEnabled = true;
-              enabled = false;
-              keybind = "";
-            }
-            {
-              action = "userspaceReboot";
-              command = "";
-              countdownEnabled = true;
-              enabled = false;
-              keybind = "";
-            }
+          behavior_order = [
+            "lock"
+            "screen-off"
+            "lock-and-suspend"
           ];
+
+          behavior = {
+            lock = {
+              action = "lock";
+              enabled = true;
+              timeout = 300.0;
+            };
+            lock-and-suspend = {
+              action = "lock_and_suspend";
+              enabled = true;
+              timeout = 900.0;
+            };
+
+            screen-off = {
+              action = "screen_off";
+              enabled = true;
+              timeout = 600.0;
+            };
+          };
         };
       };
     };
