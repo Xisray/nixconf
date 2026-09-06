@@ -32,6 +32,7 @@
         package = inputs.wrapper-modules.wrappers.niri.wrap {
           inherit pkgs;
           settings = {
+            overview.backdrop-color = config.lib.stylix.colors.withHashtag.base00;
             prefer-no-csd = _: { };
             input = {
               focus-follows-mouse = _: { };
@@ -53,11 +54,11 @@
               gaps = 16;
               focus-ring = {
                 width = 2;
-                active-color = self.theme.base07;
+                active-color = config.lib.stylix.colors.withHashtag.base07;
               };
               struts = {
-                left = 2;
-                right = 2;
+                left = 1;
+                right = 1;
                 top = 2;
                 bottom = 0;
               };

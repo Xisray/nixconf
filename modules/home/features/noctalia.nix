@@ -31,6 +31,7 @@
           polkit_agent = true;
         };
         bar.widgets = {
+          shadow = false;
           center = [ "date" ];
           end = [
             "tray"
@@ -64,35 +65,29 @@
             "screen-time"
           ];
           shortcuts = [
-            "wifi"
-            "bluetooth"
-            "caffeine"
-            "notification"
-            "power_profile"
-            "wallpaper"
+            {
+              type = "caffeine";
+            }
+            {
+              type = "wallpaper";
+            }
           ];
         };
 
-        widget.brightness = {
-          show_label = false;
+        widget = {
+          brightness.show_label = false;
+          date.format = "{::%H:%m %a, %b %d}";
+          network.show_label = false;
+          workspaces.show_labels = false;
+          tray.drawer = true;
         };
-
-        widget.date = {
-          format = "{::%H:%m %a, %b %d}";
-        };
-
-        widget.network = {
-          show_label = false;
-        };
-
-        widget.workspaces = {
-          show_labels = false;
-        };
-
-        widget.tray.drawer = true;
-
         nightlight.enabled = true;
-        weather.enable = false;
+        location = {
+          sunrise = "07:00";
+          sunset = "20:00";
+          custom_schedule = true;
+        };
+        weather.enabled = false;
 
         theme.templates = {
           enable_builtin_templates = false;
@@ -100,6 +95,7 @@
         };
 
         wallpaper.directory = "~/Pictures/Wallpapers";
+        shell.panel.open_near_click_control_center = true;
         idle = {
           behavior_order = [
             "lock"

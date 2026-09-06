@@ -1,15 +1,17 @@
-{ self, inputs, ... }: {
-  flake.homeModules.firefox = { pkgs, lib, ... }: {
+{
+  flake.homeModules.firefox = {
     stylix.targets.firefox = {
       profileNames = [ "default" ];
+      colorTheme.enable = true;
     };
     programs.firefox = {
       enable = true;
       languagePacks = [ "ru" ];
       profiles = {
-        default = { };
+        default.extensions.force = true;
       };
       policies = {
+        DownloadDirectory = "\${home}/Downloads";
         RequestedLocales = [
           "ru"
           "en-US"
@@ -218,6 +220,10 @@
           };
           "offline-qr-code@rugk.github.io" = {
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/offline-qr-code-generator/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "FirefoxColor@mozilla.com" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/firefox-color/latest.xpi";
             installation_mode = "force_installed";
           };
         };
