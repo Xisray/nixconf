@@ -54,7 +54,7 @@
         };
 
         git_branch = {
-          format = "[$symbol$branch(:$remote_branch)]($style)";
+          format = "[$symbol$branch(:$remote_branch)]($style) ";
           symbol = " ";
           style = "bold green";
           only_attached = true;
@@ -66,9 +66,9 @@
 
         nodejs.format = "[$symbol$version]($style) ";
 
-        python.format = "[\${symbol}\${pyenv_prefix}(\${version} )(\($virtualenv\) )]($style)";
+        python.format = "[\${symbol}\${pyenv_prefix}(\${version} )(\($virtualenv\))]($style) ";
 
-        rust.format = "[$symbol($version )]($style)";
+        rust.format = "[$symbol$version]($style) ";
 
         golang.format = "[$symbol$version]($style) ";
       };
