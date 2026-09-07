@@ -14,6 +14,7 @@
           MinimizeOnStartup = true;
           ShowTrayIcon = true;
           TrayIconAppearance = "monochrome-light";
+          ApplicationTheme = "classic";
         };
         Security = {
           HideTotpPreviewPanel = true;
@@ -25,6 +26,17 @@
 
     preferences.persistance.cache.directories = [
       ".cache/keepassxc"
+    ];
+    preferences.windowRules = [
+      {
+        matches = [
+          {
+            app-id = "^KeePassXC$";
+            title = "^Unlock Database$";
+          }
+        ];
+        open-floating = true;
+      }
     ];
   };
 }

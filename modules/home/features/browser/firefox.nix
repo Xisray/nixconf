@@ -4,6 +4,16 @@
       profileNames = [ "default" ];
       colorTheme.enable = true;
     };
+    preferences.windowRules = [
+      {
+        matches = [
+          {
+            title = "^Picture-in-Picture$";
+          }
+        ];
+        open-floating = true;
+      }
+    ];
     programs.firefox = {
       enable = true;
       languagePacks = [ "ru" ];

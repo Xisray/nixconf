@@ -25,6 +25,8 @@
       hmBinds = hmPreferences.binds or { };
       allBinds = config.preferences.binds // hmBinds;
       niriBinds = lib.mapAttrs (_: toBind) allBinds;
+      hmWindowRules = hmPreferences.windowRules or [ ];
+      allWindowRules = config.preferences.windowRules ++ hmWindowRules;
     in
     {
       programs.niri = {
@@ -63,10 +65,11 @@
                 bottom = 0;
               };
             };
-            window-rule = {
-              # geometry-corner-radius = 12;
-              # clip-to-geometry = true;
-            };
+            #window-rule = {
+            # geometry-corner-radius = 12;
+            # clip-to-geometry = true;
+            #};
+            window-rules = allWindowRules;
             binds = niriBinds // {
               "Mod+Q".close-window = _: { };
               "Mod+F".maximize-column = _: { };

@@ -39,6 +39,7 @@
             "bluetooth"
             "volume"
             "battery"
+            "keyboard_layout"
             "notifications"
           ];
           margin_ends = 0;
