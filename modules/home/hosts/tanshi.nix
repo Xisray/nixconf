@@ -11,5 +11,6 @@
       self.homeModules.nixvim
       self.homeModules.keepassxc
     ];
+    preferences.shell = "fish";
   };
 }

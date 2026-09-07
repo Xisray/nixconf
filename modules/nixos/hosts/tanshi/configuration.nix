@@ -25,15 +25,16 @@
     ];
 
     preferences.hostName = hostName;
-    preferences.shell = "fish";
 
     boot = {
       kernelParams = [ "amd_pstate=active" ];
       loader = {
-        grub.enable = true;
-        grub.device = "nodev";
-        grub.efiSupport = true;
-        grub.useOSProber = true;
+        grub = {
+          enable = true;
+          device = "nodev";
+          efiSupport = true;
+          useOSProber = true;
+        };
         efi.canTouchEfiVariables = true;
       };
       initrd.kernelModules = [ "amdgpu" ];
@@ -41,7 +42,6 @@
     };
 
     hardware = {
-      cpu.amd.updateMicrocode = true;
       graphics = {
         enable = true;
       };
