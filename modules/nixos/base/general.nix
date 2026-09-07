@@ -6,8 +6,12 @@
     in
     {
       imports = [
+        self.nixosModules.boot
+        self.nixosModules.preferences
         self.nixosModules.audio
         self.nixosModules.stylix
+        self.nixosModules.impermanence
+        self.nixosModules.home
       ];
       nix.settings.experimental-features = [
         "nix-command"

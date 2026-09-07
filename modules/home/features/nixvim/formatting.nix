@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{
   flake.homeModules.nixvim = { pkgs, lib, ... }: {
     programs.nixvim.extraConfigLua = ''
       -- User-configurable: filetype -> shell command (stdin/stdout)

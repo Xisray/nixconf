@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{
   flake.homeModules.nixvim = { pkgs, lib, ... }: {
     programs.nixvim = {
       lsp = {

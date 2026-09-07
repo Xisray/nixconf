@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{
   flake.homeModules.noctalia = { lib, pkgs, ... }: {
     preferences.autostart = [ "noctalia" ];
 

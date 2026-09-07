@@ -1,4 +1,4 @@
-{ ... }: {
+{
   flake.nixosModules.audio = {
     security.rtkit.enable = true;
     services.pipewire = {

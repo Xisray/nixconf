@@ -1,5 +1,5 @@
-{ self, inputs, ... }: {
-  flake.nixosModules.clashVerge = { pkgs, lib, ... }: {
+{
+  flake.nixosModules.clashVerge = {
     programs.clash-verge = {
       enable = true;
       autoStart = false;

@@ -9,18 +9,15 @@
     ];
   };
 
-  flake.nixosModules.tanshiConfiguration = { pkgs, hostName, ... }: {
+  flake.nixosModules.tanshiConfiguration = { hostName, ... }: {
     imports = [
       self.nixosModules.tanshiHardware
-      self.nixosModules.preferences
       self.nixosModules.general
-      self.nixosModules.impermanence
       self.nixosModules.bluetooth
       self.nixosModules.power
       self.nixosModules.niri
       self.nixosModules.clashVerge
       self.nixosModules.syncthing
-      self.nixosModules.home
       self.diskoConfigurations.tanshi
     ];
 
@@ -29,17 +26,7 @@
 
     boot = {
       kernelParams = [ "amd_pstate=active" ];
-      loader = {
-        grub = {
-          enable = true;
-          device = "nodev";
-          efiSupport = true;
-          useOSProber = true;
-        };
-        efi.canTouchEfiVariables = true;
-      };
       initrd.kernelModules = [ "amdgpu" ];
-      kernelPackages = pkgs.linuxPackages_latest;
     };
 
     hardware = {

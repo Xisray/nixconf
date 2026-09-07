@@ -1,9 +1,8 @@
-{ self, inputs, ... }: {
+{
   flake.nixosModules.tanshiHardware =
     {
       config,
       lib,
-      pkgs,
       modulesPath,
       ...
     }:
