@@ -8,7 +8,7 @@
       imports = [
         inputs.home-manager.nixosModules.home-manager
       ];
-      programs.${config.home-manager.users.${user}.preferences.shell}.enable = true;
+      programs.${config.preferences.shell}.enable = true;
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
@@ -25,7 +25,7 @@
         extraSpecialArgs = {
           nixosConfig = config;
         };
-        users.${config.preferences.user.name} = self.homeModules.${hostName};
+        users.${user} = self.homeModules.${hostName};
       };
     };
 }

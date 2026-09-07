@@ -26,7 +26,7 @@
           "wheel"
           "networkmanager"
         ];
-        shell = pkgs.${config.home-manager.users.${user}.preferences.shell};
+        shell = pkgs.${config.preferences.shell};
 
         hashedPasswordFile = "/persist/passwd";
       };

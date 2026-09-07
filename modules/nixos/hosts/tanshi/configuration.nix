@@ -25,6 +25,7 @@
     ];
 
     preferences.hostName = hostName;
+    preferences.shell = "fish";
 
     boot = {
       kernelParams = [ "amd_pstate=active" ];
