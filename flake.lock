@@ -408,6 +408,7 @@
         "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
         "stylix": "stylix",
+        "wallpapers": "wallpapers",
         "wrapper-modules": "wrapper-modules"
       }
     },
@@ -538,6 +539,22 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "base16-zed",
+        "type": "github"
+      }
+    },
+    "wallpapers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788854305,
+        "narHash": "sha256-bLT+W1+uxItAW3DijKVgbLX1CD29T6Ifz1gh6V9LvZc=",
+        "owner": "Xisray",
+        "repo": "wallpapers",
+        "rev": "f0b4ad40037bf2b2a6aa4382dc3e636b7e972f32",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Xisray",
+        "repo": "wallpapers",
         "type": "github"
       }
     },
