@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ inputs, ... }: {
   flake.nixosModules.stylix = { pkgs, ... }: {
     imports = [
       inputs.stylix.nixosModules.stylix
@@ -6,12 +6,7 @@
     stylix = {
       enable = true;
       polarity = "dark";
-      base16Scheme = {
-        scheme = self.themeName;
-        author = "";
-        slug = self.themeName;
-      }
-      // self.themeNoHash;
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
       fonts = {
         serif = {
           package = pkgs.ubuntu-sans;
