@@ -41,6 +41,8 @@
         extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
       };
 
+      services.udisks2.enable = true;
+
       preferences.persistance.data.directories = [
         "nixconf"
 
