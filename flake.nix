@@ -24,6 +24,11 @@
     };
 
     nixvim.url = "github:nix-community/nixvim";
+
+    wallpapers = {
+      url = "github:Xisray/wallpapers";
+      flake = false;
+    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);

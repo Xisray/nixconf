@@ -1,81 +1,10 @@
 {
   flake.homeModules.noctalia =
     {
-      config,
       lib,
       pkgs,
       ...
     }:
-    let
-      colors = config.lib.stylix.colors.withHashtag;
-      colorList = with colors; [
-        base00
-        base01
-        base02
-        base03
-        base04
-        base05
-        base06
-        base07
-        base08
-        base09
-        base0A
-        base0B
-        base0C
-        base0D
-        base0E
-        base0F
-      ];
-      paletteHash = builtins.hashString "sha256" (lib.concatStringsSep "" colorList);
-      haldClut =
-        pkgs.runCommand "stylix-hald-clut.png"
-          {
-            nativeBuildInputs = [ pkgs.lutgen ];
-          }
-          ''
-            lutgen generate -o $out -- ${lib.escapeShellArgs colorList}
-          '';
-      recolorScript = pkgs.writeShellApplication {
-        name = "noctalia-recolor-wallpaper";
-        runtimeInputs = with pkgs; [
-          lutgen
-          coreutils
-          findutils
-          gnused
-        ];
-        text = ''
-          set -euo pipefail
-
-          original="''${1:-}"
-          screen="''${2:-}"
-
-          if [[ -z "$original" ]]; then
-            echo "noctalia-recolor: no wallpaper path provided" >&2
-            exit 1
-          fi
-
-          if [[ "$original" == color:* ]] || [[ "$original" == *"/recolored/"* ]]; then
-            exit 0
-          fi
-
-          if [[ ! -f "$original" ]]; then
-            echo "noctalia-recolor: file not found: $original" >&2
-            exit 1
-          fi
-
-          out="$(mktemp --suffix=.png)"
-          trap 'rm -f "$out"' EXIT
-
-          lutgen apply --hald-clut ${haldClut} "$original" -o "$out" 
-
-          if [[ -n "$screen" ]]; then
-            noctalia msg wallpaper-set "$screen" "$out"
-          else
-            noctalia msg wallpaper-set "$out"
-          fi
-        '';
-      };
-    in
     {
       preferences.autostart = [ "noctalia" ];
 
@@ -101,7 +30,6 @@
       programs.noctalia = {
         enable = true;
         settings = {
-          hooks.wallpaper_changed = lib.mkIf config.stylix.enable "${recolorScript}/bin/noctalia-recolor-wallpaper $NOCTALIA_WALLPAPER_PATH $NOCTALIA_WALLPAPER_CONNECTOR";
           desktop_widgets.enabled = false;
           dock.enabled = false;
           shell = {
@@ -173,7 +101,7 @@
             enable_community_templates = false;
           };
 
-          wallpaper.directory = "~/Pictures/Wallpapers";
+          wallpaper.directory = "/etc/wallpapers";
           shell.panel.open_near_click_control_center = true;
           idle = {
             behavior_order = [

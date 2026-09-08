@@ -10,6 +10,7 @@
         self.nixosModules.preferences
         self.nixosModules.audio
         self.nixosModules.stylix
+        self.nixosModules.wallpapers
         self.nixosModules.impermanence
         self.nixosModules.home
       ];
