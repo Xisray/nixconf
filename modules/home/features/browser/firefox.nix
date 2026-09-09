@@ -8,7 +8,7 @@
       {
         matches = [
           {
-            title = "^Picture-in-Picture$";
+            title = "^(Picture-in-Picture|Картинка в картинке)$";
           }
         ];
         open-floating = true;

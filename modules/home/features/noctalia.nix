@@ -35,6 +35,12 @@
           shell = {
             password_style = "random";
             polkit_agent = true;
+            panel = {
+              open_near_click_control_center = true;
+              shadow = false;
+            };
+
+            launcher.providers.session.global = true;
           };
           bar.widgets = {
             shadow = false;
@@ -86,7 +92,12 @@
             date.format = "{::%H:%m %a, %b %d}";
             network.show_label = false;
             workspaces.show_labels = false;
-            tray.drawer = true;
+            tray = {
+              drawer = true;
+              pinned = [
+                "udiskie"
+              ];
+            };
           };
           nightlight.enabled = true;
           location = {
@@ -102,7 +113,6 @@
           };
 
           wallpaper.directory = "/etc/wallpapers";
-          shell.panel.open_near_click_control_center = true;
           idle = {
             behavior_order = [
               "lock"

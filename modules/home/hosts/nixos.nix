@@ -2,7 +2,6 @@
   flake.homeModules.nixos = {
     imports = [
       self.homeModules.general
-      self.homeModules.noctalia
       self.homeModules.kitty
       self.homeModules.shell
       self.homeModules.starship
@@ -10,6 +9,7 @@
       self.homeModules.firefox
       self.homeModules.nixvim
       self.homeModules.keepassxc
+      self.homeModules.noctalia
     ];
   };
 }

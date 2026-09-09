@@ -34,6 +34,7 @@
         package = inputs.wrapper-modules.wrappers.niri.wrap {
           inherit pkgs;
           settings = {
+            hotkey-overlay.skip-at-startup = _: { };
             overview.backdrop-color = config.lib.stylix.colors.withHashtag.base00;
             prefer-no-csd = _: { };
             input = {

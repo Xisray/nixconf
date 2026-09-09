@@ -32,7 +32,7 @@
         matches = [
           {
             app-id = "^KeePassXC$";
-            title = "^Unlock Database$";
+            title = "^Unlock Database - KeePassXC$";
           }
         ];
         open-floating = true;
