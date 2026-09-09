@@ -29,7 +29,7 @@
             };
             root = {
               name = "root";
-              size = "100%FREE";
+              size = "100%";
               content = {
                 type = "lvm_pv";
                 vg = "btrfs_vg";
