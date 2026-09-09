@@ -1,7 +1,7 @@
 { lib, ... }: {
   options.flake = {
     diskoConfigurations = lib.mkOption {
-      type = lib.types.lazyAttrsOf lib.types.deferredModule;
+      type = lib.types.lazyAttrsOf lib.types.raw;
       default = { };
       description = "Disko configurations per host";
     };
