@@ -6,7 +6,7 @@
       ...
     }:
     {
-      preferences.autostart = [ "noctalia" ];
+      #preferences.autostart = [ "noctalia" ];
 
       preferences.binds."Mod+S".action = "${lib.getExe pkgs.noctalia} msg panel-toggle launcher";
 
@@ -29,6 +29,7 @@
 
       programs.noctalia = {
         enable = true;
+        systemd.enable = true;
         settings = {
           desktop_widgets.enabled = false;
           dock.enabled = false;
