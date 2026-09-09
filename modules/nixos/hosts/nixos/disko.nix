@@ -5,7 +5,7 @@
     ];
     disko.devices = {
       disk.main = {
-        device = "CHANGE_ME";
+        device = "/dev/disk/by-id/ata-KINGSTON_SA400S37240G_50026B7785A5A1EA";
         type = "disk";
         content = {
           type = "gpt";
