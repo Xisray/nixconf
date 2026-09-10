@@ -18,6 +18,7 @@
       self.nixosModules.niri
       self.nixosModules.clashVerge
       self.nixosModules.syncthing
+      self.nixosModules.qbittorrent
       self.diskoConfigurations.tanshi
     ];
 
