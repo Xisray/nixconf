@@ -42,6 +42,7 @@
             gcmsg = "git commit -m";
           };
         };
+        tealdeer.enable = true;
         fzf = {
           enable = true;
         };
@@ -61,6 +62,7 @@
           enable = true;
         };
         lazygit.enable = true;
+        fastfetch.enable = true;
       };
     };
 }
