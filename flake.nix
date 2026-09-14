@@ -29,6 +29,7 @@
       url = "github:Xisray/wallpapers";
       flake = false;
     };
+    cliamp.url = "github:bjarneo/cliamp";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
