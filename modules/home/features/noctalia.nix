@@ -8,15 +8,17 @@
     {
       #preferences.autostart = [ "noctalia" ];
 
-      preferences.binds."Mod+S".action = "${lib.getExe pkgs.noctalia} msg panel-toggle launcher";
+      preferences.binds = {
+        "Mod+S".action = "${lib.getExe pkgs.noctalia} msg panel-toggle launcher";
 
-      preferences.binds."XF86MonBrightnessUp" = {
-        props.allow-when-locked = true;
-        action = "${lib.getExe pkgs.noctalia} msg brightness-up";
-      };
-      preferences.binds."XF86MonBrightnessDown" = {
-        props.allow-when-locked = true;
-        action = "${lib.getExe pkgs.noctalia} msg brightness-down";
+        "XF86MonBrightnessUp" = {
+          props.allow-when-locked = true;
+          action = "${lib.getExe pkgs.noctalia} msg brightness-up";
+        };
+        "XF86MonBrightnessDown" = {
+          props.allow-when-locked = true;
+          action = "${lib.getExe pkgs.noctalia} msg brightness-down";
+        };
       };
 
       preferences.persistance.data.directories = [
@@ -50,6 +52,7 @@
               "tray"
               "network"
               "bluetooth"
+              "input_volume"
               "volume"
               "battery"
               "keyboard_layout"
@@ -60,6 +63,7 @@
             start = [
               "session"
               "workspaces"
+              "audio_visualizer"
             ];
           };
           control_center = {
@@ -99,6 +103,8 @@
                 "udiskie"
               ];
             };
+            volume.show_label = false;
+            input_volume.show_label = false;
           };
           nightlight.enabled = true;
           location = {
