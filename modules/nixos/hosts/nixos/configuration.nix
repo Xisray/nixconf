@@ -21,6 +21,13 @@
       self.nixosModules.qbittorrent
       self.diskoConfigurations.nixos
     ];
+    systemd.tpm2.enable = false;
+    boot = {
+      initrd.systemd.tpm2.enable = false;
+      kernelParams = [
+        "video=DP-2:d"
+      ];
+    };
 
     preferences = {
       hostName = hostName;
