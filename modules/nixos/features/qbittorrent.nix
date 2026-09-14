@@ -4,7 +4,7 @@
       enable = true;
       openFirewall = true;
       serverConfig = {
-        Preferences.WebUI.LocalHostAuth = true;
+        Preferences.WebUI.LocalHostAuth = false;
       };
     };
     users.users.qbittorrent = {
