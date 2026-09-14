@@ -90,7 +90,7 @@
 
           widget = {
             brightness.show_label = false;
-            date.format = "{::%H:%m %a, %b %d}";
+            date.format = "{::%H:%M %a, %b %d}";
             network.show_label = false;
             workspaces.show_labels = false;
             tray = {
