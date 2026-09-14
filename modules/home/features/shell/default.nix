@@ -25,6 +25,7 @@
         ${shell} = {
           enable = true;
           shellAliases = {
+            man = "tldr";
             grep = "rg";
             cat = "bat --paging=never";
             top = "btop";
@@ -64,5 +65,8 @@
         lazygit.enable = true;
         fastfetch.enable = true;
       };
+      preferences.persistance.cache.directories = [
+        ".cache/tealdeer/tldr-pages"
+      ];
     };
 }
