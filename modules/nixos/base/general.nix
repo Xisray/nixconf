@@ -30,6 +30,7 @@
         extraGroups = [
           "wheel"
           "networkmanager"
+          "input"
         ];
         shell = pkgs.${config.preferences.shell};
 
