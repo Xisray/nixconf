@@ -238,6 +238,10 @@
           };
         };
         Preferences = {
+          general.autoScroll = {
+            Value = true;
+            Status = "locked";
+          };
           browser.crashReports.unsubmittedCheck.autoSubmit2 = {
             Value = false;
             Status = "locked";
