@@ -2,16 +2,16 @@
   flake.homeModules.shell =
     {
       nixosConfig,
-      lib,
-      options,
+      #lib,
+      #options,
       ...
     }:
     let
-      capitalize = s: lib.toUpper (builtins.substring 0 1 s) + builtins.substring 1 (-1) s;
+      #capitalize = s: lib.toUpper (builtins.substring 0 1 s) + builtins.substring 1 (-1) s;
       shell = nixosConfig.preferences.shell;
-      integrationOption = "enable${capitalize shell}Integration";
-      enableIntegration = program: { "${integrationOption}" = true; };
-      hasOption = program: lib.hasAttrByPath [ "programs" program integrationOption ] options;
+      #integrationOption = "enable${capitalize shell}Integration";
+      #enableIntegration = program: { "${integrationOption}" = true; };
+      #hasOption = program: lib.hasAttrByPath [ "programs" program integrationOption ] options;
     in
     {
       imports =
@@ -25,11 +25,6 @@
         ${shell} = {
           enable = true;
           shellAliases = {
-            #ls = "lsd";
-            #ll = "ls -l";
-            #la = "ls -a";
-            #lla = "ls -la";
-            #lt = "ls --tree";
             grep = "rg";
             cat = "bat --paging=never";
             top = "btop";
@@ -65,6 +60,7 @@
         yazi = {
           enable = true;
         };
+        lazygit.enable = true;
       };
     };
 }
