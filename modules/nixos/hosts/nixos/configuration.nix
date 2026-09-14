@@ -24,9 +24,6 @@
     systemd.tpm2.enable = false;
     boot = {
       initrd.systemd.tpm2.enable = false;
-      kernelParams = [
-        "video=DP-2:d"
-      ];
     };
 
     preferences = {
@@ -47,10 +44,8 @@
         }
         {
           name = "Acer Technologies Acer HS244HQ LS80W0094390";
-          # mode = "1920x1080@60.000";
-          # для разгона:
-          mode = "1920x1080@110";
-          custom = true;
+          mode = "1920x1080@60.000";
+          #modeline = "285.25  1920 1968 2000 2080  1080 1083 1088 1144 +hsync -vsync";
           position = {
             x = 2560;
             y = 0;
