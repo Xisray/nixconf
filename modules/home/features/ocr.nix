@@ -14,7 +14,7 @@
         text = ''
           set -euo pipefail
 
-          geometry=$(slurp) || exit 0          # Escape = ничего не делать
+          geometry=$(slurp -b '#000000A0' -c '#FFFFFFCC' -w 2) || exit 0          # Escape = ничего не делать
 
           text=$(grim -g "$geometry" - | tesseract stdin stdout -l rus+eng 2>/dev/null || true)
 
