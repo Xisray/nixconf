@@ -7,6 +7,11 @@
       enable = true;
       polarity = "dark";
       base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
+      cursor = {
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Classic";
+        size = 20;
+      };
       fonts = {
         serif = {
           package = pkgs.ubuntu-sans;
