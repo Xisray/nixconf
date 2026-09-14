@@ -8,9 +8,7 @@
 
       age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
-      secrets.yandex_music_token = {
-        path = "%r/yandex-music-token";
-      };
+      # secrets.yandex_music_token = { };
     };
     preferences.persistance.data.files = [
       ".config/sops/age/keys.txt"
