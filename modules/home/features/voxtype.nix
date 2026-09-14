@@ -31,5 +31,9 @@
       "record"
       "toggle"
     ];
+
+    preferences.persistance.cache.directories = [
+      ".local/share/voxtype"
+    ];
   };
 }
