@@ -13,7 +13,12 @@
     };
     users.groups.qbittorrent = { };
     preferences.persistance.directories = [
-      "/var/lib/qBittorrent/qBittorrent"
+      {
+        directory = "/var/lib/qBittorrent/qBittorrent";
+        user = "qbittorrent";
+        group = "qbittorrent";
+        mode = "0750";
+      }
     ];
   };
 }
