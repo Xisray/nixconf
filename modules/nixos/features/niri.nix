@@ -27,6 +27,33 @@
       niriBinds = lib.mapAttrs (_: toBind) allBinds;
       hmWindowRules = hmPreferences.windowRules or [ ];
       allWindowRules = config.preferences.windowRules ++ hmWindowRules;
+      mousePrefs = config.preferences.mouse or { };
+      renderOutput =
+        mon:
+        let
+          name = mon.name or mon.connector or (throw "monitor needs name or connector");
+          mode = mon.mode or null;
+          custom = mon.custom or false;
+          position = mon.position or null;
+          scale = mon.scale or null;
+          transform = mon.transform or null;
+          vrr = mon.variable-refresh-rate or false;
+        in
+        ''
+          output "${name}" {
+            ${lib.optionalString (mode != null) (
+              if custom then ''mode custom=true "${mode}"'' else ''mode "${mode}"''
+            )}
+            ${lib.optionalString (
+              position != null
+            ) "position x=${toString position.x} y=${toString position.y}"}
+            ${lib.optionalString (scale != null) "scale ${toString scale}"}
+            ${lib.optionalString (transform != null) ''transform "${transform}"''}
+            ${lib.optionalString vrr "variable-refresh-rate"}
+          }
+        '';
+
+      monitorsConfig = lib.concatMapStrings renderOutput config.preferences.monitors;
     in
     {
       programs.niri = {
@@ -49,6 +76,20 @@
                 natural-scroll = _: { };
                 tap = _: { };
               };
+              mouse = lib.mkMerge [
+                (lib.optionalAttrs (mousePrefs.accel-profile != null) {
+                  accel-profile = mousePrefs.accel-profile;
+                })
+                (lib.optionalAttrs (mousePrefs.accel-speed != null) {
+                  accel-speed = mousePrefs.accel-speed;
+                })
+                (lib.optionalAttrs (mousePrefs.natural-scroll == true) {
+                  natural-scroll = _: { };
+                })
+                (lib.optionalAttrs (mousePrefs.scroll-factor != null) {
+                  scroll-factor = mousePrefs.scroll-factor;
+                })
+              ];
             };
             spawn-at-startup = map toCmd autostart;
             xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
@@ -87,6 +128,11 @@
               "Mod+Right".focus-column-right = _: { };
               "Mod+Up".focus-window-up = _: { };
               "Mod+Down".focus-window-down = _: { };
+
+              "Mod+WheelScrollDown".focus-column-left = _: { };
+              "Mod+WheelScrollUp".focus-column-right = _: { };
+              "Mod+Ctrl+WheelScrollDown".focus-workspace-down = _: { };
+              "Mod+Ctrl+WheelScrollUp".focus-workspace-up = _: { };
 
               "Mod+Shift+H".move-column-left = _: { };
               "Mod+Shift+L".move-column-right = _: { };
@@ -140,6 +186,8 @@
               "Mod+Shift+E".spawn-sh = "${pkgs.wl-clipboard}/bin/wl-paste | ${lib.getExe pkgs.swappy} -f -";
             };
             extraConfig = ''
+              ${monitorsConfig}
+
               animations {
                 // Uncomment to turn off all animations.
                 //off
