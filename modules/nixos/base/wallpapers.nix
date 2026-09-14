@@ -52,8 +52,8 @@
     {
       environment.etc."wallpapers".source = wallpapers;
 
-      preferences.persistance.directories = [
-        "/etc/wallpapers"
-      ];
+      #preferences.persistance.directories = [
+      #  "/etc/wallpapers"
+      #];
     };
 }
