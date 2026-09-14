@@ -22,31 +22,5 @@
         '';
         force = true;
       };
-      preferences.binds = {
-        "XF86AudioPlay".action = [
-          "cliamp"
-          "toggle"
-        ];
-        "XF86AudioNext".action = [
-          "cliamp"
-          "next"
-        ];
-        "XF86AudioPrev".action = [
-          "cliamp"
-          "prev"
-        ];
-        "Mod+Shift+Space".action = [
-          "cliamp"
-          "toggle"
-        ];
-        "Mod+Shift+less".action = [
-          "cliamp"
-          "next"
-        ];
-        "Mod+Shift+greater".action = [
-          "cliamp"
-          "prev"
-        ];
-      };
     };
 }
