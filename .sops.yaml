@@ -1,0 +1,8 @@
+keys:
+  - &xisray age13myrc5dvgdexd4deu4p9e7nqll0eg5mnqsqsskqk6vqr7y2dtswqsr66zv
+
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *xisray
