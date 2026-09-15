@@ -10,8 +10,8 @@
 
       # secrets.yandex_music_token = { };
     };
-    preferences.persistance.data.files = [
-      ".config/sops/age/keys.txt"
+    preferences.persistance.data.directories = [
+      ".config/sops"
     ];
   };
 }
