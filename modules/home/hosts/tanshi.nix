@@ -10,6 +10,8 @@
       self.homeModules.nixvim
       self.homeModules.keepassxc
       self.homeModules.noctalia
+      self.homeModules.voxtype
+      self.homeModules.cliamp
     ];
   };
 }
