@@ -8,14 +8,14 @@
         netrw_browse_split = 0;
         netrw_altfile = 1;
       };
-      keymaps = [
-        {
-          mode = "n";
-          key = "<leader>e";
-          action = ":Lexplore<cr>";
-          options.silent = true;
-        }
-      ];
+      # keymaps = [
+      #   {
+      #     mode = "n";
+      #     key = "<leader>e";
+      #     action = ":Lexplore<cr>";
+      #     options.silent = true;
+      #   }
+      # ];
       autoCmd = [
         {
           event = [ "FileType" ];
