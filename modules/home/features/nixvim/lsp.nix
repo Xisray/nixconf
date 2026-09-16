@@ -5,10 +5,29 @@
         servers = {
           nixd = {
             enable = true;
-            config = {
-              cmd = [ "${lib.getExe pkgs.nixd}" ];
-              filetypes = [ "nix" ];
-            };
+            package = pkgs.nixd;
+            #config = {
+            #  cmd = [ "${lib.getExe pkgs.nixd}" ];
+            #  filetypes = [ "nix" ];
+            #};
+          };
+          lua_ls = {
+            enable = true;
+          };
+          pyright = {
+            enable = true;
+          };
+          ts_ls = {
+            enable = true;
+          };
+          csharp_ls = {
+            enable = true;
+          };
+          clangd = {
+            enable = true;
+          };
+          rust_analyzer = {
+            enable = true;
           };
         };
       };
@@ -26,9 +45,13 @@
         }
       ];
       diagnostic.settings.virtual_text = true;
-      extraConfigLua = ''
-        vim.cmd("set completeopt+=noselect") 
-      '';
+      opts = {
+        completeopt = [
+          "menu"
+          "menuone"
+          "noselect"
+        ];
+      };
     };
   };
 }
