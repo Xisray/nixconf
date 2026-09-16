@@ -32,6 +32,8 @@
         require("tiny-cmdline").setup({
           on_reposition = require("tiny-cmdline").adapters.blink,
         })
+        vim.api.nvim_set_hl(0, "TinyCmdlineBorder", { bg = "NONE" })
+        vim.api.nvim_set_hl(0, "TinyCmdlineNormal", { bg = "NONE" })
       '';
     };
   };
