@@ -1,14 +1,14 @@
 { self, ... }: {
   flake.homeModules.shell =
     {
-      nixosConfig,
+      osConfig,
       #lib,
       #options,
       ...
     }:
     let
       #capitalize = s: lib.toUpper (builtins.substring 0 1 s) + builtins.substring 1 (-1) s;
-      shell = nixosConfig.preferences.shell;
+      shell = osConfig.preferences.shell;
       #integrationOption = "enable${capitalize shell}Integration";
       #enableIntegration = program: { "${integrationOption}" = true; };
       #hasOption = program: lib.hasAttrByPath [ "programs" program integrationOption ] options;

@@ -7,30 +7,6 @@
       ...
     }:
     let
-      ocr = pkgs.writeShellApplication {
-        name = "ocr";
-        runtimeInputs = with pkgs; [
-          grim
-          slurp
-          tesseract
-          wl-clipboard
-          libnotify
-        ];
-        text = ''
-          set -euo pipefail
-
-          geometry=$(slurp) || exit 0          # Escape = ничего не делать
-
-          text=$(grim -g "$geometry" - | tesseract stdin stdout -l rus+eng 2>/dev/null || true)
-
-          if [ -n "''${text// }" ]; then       # проверяем, что не только пробелы
-            printf '%s' "$text" | wl-copy
-            notify-send -u low "OCR" "Текст скопирован"
-          else
-            notify-send -u low "OCR" "Ничего не распознано"
-          fi
-        '';
-      };
       toCmd = entry: if lib.isDerivation entry then lib.getExe entry else entry;
       toContent = action: if builtins.isList action then { spawn = action; } else { spawn-sh = action; };
       toBind =

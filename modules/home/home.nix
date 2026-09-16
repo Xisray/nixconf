@@ -22,9 +22,9 @@
             };
           })
         ];
-        extraSpecialArgs = {
-          nixosConfig = config;
-        };
+        #extraSpecialArgs = {
+        #          nixosConfig = config;
+        #        };
         users.${user} = self.homeModules.${hostName};
       };
     };
