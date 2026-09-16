@@ -19,7 +19,6 @@
           ];
           translate = false;
         };
-
         output = {
           mode = "type";
           fallback_to_clipboard = true;

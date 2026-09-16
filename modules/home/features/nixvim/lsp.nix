@@ -1,14 +1,9 @@
 {
-  flake.homeModules.nixvim = { pkgs, lib, ... }: {
+  flake.homeModules.nixvim = {
     programs.nixvim = {
       lsp = {
         servers = {
           nixd.enable = true;
-          # package = pkgs.nixd;
-          # config = {
-          #   cmd = [ "${lib.getExe pkgs.nixd}" ];
-          #   filetypes = [ "nix" ];
-          # };
           lua_ls.enable = true;
           pyright.enable = true;
           ts_ls.enable = true;
