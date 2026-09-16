@@ -16,14 +16,24 @@
         tabstop = 2;
         softtabstop = 2;
         shiftwidth = 2;
+        autoindent = true;
+        smartindent = true;
         expandtab = true;
         signcolumn = "yes";
         undofile = true;
         autoread = true;
         laststatus = 3;
         cmdheight = 0;
-        textwidth = 120;
-        colorcolumn = "120";
+      };
+
+      highlightOverride = {
+        NormalFloat = {
+          bg = "NONE";
+        };
+
+        FloatBorder = {
+          bg = "NONE";
+        };
       };
     };
     stylix.targets.nixvim.transparentBackground = {

@@ -8,5 +8,6 @@
     mini-jump.enable = true;
     mini-pairs.enable = true;
     mini-surround.enable = true;
+    mini-indentscope.enable = true;
   };
 }
