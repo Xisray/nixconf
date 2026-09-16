@@ -6,7 +6,7 @@
     sops = {
       defaultSopsFile = "${self}/secrets/secrets.yaml";
 
-      age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+      age.keyFile = "/persist/userdata${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
       # secrets.yandex_music_token = { };
     };
