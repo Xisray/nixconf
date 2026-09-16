@@ -15,11 +15,15 @@
         relativenumber = true;
         tabstop = 2;
         softtabstop = 2;
+        shiftwidth = 2;
+        expandtab = true;
         signcolumn = "yes";
         undofile = true;
         autoread = true;
         laststatus = 3;
         cmdheight = 0;
+        textwidth = 120;
+        colorcolumn = "120";
       };
     };
     stylix.targets.nixvim.transparentBackground = {
