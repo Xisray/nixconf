@@ -21,6 +21,7 @@
           dockerls.enable = true;
         };
       };
+      plugins.lspconfig.enable = true;
       autoCmd = [
         {
           event = "LspAttach";
