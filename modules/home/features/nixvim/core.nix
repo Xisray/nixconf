@@ -22,5 +22,10 @@
         cmdheight = 0;
       };
     };
+    stylix.targets.nixvim.transparentBackground = {
+      main = true;
+      numberLine = true;
+      signColumn = true;
+    };
   };
 }

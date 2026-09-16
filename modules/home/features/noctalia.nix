@@ -1,6 +1,7 @@
 {
   flake.homeModules.noctalia =
     {
+      osConfig,
       lib,
       pkgs,
       ...
@@ -46,6 +47,7 @@
             launcher.providers.session.global = true;
           };
           bar.widgets = {
+            background_opacity = osConfig.stylix.opacity.desktop;
             shadow = false;
             center = [ "date" ];
             end = [
