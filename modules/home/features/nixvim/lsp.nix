@@ -3,32 +3,22 @@
     programs.nixvim = {
       lsp = {
         servers = {
-          nixd = {
-            enable = true;
-            package = pkgs.nixd;
-            #config = {
-            #  cmd = [ "${lib.getExe pkgs.nixd}" ];
-            #  filetypes = [ "nix" ];
-            #};
-          };
-          lua_ls = {
-            enable = true;
-          };
-          pyright = {
-            enable = true;
-          };
-          ts_ls = {
-            enable = true;
-          };
-          csharp_ls = {
-            enable = true;
-          };
-          clangd = {
-            enable = true;
-          };
-          rust_analyzer = {
-            enable = true;
-          };
+          nixd.enable = true;
+          # package = pkgs.nixd;
+          # config = {
+          #   cmd = [ "${lib.getExe pkgs.nixd}" ];
+          #   filetypes = [ "nix" ];
+          # };
+          lua_ls.enable = true;
+          pyright.enable = true;
+          ts_ls.enable = true;
+          csharp_ls.enable = true;
+          clangd.enable = true;
+          rust_analyzer.enable = true;
+          jsonls.enable = true;
+          yamlls.enable = true;
+          bashls.enable = true;
+          dockerls.enable = true;
         };
       };
       autoCmd = [
