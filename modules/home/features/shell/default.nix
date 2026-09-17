@@ -58,7 +58,12 @@
             mode.normal_alt.bg = lib.mkForce osConfig.lib.stylix.colors.withHashtag.base02;
           };
         };
-        lazygit.enable = true;
+        lazygit = {
+          enable = true;
+          settings = {
+            disableStartupPopups = true;
+          };
+        };
         fastfetch.enable = true;
       };
       preferences.persistance.cache.directories = [
