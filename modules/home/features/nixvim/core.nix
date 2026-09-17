@@ -34,6 +34,7 @@
         FloatBorder = {
           bg = "NONE";
         };
+        CursorLineSign.bg = "NONE";
       };
     };
     stylix.targets.nixvim.transparentBackground = {
