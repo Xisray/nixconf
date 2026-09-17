@@ -2,16 +2,11 @@
   flake.homeModules.shell =
     {
       osConfig,
-      #lib,
-      #options,
+      lib,
       ...
     }:
     let
-      #capitalize = s: lib.toUpper (builtins.substring 0 1 s) + builtins.substring 1 (-1) s;
       shell = osConfig.preferences.shell;
-      #integrationOption = "enable${capitalize shell}Integration";
-      #enableIntegration = program: { "${integrationOption}" = true; };
-      #hasOption = program: lib.hasAttrByPath [ "programs" program integrationOption ] options;
     in
     {
       imports =
@@ -51,16 +46,17 @@
         lsd = {
           enable = true;
         };
-        #// lib.optionalAttrs (hasOption "lsd") (enableIntegration "lsd");
         bat.enable = true;
         zoxide = {
           enable = true;
         };
-        #// lib.optionalAttrs (hasOption "zoxide") (enableIntegration "zoxide");
         fd.enable = true;
         btop.enable = true;
         yazi = {
           enable = true;
+          theme = {
+            mode.normal_alt.bg = lib.mkForce osConfig.lib.stylix.colors.withHashtag.base02;
+          };
         };
         lazygit.enable = true;
         fastfetch.enable = true;
