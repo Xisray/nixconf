@@ -19,5 +19,9 @@
         };
       };
       preferences.binds."Mod+Return".action = lib.getExe pkgs.kitty;
+      home.sessionVariables = {
+        TERMINAL = lib.getExe pkgs.kitty;
+        TERMCMD = "$TERMINAL";
+      };
     };
 }
