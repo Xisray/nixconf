@@ -4,6 +4,7 @@
       self.homeModules.ocr
       self.homeModules.colorPicker
       self.homeModules.sops
+      self.homeModules.yazi
     ];
     home.packages = with pkgs; [
       wl-clipboard
@@ -15,22 +16,27 @@
       enable = true;
       extraPortals = with pkgs; [
         xdg-desktop-portal-gtk
-        xdg-desktop-portal-termfilechooser
+        # xdg-desktop-portal-termfilechooser
       ];
-      config = {
-        common = {
-          default = [ "gtk" ];
-          "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
-        };
-      };
+      # config = {
+      #   common = {
+      #     default = [ "gtk" ];
+      #     "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
+      #   };
+      # };
     };
-    home.sessionVariables = {
-      GTK_USE_PORTAL = "1";
-      GDK_DEBUG = "portals";
-      QT_QPA_PLATFORMTHEME = "xdgdesktopportal";
-    };
+    # xdg.mimeApps = {
+    #   enable = true;
+    # };
+    # home.sessionVariables = {
+    #   GTK_USE_PORTAL = "1";
+    #   GDK_DEBUG = "portals";
+    # };
     services.udiskie = {
       enable = true;
+      # settings = {
+      #   program_options.file_manager = "xdg-open";
+      # };
     };
     preferences = {
       binds =
