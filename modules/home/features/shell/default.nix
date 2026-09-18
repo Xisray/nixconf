@@ -52,12 +52,6 @@
         };
         fd.enable = true;
         btop.enable = true;
-        yazi = {
-          enable = true;
-          theme = {
-            mode.normal_alt.bg = lib.mkForce osConfig.lib.stylix.colors.withHashtag.base02;
-          };
-        };
         lazygit = {
           enable = true;
           settings = {
