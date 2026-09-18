@@ -11,6 +11,24 @@
       libreoffice-qt
       ayugram-desktop
     ];
+    xdg.portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+        xdg-desktop-portal-termfilechooser
+      ];
+      config = {
+        common = {
+          default = [ "gtk" ];
+          "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
+        };
+      };
+    };
+    home.sessionVariables = {
+      GTK_USE_PORTAL = "1";
+      GDK_DEBUG = "portals";
+      QT_QPA_PLATFORMTHEME = "xdgdesktopportal";
+    };
     services.udiskie = {
       enable = true;
     };

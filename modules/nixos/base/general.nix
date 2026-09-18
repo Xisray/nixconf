@@ -37,11 +37,6 @@
         hashedPasswordFile = "/persist/passwd";
       };
 
-      xdg.portal = {
-        enable = true;
-        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-      };
-
       services.udisks2.enable = true;
 
       preferences.persistance.data.directories = [
