@@ -1,21 +1,6 @@
 {
   flake.homeModules.nixvim = {
     programs.nixvim = {
-      lsp = {
-        servers = {
-          nixd.enable = true;
-          lua_ls.enable = true;
-          pyright.enable = true;
-          ts_ls.enable = true;
-          csharp_ls.enable = true;
-          clangd.enable = true;
-          rust_analyzer.enable = true;
-          jsonls.enable = true;
-          yamlls.enable = true;
-          bashls.enable = true;
-          dockerls.enable = true;
-        };
-      };
       plugins.lspconfig.enable = true;
       autoCmd = [
         {
