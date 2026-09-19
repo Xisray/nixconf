@@ -1,6 +1,6 @@
 - [ ] Пофиксить сон на пк(возможно и на ноуте)
 - [x] Поставить тг
 - [ ] ВМ с виндой - ? 
-- [ ] yazi default file manager
+- [x] yazi default file manager
 - [x] yazi fix status bar
 - [ ] niri binds for multiply monitors
