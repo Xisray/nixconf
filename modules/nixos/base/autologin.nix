@@ -1,8 +1,10 @@
 {
   flake.nixosModules.autologin = { config, ... }: {
-    services.getty = {
-      autologinUser = config.preferences.user.name;
-      # autologinOnce = true;
+    services.greetd = {
+      enable = true;
+      settings.default_session = {
+        user = config.preferences.user.name;
+      };
     };
   };
 }

@@ -38,6 +38,7 @@
           scale = mon.scale or null;
           transform = mon.transform or null;
           vrr = mon.variable-refresh-rate or false;
+          focusAtStartup = mon.focus-at-startup or false;
         in
         ''
           output "${name}" {
@@ -50,12 +51,15 @@
             ${lib.optionalString (scale != null) "scale ${toString scale}"}
             ${lib.optionalString (transform != null) ''transform "${transform}"''}
             ${lib.optionalString vrr "variable-refresh-rate"}
+            ${lib.optionalString focusAtStartup "focus-at-startup"}
           }
         '';
 
       monitorsConfig = lib.concatMapStrings renderOutput config.preferences.monitors;
     in
     {
+      services.greetd.settings.default_session.command =
+        "${config.programs.niri.package}/bin/niri-session";
       programs.niri = {
         enable = true;
         package = inputs.wrapper-modules.wrappers.niri.wrap {

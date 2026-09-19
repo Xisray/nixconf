@@ -7,8 +7,6 @@
       ...
     }:
     {
-      #preferences.autostart = [ "noctalia" ];
-
       preferences.binds = {
         "Mod+S".action = "${lib.getExe pkgs.noctalia} msg panel-toggle launcher";
 
@@ -34,6 +32,44 @@
         enable = true;
         systemd.enable = true;
         settings = {
+          hooks.started = "${lib.getExe pkgs.noctalia} msg session lock";
+          shell.session.actions = [
+            {
+              action = "lock";
+              countdown_seconds = 0.0;
+              enabled = true;
+              shortcut = "1";
+              variant = "default";
+            }
+            {
+              action = "lock_and_suspend";
+              countdown_seconds = 0.0;
+              enabled = true;
+              shortcut = "2";
+              variant = "default";
+            }
+            {
+              action = "reboot";
+              countdown_seconds = 0.0;
+              enabled = true;
+              shortcut = "3";
+              variant = "default";
+            }
+            {
+              action = "shutdown";
+              countdown_seconds = 0.0;
+              enabled = true;
+              shortcut = "4";
+              variant = "default";
+            }
+            {
+              action = "logout";
+              countdown_seconds = 0.0;
+              enabled = false;
+              shortcut = "5";
+              variant = "default";
+            }
+          ];
           desktop_widgets.enabled = false;
           dock.enabled = false;
           shell = {
