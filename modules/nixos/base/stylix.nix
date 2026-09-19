@@ -32,6 +32,12 @@
         popups = 0.8;
         terminal = 0.8;
       };
+      icons = {
+        enable = true;
+        package = pkgs.papirus-icon-theme;
+        dark = "Papirus-Dark";
+        light = "Papirus-Light";
+      };
     };
   };
 }
