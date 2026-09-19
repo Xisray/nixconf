@@ -62,6 +62,11 @@
         docker = {
           lsp = "dockerls";
         };
+        typst = {
+          lsp = "tinymist";
+          formatter = "typstyle";
+          formatterPkg = pkgs.typstyle;
+        };
       };
 
       enabledLsps = lib.filterAttrs (_: v: v ? lsp && v.lsp != null) languages;

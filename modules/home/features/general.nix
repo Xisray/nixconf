@@ -10,6 +10,7 @@
       wl-clipboard
       libreoffice-qt
       ayugram-desktop
+      typst
     ];
     xdg.portal = {
       enable = true;

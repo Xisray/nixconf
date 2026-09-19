@@ -37,6 +37,16 @@
         hashedPasswordFile = "/persist/passwd";
       };
 
+      nixpkgs.config.allowUnfreePredicate =
+        pkg:
+        builtins.elem (pkgs.lib.getName pkg) [
+          "corefonts"
+        ];
+
+      fonts.packages = with pkgs; [
+        corefonts
+      ];
+
       services.udisks2.enable = true;
 
       preferences.persistance.data.directories = [
