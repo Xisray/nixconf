@@ -4,4 +4,5 @@
 - [x] yazi default file manager
 - [x] yazi fix status bar
 - [ ] niri binds for multiply monitors
-- [ ] added extra settings for lsp nixvim
+- [ ] add extra settings for lsp nixvim
+- [ ] add ai commits
