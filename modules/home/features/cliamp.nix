@@ -11,7 +11,7 @@
       home.packages = [
         (pkgs.writeShellScriptBin "cliamp" ''
           export YANDEX_MUSIC_TOKEN="$(cat ${config.sops.secrets.yandex_music_token.path})"
-          exec ${lib.getExe inputs.cliamp.packages.${pkgs.system}.default} "$@"
+          exec ${lib.getExe inputs.cliamp.packages.${pkgs.stdenv.hostPlatform.system}.default} "$@"
         '')
       ];
       xdg.configFile."cliamp/config.toml" = {
