@@ -2,7 +2,6 @@
   flake.homeModules.shell =
     {
       osConfig,
-      lib,
       ...
     }:
     let
