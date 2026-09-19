@@ -34,14 +34,13 @@
         };
 
         highlightOverride = {
-          NormalFloat = {
-            bg = "NONE";
-          };
-
-          FloatBorder = {
-            bg = "NONE";
-          };
+          NormalFloat.bg = "NONE";
+          FloatBorder.bg = "NONE";
           CursorLineSign.bg = "NONE";
+          DiagnosticSignError.link = "DiagnosticError";
+          DiagnosticSignWarn.link = "DiagnosticWarn";
+          DiagnosticSignInfo.link = "DiagnosticInfo";
+          DiagnosticSignHint.link = "DiagnosticHint";
         };
       };
       stylix.targets.nixvim.transparentBackground = {
