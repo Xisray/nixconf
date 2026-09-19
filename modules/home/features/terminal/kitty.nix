@@ -23,5 +23,9 @@
         TERMINAL = lib.getExe pkgs.kitty;
         TERMCMD = "$TERMINAL";
       };
+      xdg.terminal-exec = {
+        enable = true;
+        settings.default = [ "kitty.desktop" ];
+      };
     };
 }

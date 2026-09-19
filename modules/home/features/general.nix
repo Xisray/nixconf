@@ -16,28 +16,23 @@
       enable = true;
       extraPortals = with pkgs; [
         xdg-desktop-portal-gtk
-        # xdg-desktop-portal-termfilechooser
+        xdg-desktop-portal-termfilechooser
       ];
-      # config = {
-      #   common = {
-      #     default = [ "gtk" ];
-      #     "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
-      #   };
-      # };
+      config = {
+        common = {
+          default = [ "gtk" ];
+          "org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
+        };
+      };
     };
-    # xdg.mimeApps = {
-    #   enable = true;
-    # };
+    xdg.mimeApps = {
+      enable = true;
+    };
     # home.sessionVariables = {
     #   GTK_USE_PORTAL = "1";
     #   GDK_DEBUG = "portals";
     # };
-    services.udiskie = {
-      enable = true;
-      # settings = {
-      #   program_options.file_manager = "xdg-open";
-      # };
-    };
+    services.udiskie.enable = true;
     preferences = {
       binds =
         let
