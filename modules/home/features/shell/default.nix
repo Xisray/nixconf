@@ -59,6 +59,7 @@
           };
         };
         fastfetch.enable = true;
+        devenv.enable = true;
       };
       preferences.persistance.cache.directories = [
         ".cache/tealdeer/tldr-pages"

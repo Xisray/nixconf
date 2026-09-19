@@ -8,7 +8,6 @@
     ];
     home.packages = with pkgs; [
       wl-clipboard
-      devenv
       libreoffice-qt
       ayugram-desktop
     ];
