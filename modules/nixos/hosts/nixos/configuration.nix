@@ -19,6 +19,7 @@
       self.nixosModules.clashVerge
       self.nixosModules.syncthing
       self.nixosModules.qbittorrent
+      self.nixosModules.autologin
       self.diskoConfigurations.nixos
     ];
     systemd.tpm2.enable = false;
@@ -41,6 +42,7 @@
             x = 0;
             y = 0;
           };
+          focus-at-startup = true;
         }
         {
           name = "Acer Technologies Acer HS244HQ LS80W0094390";
