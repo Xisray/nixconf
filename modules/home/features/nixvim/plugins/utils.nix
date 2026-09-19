@@ -1,5 +1,5 @@
 {
-  flake.homeModules.nixvim = { pkgs, ... }: {
+  flake.nixvimModules.utils = { pkgs, ... }: {
     programs.nixvim = {
       plugins = {
         schemastore.enable = true;

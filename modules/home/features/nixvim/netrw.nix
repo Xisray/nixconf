@@ -1,5 +1,5 @@
 {
-  flake.homeModules.nixvim = {
+  flake.homeModules.nixvim = { config, lib, ... }: {
     programs.nixvim = {
       globals = {
         netrw_liststyle = 3;
@@ -8,14 +8,24 @@
         netrw_browse_split = 0;
         netrw_altfile = 1;
       };
-      # keymaps = [
-      #   {
-      #     mode = "n";
-      #     key = "<leader>e";
-      #     action = ":Lexplore<cr>";
-      #     options.silent = true;
-      #   }
-      # ];
+      keymaps =
+        lib.mkIf
+          (
+            !(config.programs.nixvim.plugins.yazi.enable or false)
+            && !(config.programs.nixvim.plugins.oil.enable or false)
+            && !(config.programs.nixvim.plugins.neo-tree.enable or false)
+          )
+          [
+            {
+              mode = "n";
+              key = "<leader>e";
+              action = ":Lexplore<cr>";
+              options = {
+                silent = true;
+                desc = "Open netrw";
+              };
+            }
+          ];
       autoCmd = [
         {
           event = [ "FileType" ];

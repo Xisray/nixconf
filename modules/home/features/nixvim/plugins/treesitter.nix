@@ -1,5 +1,5 @@
 {
-  flake.homeModules.nixvim = { pkgs, ... }: {
+  flake.nixvimModules.treesitter = {
     programs.nixvim = { config, ... }: {
       plugins.treesitter = {
         enable = true;
@@ -21,7 +21,6 @@
           regex
         ];
         highlight.enable = true;
-        #indent.enable = true;
       };
     };
   };
