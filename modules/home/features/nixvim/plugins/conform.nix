@@ -1,6 +1,6 @@
 {
   flake.nixvimModules.conform = {
-    plugins.conform-nvim = {
+    programs.nixvim.plugins.conform-nvim = {
       enable = true;
       settings = {
         format_on_save = {

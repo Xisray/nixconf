@@ -4,21 +4,39 @@
       plugins = {
         schemastore.enable = true;
         luasnip.enable = true;
-        blink-cmp.enable = true;
+        blink-cmp = {
+          enable = true;
+          settings = {
+            keymap = {
+              preset = "enter";
+              "<Tab>" = [
+                "select_and_accept"
+                "snippet_forward"
+                "fallback"
+              ];
+              "<S-Tab>" = [
+                "snippet_backward"
+                "fallback"
+              ];
+              "<CR>" = [
+                "accept"
+                "fallback"
+              ];
+            };
+            completion.list.selection.preselect = false;
+          };
+        };
         blink-ripgrep.enable = true;
         tiny-inline-diagnostic = {
           enable = true;
           settings = {
-            multilines = {
-              enabled = true;
-            };
             options = {
-              use_icons_from_diagnostic = true;
+              multilines = {
+                enabled = true;
+                #always_show = true;
+              };
             };
             preset = "classic";
-            virt_texts = {
-              priority = 2048;
-            };
           };
         };
         fidget.enable = true;
