@@ -25,12 +25,6 @@
         }
         {
           mode = "n";
-          key = "<leader>f";
-          action = ":find ";
-          options.silent = false;
-        }
-        {
-          mode = "n";
           key = "<leader>d";
           action.__raw = ''
             function()
