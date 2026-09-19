@@ -54,6 +54,7 @@
           open-floating = true;
           default-window-height.proportion = 0.6;
           default-column-width.proportion = 0.45;
+          # background-effect.xray = false;
         }
       ];
     };

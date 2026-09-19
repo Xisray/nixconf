@@ -49,6 +49,7 @@
         bat.enable = true;
         zoxide = {
           enable = true;
+          options = [ "--cmd cd" ];
         };
         fd.enable = true;
         btop.enable = true;

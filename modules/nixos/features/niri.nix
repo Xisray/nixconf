@@ -196,95 +196,76 @@
                 }
 
                 window-open {
-                  spring damping-ratio=0.5 stiffness=1000 epsilon=0.0003
-                  //curve "ease-out-expo"
+                  duration-ms 500
+                  curve "ease-out-cubic"
+                  custom-shader r"
+                    vec4 open_color(vec3 coords_geo, vec3 size_geo) {
+                      float p = niri_clamped_progress;
+                      vec2 uv = coords_geo.xy;
+                      vec3 tc = niri_geo_to_tex * vec3(uv, 1.0);
+                      vec4 win = texture2D(niri_tex, tc.st);
+                      
+                      vec2 dir = vec2(1.0, -1.0);
+                      float smoothness = 0.5;
+                      vec2 center = vec2(0.5, 0.5);
+                      vec2 v = normalize(dir);
+                      v /= abs(v.x) + abs(v.y);
+                      float d = v.x * center.x + v.y * center.y;
+                      float reveal = (1.0 - step(p, 0.0)) *
+                          (1.0 - smoothstep(-smoothness, 0.0, v.x * uv.x + v.y * uv.y - (d - 0.5 + p * (1.0 + smoothness))));
+                      
+                      return win * reveal;
+                    }
+
+                  //vec4 open_color(vec3 coords_geo, vec3 size_geo) {
+                  //  float p = niri_clamped_progress;
+                  //  vec2 uv = coords_geo.xy;
+                  //  
+                  //  float a = 4.0;
+                  //  float b = 1.0;
+                  //  float amplitude = 120.0;
+                  //  float smoothness = 0.1;
+                  //  vec2 dir = uv - vec2(0.5);
+                  //  float dist = length(dir);
+                  //  float xx = (a - b) * cos(p) + b * cos(p * ((a / b) - 1.0));
+                  //  float yy = (a - b) * sin(p) - b * sin(p * ((a / b) - 1.0));
+                  //  vec2 offset = dir * vec2(sin(p * dist * amplitude * xx), sin(p * dist * amplitude * yy)) / smoothness;
+                  //  
+                  //  vec3 tc = niri_geo_to_tex * vec3(uv, 1.0);
+                  //  vec4 win = texture2D(niri_tex, tc.st);
+                  //  
+                  //  float reveal = smoothstep(0.2, 1.0, p);
+                  //  return win * reveal;
+                  //}
+                  "
                 }
 
-              window-close {
-                  duration-ms 200
-                  curve "linear"
+                window-close {
+                  duration-ms 500
+                  curve "ease-out-cubic"
                   custom-shader r"
-                  // ── Easing ────────────────────────────────────────────────────────
-                  float easeInExpo(float t)   { return t == 0.0 ? 0.0 : pow(2.0, 10.0 * (t - 1.0)); }
-                  float easeOutQuad(float t)  { return 1.0 - (1.0 - t) * (1.0 - t); }
-                  float easeInQuad(float t)   { return t * t; }
-                  float easeOutCubic(float t) { float f = t - 1.0; return f * f * f + 1.0; }
-                  float easeInQuart(float t)  { return t * t * t * t; }
-
-                  float saturate(float x) {
-                      return clamp(x, 0.0, 1.0);
-                  }
-
-                  float remap(float t, float a, float b) {
-                      return saturate((t - a) / (b - a));
-                  }
-
-                  vec2 scaleUV(vec2 uv, vec2 scale) {
-                      return (uv - 0.5) / scale + 0.5;
-                  }
-
-                  float centerGradient(float x) {
-                      x *= 2.0;
-                      return x < 1.0 ? x : 2.0 - x;
-                  }
-
-                  vec2 barrelDistort(vec2 uv, float strength) {
-                      vec2 cc = uv - 0.5;
-                      float dist = dot(cc, cc);
-                      return uv + cc * dist * strength;
-                  }
-
                   vec4 close_color(vec3 coords_geo, vec3 size_geo) {
-
-                      if (coords_geo.x < 0.0 || coords_geo.x > 1.0 ||
-                          coords_geo.y < 0.0 || coords_geo.y > 1.0)
-                          return vec4(0.0);
-
-                      vec2 uv = (niri_geo_to_tex * coords_geo).xy;
-
-                      if (uv.x < 0.0 || uv.x > 1.0 ||
-                          uv.y < 0.0 || uv.y > 1.0)
-                          return vec4(0.0);
-
-                      float p = niri_clamped_progress;
-                      float inv = 1.0 - p;
-
-                      // Horizontal collapses slightly after vertical for a CRT feel.
-                      float py = remap(inv, 0.30, 1.00);
-                      float px = remap(inv, 0.00, 0.80);
-
-                      float scaleX = mix(0.06, 1.0, easeOutCubic(px));
-                      float scaleY = mix(0.00, 1.0, easeInQuad(py));
-
-                      float barrelStr = (1.0 - easeOutQuad(px)) * 0.20;
-                      vec2 distortedUV = barrelDistort(uv, barrelStr);
-
-                      vec2 sampleUV = scaleUV(distortedUV, vec2(scaleX, scaleY));
-
-                      if (sampleUV.x < 0.0 || sampleUV.x > 1.0 ||
-                          sampleUV.y < 0.0 || sampleUV.y > 1.0)
-                          return vec4(0.0);
-
-                      vec4 color = texture2D(niri_tex, sampleUV);
-
-                      float edgeSoft = mix(0.14, 0.04, easeInQuad(p));
-
-                      float tb = centerGradient(sampleUV.y);
-                      float lr = centerGradient(sampleUV.x);
-
-                      float mask =
-                          smoothstep(0.0, edgeSoft, tb) *
-                          smoothstep(0.0, edgeSoft, lr);
-
-                      color.a *= mask;
-                      color *= easeOutQuad(inv);
-
-                      color *= 1.0 - easeInQuart(remap(p, 0.90, 1.00));
-
-                      return color;
+                    float p = 1.0 - niri_clamped_progress;
+                    vec2 uv = coords_geo.xy;
+                    
+                    float a = 4.0;
+                    float b = 1.0;
+                    float amplitude = 120.0;
+                    float smoothness = 0.1;
+                    vec2 dir = uv - vec2(0.5);
+                    float dist = length(dir);
+                    float xx = (a - b) * cos(p) + b * cos(p * ((a / b) - 1.0));
+                    float yy = (a - b) * sin(p) - b * sin(p * ((a / b) - 1.0));
+                    vec2 offset = dir * vec2(sin(p * dist * amplitude * xx), sin(p * dist * amplitude * yy)) / smoothness;
+                    
+                    vec3 tc = niri_geo_to_tex * vec3(uv, 1.0);
+                    vec4 win = texture2D(niri_tex, tc.st);
+                    
+                    float reveal = smoothstep(0.2, 1.0, p);
+                    return win * reveal;
                   }
                   "
-              }
+                }
 
                 horizontal-view-movement {
                   spring damping-ratio=0.75 stiffness=800 epsilon=0.0003
@@ -306,8 +287,7 @@
                   spring damping-ratio=0.40 stiffness=900 epsilon=0.001
                 }
 
-                // Slow down all animations by this factor. Values below 1 speed them up instead
-                slowdown 1.3
+                //slowdown 1.3
               }
             '';
           };
