@@ -5,6 +5,7 @@
       self.homeModules.kitty
       self.homeModules.shell
       self.homeModules.starship
+      self.homeModules.ssh
       self.homeModules.git
       self.homeModules.firefox
       self.homeModules.nixvim
