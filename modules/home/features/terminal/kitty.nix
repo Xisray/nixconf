@@ -15,7 +15,6 @@
           cursor_trail = 1;
           confirm_os_window_close = 0;
           shell_integration = "enabled";
-          background_blur = 32;
         };
         keybindings = {
           "ctrl+1" = "goto_tab 1";

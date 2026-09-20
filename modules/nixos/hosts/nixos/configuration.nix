@@ -26,6 +26,12 @@
     boot = {
       initrd.systemd.tpm2.enable = false;
     };
+    stylix.opacity = {
+      applications = 0.9;
+      desktop = 0.9;
+      popups = 0.9;
+      terminal = 0.9;
+    };
 
     preferences = {
       hostName = hostName;
@@ -37,17 +43,17 @@
       monitors = [
         {
           name = "Xiaomi Corporation Mi Monitor 5598910068895";
+          port = "DP-2";
           mode = "2560x1440@180.000";
           position = {
             x = 0;
             y = 0;
           };
-          focus-at-startup = true;
+          primary = true;
         }
         {
           name = "Acer Technologies Acer HS244HQ LS80W0094390";
           mode = "1920x1080@60.000";
-          #modeline = "285.25  1920 1968 2000 2080  1080 1083 1088 1144 +hsync -vsync";
           position = {
             x = 2560;
             y = 0;

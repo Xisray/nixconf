@@ -27,6 +27,12 @@
       niriBinds = lib.mapAttrs (_: toBind) allBinds;
       hmWindowRules = hmPreferences.windowRules or [ ];
       allWindowRules = config.preferences.windowRules ++ hmWindowRules;
+
+      hmLayerRules = hmPreferences.layerRules or [ ];
+      allLayerRules = config.preferences.layerRules ++ hmLayerRules;
+
+      allLayouts = config.preferences.layouts // hmPreferences.layouts;
+
       mousePrefs = config.preferences.mouse or { };
       renderOutput =
         mon:
@@ -38,7 +44,7 @@
           scale = mon.scale or null;
           transform = mon.transform or null;
           vrr = mon.variable-refresh-rate or false;
-          focusAtStartup = mon.focus-at-startup or false;
+          primary = mon.primary or false;
         in
         ''
           output "${name}" {
@@ -51,7 +57,7 @@
             ${lib.optionalString (scale != null) "scale ${toString scale}"}
             ${lib.optionalString (transform != null) ''transform "${transform}"''}
             ${lib.optionalString vrr "variable-refresh-rate"}
-            ${lib.optionalString focusAtStartup "focus-at-startup"}
+            ${lib.optionalString primary "focus-at-startup"}
           }
         '';
 
@@ -65,6 +71,18 @@
         package = inputs.wrapper-modules.wrappers.niri.wrap {
           inherit pkgs;
           settings = {
+            blur =
+              if config.preferences.blur.enable then
+                {
+                  passes = 2;
+                  offset = 3.0;
+                  noise = 0.03;
+                  saturation = 1.0;
+                }
+              else
+                {
+                  off = _: { };
+                };
             hotkey-overlay.skip-at-startup = _: { };
             overview.backdrop-color = config.lib.stylix.colors.withHashtag.base00;
             prefer-no-csd = _: { };
@@ -107,15 +125,22 @@
               struts = {
                 left = 1;
                 right = 1;
-                top = 2;
+                top = 1;
                 bottom = 0;
               };
+            }
+            // allLayouts;
+            window-rule = {
+              background-effect = {
+                blur = config.preferences.blur.enable;
+                xray = !(lib.any (val: val < 1.0) (builtins.attrValues config.stylix.opacity));
+              };
+              geometry-corner-radius =
+                if config.preferences.corner.enable then config.preferences.corner.radius else 0;
+              clip-to-geometry = config.preferences.corner.enable;
             };
-            #window-rule = {
-            # geometry-corner-radius = 12;
-            # clip-to-geometry = true;
-            #};
             window-rules = allWindowRules;
+            layer-rules = allLayerRules;
             binds = niriBinds // {
               "Mod+Q".close-window = _: { };
               "Mod+F".maximize-column = _: { };

@@ -26,12 +26,6 @@
           name = "JetBrainsMono Nerd Font Mono";
         };
       };
-      opacity = {
-        applications = 0.8;
-        desktop = 0.8;
-        popups = 0.8;
-        terminal = 0.8;
-      };
       icons = {
         enable = true;
         package = pkgs.papirus-icon-theme;

@@ -20,6 +20,20 @@
         ];
         default = "bash";
       };
+      blur.enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+      corner = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+        };
+        radius = lib.mkOption {
+          type = lib.types.int;
+          default = 20;
+        };
+      };
       mouse = {
         accel-profile = lib.mkOption {
           type = lib.types.nullOr (

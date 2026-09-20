@@ -25,6 +25,14 @@
         type = lib.types.listOf lib.types.attrs;
         default = [ ];
       };
+      layerRules = lib.mkOption {
+        type = lib.types.listOf lib.types.attrs;
+        default = [ ];
+      };
+      layouts = lib.mkOption {
+        type = lib.types.attrs;
+        default = { };
+      };
       persistance = {
         data.directories = lib.mkOption {
           default = [ ];
