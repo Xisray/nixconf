@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
   flake.nixosModules.home =
-    { config, hostName, ... }:
+    { config, ... }:
     let
       user = config.preferences.user.name;
     in
@@ -22,7 +22,23 @@
             };
           })
         ];
-        users.${user} = self.homeModules.${hostName};
+        users.${user} = self.homeModules.home;
       };
     };
+  flake.homeModules.home = {
+    imports = [
+      self.homeModules.general
+      self.homeModules.kitty
+      self.homeModules.shell
+      self.homeModules.starship
+      self.homeModules.ssh
+      self.homeModules.git
+      self.homeModules.firefox
+      self.homeModules.nixvim
+      self.homeModules.keepassxc
+      self.homeModules.noctalia
+      self.homeModules.voxtype
+      self.homeModules.cliamp
+    ];
+  };
 }
