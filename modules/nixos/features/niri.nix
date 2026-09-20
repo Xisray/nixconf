@@ -133,7 +133,9 @@
             window-rule = {
               background-effect = {
                 blur = config.preferences.blur.enable;
-                xray = !(lib.any (val: val < 1.0) (builtins.attrValues config.stylix.opacity));
+                xray =
+                  !config.preferences.blur.enable
+                  || !(lib.any (val: val < 1.0) (builtins.attrValues config.stylix.opacity));
               };
               geometry-corner-radius =
                 if config.preferences.corner.enable then config.preferences.corner.radius else 0;
