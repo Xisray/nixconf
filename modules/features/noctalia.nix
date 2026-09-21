@@ -87,11 +87,11 @@
           place-within-backdrop = true;
         }
       ];
-      persistance.data.directories = [
+      persistence.data.directories = [
         ".local/state/noctalia"
       ];
 
-      persistance.cache.directories = [
+      persistence.cache.directories = [
         ".cache/noctalia"
       ];
     };
@@ -101,7 +101,9 @@
     packages.noctalia = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
       settings =
         let
-          monitors = config.preferences.monitors;
+          monitors = builtins.filter (mon: mon.enable) (
+            lib.mapAttrsToList (port: mon: mon // { port = port; }) config.preferences.monitors
+          );
           primaryMonitor = lib.findFirst (m: m.primary) (builtins.head monitors) monitors;
           showSecondaryBar = builtins.length monitors > 1;
           parseMode =

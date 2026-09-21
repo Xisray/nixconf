@@ -12,7 +12,7 @@ let
   bindsType = lib.types.submodule {
     options = {
       action = lib.mkOption {
-        type = lib.types.either bindActionType (lib.types.listof bindActionType);
+        type = lib.types.either bindActionType (lib.types.listOf bindActionType);
       };
       allowLocked = lib.mkOption {
         type = lib.types.nullOr lib.types.bool;
@@ -94,6 +94,33 @@ in
     monitors = lib.mkOption {
       type = lib.types.attrsOf monitorType;
     };
+    mouse = {
+      accel-profile = lib.mkOption {
+        type = lib.types.nullOr (
+          lib.types.enum [
+            "adaptive"
+            "flat"
+          ]
+        );
+        default = null;
+        description = "Mouse acceleration profile (null = default)";
+      };
+      accel-speed = lib.mkOption {
+        type = lib.types.nullOr (lib.types.float);
+        default = null;
+        description = "Mouse acceleration speed from -1.0 to 1.0 (null = default)";
+      };
+      natural-scroll = lib.mkOption {
+        type = lib.types.nullOr lib.types.bool;
+        default = null;
+        description = "Invert mouse scroll direction";
+      };
+      scroll-factor = lib.mkOption {
+        type = lib.types.nullOr lib.types.float;
+        default = null;
+        description = "Scale mouse scroll speed";
+      };
+    };
     wm.rules = {
       windows = lib.mkOption {
         type = lib.types.listOf lib.types.attrs;
@@ -104,7 +131,7 @@ in
         default = [ ];
       };
     };
-    persistance = {
+    persistence = {
       nukeRoot.enable = lib.mkEnableOption "Destroy /root on every boot";
       volumeGroup = lib.mkOption {
         default = "btrfs_vg";
@@ -133,7 +160,7 @@ in
   };
   config.assertions = [
     {
-      assertion = config.preferences.monitors != [ ];
+      assertion = config.preferences.monitors != { };
       message = "preferences.monitors должен содержать хотя бы один монитор";
     }
   ];

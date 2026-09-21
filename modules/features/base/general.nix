@@ -21,7 +21,7 @@
 
       hashedPasswordFile = "/persist/passwd";
     };
-    preferences.persistance.data.directories = [
+    preferences.persistence.data.directories = [
       "nixconf"
       "Downloads"
       "Documents"

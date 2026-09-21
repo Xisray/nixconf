@@ -15,7 +15,7 @@
     packages.niri = inputs.wrapper-modules.wrappers.niri.wrap {
       settings = {
         blur =
-          if config.preferences.blur.enable then
+          if config.preferences.ui.blur.enable then
             {
               passes = 2;
               offset = 3.0;

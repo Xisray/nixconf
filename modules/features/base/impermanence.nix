@@ -2,19 +2,8 @@
   flake.nixosModules.impermanence =
     { lib, config, ... }:
     let
-      cfg = config.preferences.persistance;
+      cfg = config.preferences.persistence;
       user = config.preferences.user.name;
-      hmPersistance = config.home-manager.users.${user}.preferences.persistance or { };
-      hmData =
-        hmPersistance.data or {
-          directories = [ ];
-          files = [ ];
-        };
-      hmCache =
-        hmPersistance.cache or {
-          directories = [ ];
-          files = [ ];
-        };
     in
     {
       imports = [
@@ -26,13 +15,13 @@
         boot.tmp.cleanOnBoot = lib.mkDefault true;
         environment.persistence = {
           "/persist/userdata".users.${user} = {
-            directories = cfg.data.directories ++ hmData.directories;
-            files = cfg.data.files ++ hmData.files;
+            directories = cfg.data.directories;
+            files = cfg.data.files;
           };
 
           "/persist/usercache".users.${user} = {
-            directories = cfg.cache.directories ++ hmCache.directories;
-            files = cfg.cache.files ++ hmCache.files;
+            directories = cfg.cache.directories;
+            files = cfg.cache.files;
           };
           "/persist/system" = {
             hideMounts = true;
