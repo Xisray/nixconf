@@ -95,7 +95,7 @@ in
       type = lib.types.attrsOf monitorType;
     };
     mouse = {
-      accel-profile = lib.mkOption {
+      accelProfile = lib.mkOption {
         type = lib.types.nullOr (
           lib.types.enum [
             "adaptive"
@@ -105,17 +105,17 @@ in
         default = null;
         description = "Mouse acceleration profile (null = default)";
       };
-      accel-speed = lib.mkOption {
+      accelSpeed = lib.mkOption {
         type = lib.types.nullOr (lib.types.float);
         default = null;
         description = "Mouse acceleration speed from -1.0 to 1.0 (null = default)";
       };
-      natural-scroll = lib.mkOption {
+      naturalScroll = lib.mkOption {
         type = lib.types.nullOr lib.types.bool;
         default = null;
         description = "Invert mouse scroll direction";
       };
-      scroll-factor = lib.mkOption {
+      scrollFactor = lib.mkOption {
         type = lib.types.nullOr lib.types.float;
         default = null;
         description = "Scale mouse scroll speed";

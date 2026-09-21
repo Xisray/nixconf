@@ -101,27 +101,12 @@
     packages.noctalia = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
       settings =
         let
-          monitors = builtins.filter (mon: mon.enable) (
+          monitors = builtins.filter (mon: mon.enabled) (
             lib.mapAttrsToList (port: mon: mon // { port = port; }) config.preferences.monitors
           );
-          primaryMonitor = lib.findFirst (m: m.primary) (builtins.head monitors) monitors;
+          monitor = lib.findFirst (m: m.primary) (builtins.head monitors) monitors;
           showSecondaryBar = builtins.length monitors > 1;
-          parseMode =
-            mode:
-            let
-              parts = lib.splitString "x" mode;
-              width = (lib.toInt (builtins.head parts)) * 1.0;
-              height = (lib.toInt (builtins.head (lib.splitString "@" (builtins.elemAt parts 1)))) * 1.0;
-            in
-            {
-              inherit width height;
-            };
-          monitorSize =
-            if primaryMonitor ? mode then
-              parseMode primaryMonitor.mode
-            else
-              throw "Noctalia: ''mode' is not set for the primary monitor";
-
+          monitorPort = monitor.port;
         in
         {
           backdrop.enabled = true;
@@ -206,7 +191,7 @@
               concave_edge_corners = false;
             }
             // lib.optionalAttrs showSecondaryBar {
-              monitor.${primaryMonitor}.enabled = true;
+              monitor.${monitorPort}.enabled = true;
             };
           }
           // lib.optionalAttrs showSecondaryBar {
@@ -224,32 +209,32 @@
               shadow = false;
               start = [ ];
               dead_zone.actions.right = "none";
-              monitor.${primaryMonitor}.enabled = false;
+              monitor.${monitorPort}.enabled = false;
             };
           };
           osd = {
             background_opacity = config.preferences.ui.opacity;
           }
           // lib.optionalAttrs showSecondaryBar {
-            monitors = [ primaryMonitor ];
+            monitors = [ monitorPort ];
           };
-          notification.monitors = lib.optionals showSecondaryBar [ primaryMonitor ];
-          lockscreen.monitors = lib.optionals showSecondaryBar [ primaryMonitor ];
+          notification.monitors = lib.optionals showSecondaryBar [ monitorPort ];
+          lockscreen.monitors = lib.optionals showSecondaryBar [ monitorPort ];
           lockscreen_widgets = {
             enabled = true;
             widget_order = [
-              "lockscreen_login_box@${primaryMonitor}"
+              "lockscreen_login_box@${monitorPort}"
               "lockscreen_widget_clock"
             ];
             widget = {
-              "lockscreen_login_box@${primaryMonitor}" = {
+              "lockscreen_login_box@${monitorPort}" = {
                 box_height = 70.0;
                 box_width = 400.0;
-                cx = monitorSize.width / 2;
-                cy = monitorSize.height / 2;
-                placement_height = monitorSize.height;
-                placement_width = monitorSize.width;
-                output = primaryMonitor;
+                cx = monitor.width / 2;
+                cy = monitor.height / 2;
+                placement_height = monitor.height;
+                placement_width = monitor.width;
+                output = monitorPort;
                 type = "login_box";
                 settings = {
                   background_opacity = 0.0;
@@ -268,11 +253,11 @@
               lockscreen_widget_clock = {
                 box_height = 112.0;
                 box_width = 288.0;
-                cx = monitorSize.width / 2;
-                cy = monitorSize.height * 0.3 - 112.0;
-                placement_height = monitorSize.height;
-                placement_width = monitorSize.width;
-                output = primaryMonitor;
+                cx = monitor.width / 2;
+                cy = monitor.height * 0.3 - 112.0;
+                placement_height = monitor.height;
+                placement_width = monitor.width;
+                output = monitorPort;
                 type = "clock";
                 settings = {
                   background = false;

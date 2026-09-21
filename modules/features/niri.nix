@@ -42,10 +42,20 @@
             let
               cfg = config.preferences.mouse;
             in
-            lib.filterAttrs (_: v: v != null) {
-              inherit (cfg) accel-profile accel-speed scroll-factor;
-              natural-scroll = if cfg.natural-scroll then (_: { }) else null;
-            };
+            lib.mkMerge [
+              (lib.optionalAttrs (cfg.accelProfile != null) {
+                accel-profile = cfg.accelProfile;
+              })
+              (lib.optionalAttrs (cfg.accelSpeed != null) {
+                accel-speed = cfg.accelSpeed;
+              })
+              (lib.optionalAttrs (cfg.naturalScroll == true) {
+                natural-scroll = _: { };
+              })
+              (lib.optionalAttrs (cfg.scrollFactor != null) {
+                scroll-factor = cfg.scrollFactor;
+              })
+            ];
         };
         xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
         layout = {
@@ -183,7 +193,7 @@
             renderOutput = port: mon: ''
               output "${port}" {
                 ${
-                  if !mon.enable then
+                  if !mon.enabled then
                     "off"
                   else
                     ''
