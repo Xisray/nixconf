@@ -19,6 +19,7 @@
       home.files.".config/niri/config.kdl".text =
         let
           cfg = config.preferences;
+
           blur =
             if cfg.ui.blur.enable then
               ''
@@ -47,11 +48,45 @@
               }
             }
           '';
+          binds =
+            let
+              toArg = x: if lib.isDerivation x || lib.isPackage x then lib.getExe x else toString x;
+              renderAction =
+                action:
+                let
+                  isList = builtins.isList action;
+                  args = if isList then action else [ action ];
+                  rendered = map toArg args;
+                in
+                if isList then
+                  "spawn ${lib.concatMapStringsSep " " (a: lib.escapeShellArg a) rendered}"
+                else
+                  "spawn-sh ${lib.escapeShellArg (builtins.head rendered)}";
+              renderBind =
+                name: value:
+                let
+                  actionStr = renderAction value.action;
+                  allowLocked =
+                    if value.allowLocked == null then
+                      ""
+                    else if value.allowLocked then
+                      " allow-when-locked=true"
+                    else
+                      " allow-when-locked=false";
+                in
+                "${name}${allowLocked} { ${actionStr} }";
+            in
+            ''
+              binds {
+                ${lib.concatStringsSep "\n\t" (lib.mapAttrsToList renderBind cfg.binds)}
+              }
+            '';
 
         in
         ''
           ${blur}
           ${mouse}
+          ${binds}
         '';
     };
 }
