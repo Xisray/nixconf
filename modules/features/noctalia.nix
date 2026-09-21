@@ -97,256 +97,260 @@
     };
   };
 
-  perSystem = { lib, ... }: {
-    packages.noctalia = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
-      settings =
-        let
-          monitors = builtins.filter (mon: mon.enabled) (
-            lib.mapAttrsToList (port: mon: mon // { port = port; }) config.preferences.monitors
-          );
-          monitor = lib.findFirst (m: m.primary) (builtins.head monitors) monitors;
-          showSecondaryBar = builtins.length monitors > 1;
-          monitorPort = monitor.port;
-        in
-        {
-          backdrop.enabled = true;
-          # hooks.started = "${lib.getExe pkgs.noctalia} msg session lock";
-          shell.session.actions = [
-            {
-              action = "lock";
-              countdown_seconds = 0.0;
-              enabled = true;
-              shortcut = "1";
-              variant = "default";
-            }
-            {
-              action = "lock_and_suspend";
-              countdown_seconds = 0.0;
-              enabled = true;
-              shortcut = "2";
-              variant = "default";
-            }
-            {
-              action = "reboot";
-              countdown_seconds = 0.0;
-              enabled = true;
-              shortcut = "3";
-              variant = "default";
-            }
-            {
-              action = "shutdown";
-              countdown_seconds = 0.0;
-              enabled = true;
-              shortcut = "4";
-              variant = "default";
-            }
-            {
-              action = "logout";
-              countdown_seconds = 0.0;
-              enabled = false;
-              shortcut = "5";
-              variant = "default";
-            }
-          ];
-          desktop_widgets.enabled = false;
-          dock.enabled = false;
-          shell = {
-            password_style = "random";
-            polkit_agent = true;
-            panel = {
-              open_near_click_control_center = true;
-              shadow = false;
-              transparency_mode = "soft";
-            };
-
-            launcher.providers.session.global = true;
-          };
-          bar = {
-            order = lib.optionals showSecondaryBar [
-              "widgets"
-              "secondary"
-            ];
-            widgets = {
-              enabled = !showSecondaryBar;
-              background_opacity = config.preferences.ui.opacity;
-              shadow = false;
-              center = [ "date" ];
-              end = [
-                "tray"
-                "network"
-                "bluetooth"
-                "input_volume"
-                "volume"
-                "battery"
-                "keyboard_layout"
-                "notifications"
-              ];
-              margin_ends = 0;
-              radius = 0;
-              start = [
-                "session"
-                "workspaces"
-                "audio_visualizer"
-              ];
-              concave_edge_corners = false;
-            }
-            // lib.optionalAttrs showSecondaryBar {
-              monitor.${monitorPort}.enabled = true;
-            };
-          }
-          // lib.optionalAttrs showSecondaryBar {
-            secondary = {
-              background_opacity = 0.0;
-              capsule = true;
-              capsule_fill = "on_primary";
-              capsule_padding = 12.0;
-              capsule_opacity = config.preferences.ui.opacity;
-              center = [ "workspaces" ];
-              concave_edge_corners = false;
-              end = [ ];
-              margin_ends = 0;
-              radius = 0;
-              shadow = false;
-              start = [ ];
-              dead_zone.actions.right = "none";
-              monitor.${monitorPort}.enabled = false;
-            };
-          };
-          osd = {
-            background_opacity = config.preferences.ui.opacity;
-          }
-          // lib.optionalAttrs showSecondaryBar {
-            monitors = [ monitorPort ];
-          };
-          notification.monitors = lib.optionals showSecondaryBar [ monitorPort ];
-          lockscreen.monitors = lib.optionals showSecondaryBar [ monitorPort ];
-          lockscreen_widgets = {
+  flake.wrappersModules.noctalia = { config, lib, ... }: {
+    settings =
+      let
+        monitors = builtins.filter (mon: mon.enabled) (
+          lib.mapAttrsToList (port: mon: mon // { port = port; }) config.preferences.monitors
+        );
+        monitor = lib.findFirst (m: m.primary) (builtins.head monitors) monitors;
+        showSecondaryBar = builtins.length monitors > 1;
+        monitorPort = monitor.port;
+      in
+      {
+        backdrop.enabled = true;
+        # hooks.started = "${lib.getExe pkgs.noctalia} msg session lock";
+        shell.session.actions = [
+          {
+            action = "lock";
+            countdown_seconds = 0.0;
             enabled = true;
-            widget_order = [
-              "lockscreen_login_box@${monitorPort}"
-              "lockscreen_widget_clock"
-            ];
-            widget = {
-              "lockscreen_login_box@${monitorPort}" = {
-                box_height = 70.0;
-                box_width = 400.0;
-                cx = monitor.width / 2;
-                cy = monitor.height / 2;
-                placement_height = monitor.height;
-                placement_width = monitor.width;
-                output = monitorPort;
-                type = "login_box";
-                settings = {
-                  background_opacity = 0.0;
-                  center_password_text = true;
-                  input_opacity = config.preferences.ui.opacity;
-                  layout = "compact";
-                  show_caps_lock = true;
-                  show_keyboard_layout = true;
-                  show_login_button = false;
-                  show_media = true;
-                  show_session_buttons = true;
-                  show_unlock_hint = false;
-                  show_weather = false;
-                };
-              };
-              lockscreen_widget_clock = {
-                box_height = 112.0;
-                box_width = 288.0;
-                cx = monitor.width / 2;
-                cy = monitor.height * 0.3 - 112.0;
-                placement_height = monitor.height;
-                placement_width = monitor.width;
-                output = monitorPort;
-                type = "clock";
-                settings = {
-                  background = false;
-                  shadow = false;
-                };
-              };
-            };
+            shortcut = "1";
+            variant = "default";
+          }
+          {
+            action = "lock_and_suspend";
+            countdown_seconds = 0.0;
+            enabled = true;
+            shortcut = "2";
+            variant = "default";
+          }
+          {
+            action = "reboot";
+            countdown_seconds = 0.0;
+            enabled = true;
+            shortcut = "3";
+            variant = "default";
+          }
+          {
+            action = "shutdown";
+            countdown_seconds = 0.0;
+            enabled = true;
+            shortcut = "4";
+            variant = "default";
+          }
+          {
+            action = "logout";
+            countdown_seconds = 0.0;
+            enabled = false;
+            shortcut = "5";
+            variant = "default";
+          }
+        ];
+        desktop_widgets.enabled = false;
+        dock.enabled = false;
+        shell = {
+          password_style = "random";
+          polkit_agent = true;
+          panel = {
+            open_near_click_control_center = true;
+            shadow = false;
+            transparency_mode = "soft";
           };
-          control_center = {
-            sidebar = "none";
-            sidebar_section = "none";
-            hidden_tabs = [
-              "media"
-              "audio"
-              "monitor"
-              "system"
-              "power"
+
+          launcher.providers.session.global = true;
+        };
+        bar = {
+          order = lib.optionals showSecondaryBar [
+            "widgets"
+            "secondary"
+          ];
+          widgets = {
+            enabled = !showSecondaryBar;
+            background_opacity = config.preferences.ui.opacity;
+            shadow = false;
+            center = [ "date" ];
+            end = [
+              "tray"
               "network"
               "bluetooth"
-              "weather"
-              "calendar"
+              "input_volume"
+              "volume"
+              "battery"
+              "keyboard_layout"
               "notifications"
-              "screen-time"
             ];
-            shortcuts = [
-              {
-                type = "caffeine";
-              }
-              {
-                type = "wallpaper";
-              }
+            margin_ends = 0;
+            radius = 0;
+            start = [
+              "session"
+              "workspaces"
+              "audio_visualizer"
             ];
+            concave_edge_corners = false;
+          }
+          // lib.optionalAttrs showSecondaryBar {
+            monitor.${monitorPort}.enabled = true;
           };
-
+        }
+        // lib.optionalAttrs showSecondaryBar {
+          secondary = {
+            background_opacity = 0.0;
+            capsule = true;
+            capsule_fill = "on_primary";
+            capsule_padding = 12.0;
+            capsule_opacity = config.preferences.ui.opacity;
+            center = [ "workspaces" ];
+            concave_edge_corners = false;
+            end = [ ];
+            margin_ends = 0;
+            radius = 0;
+            shadow = false;
+            start = [ ];
+            dead_zone.actions.right = "none";
+            monitor.${monitorPort}.enabled = false;
+          };
+        };
+        osd = {
+          background_opacity = config.preferences.ui.opacity;
+        }
+        // lib.optionalAttrs showSecondaryBar {
+          monitors = [ monitorPort ];
+        };
+        notification.monitors = lib.optionals showSecondaryBar [ monitorPort ];
+        lockscreen.monitors = lib.optionals showSecondaryBar [ monitorPort ];
+        lockscreen_widgets = {
+          enabled = true;
+          widget_order = [
+            "lockscreen_login_box@${monitorPort}"
+            "lockscreen_widget_clock"
+          ];
           widget = {
-            brightness.show_label = false;
-            date.format = "{::%H:%M %a, %b %d}";
-            network.show_label = false;
-            workspaces.show_labels = false;
-            tray = {
-              drawer = true;
-              pinned = [
-                "udiskie"
-              ];
+            "lockscreen_login_box@${monitorPort}" = {
+              box_height = 70.0;
+              box_width = 400.0;
+              cx = monitor.width / 2;
+              cy = monitor.height / 2;
+              placement_height = monitor.height;
+              placement_width = monitor.width;
+              output = monitorPort;
+              type = "login_box";
+              settings = {
+                background_opacity = 0.0;
+                center_password_text = true;
+                input_opacity = config.preferences.ui.opacity;
+                layout = "compact";
+                show_caps_lock = true;
+                show_keyboard_layout = true;
+                show_login_button = false;
+                show_media = true;
+                show_session_buttons = true;
+                show_unlock_hint = false;
+                show_weather = false;
+              };
             };
-            volume.show_label = false;
-            input_volume.show_label = false;
-          };
-          nightlight.enabled = true;
-          location = {
-            sunrise = "07:00";
-            sunset = "20:00";
-            custom_schedule = true;
-          };
-          weather.enabled = false;
-
-          theme.templates = {
-            enable_builtin_templates = false;
-            enable_community_templates = false;
-          };
-
-          wallpaper.directory = "/etc/wallpapers";
-          idle = {
-            behavior_order = [
-              "lock"
-              "screen-off"
-              "lock-and-suspend"
-            ];
-
-            behavior = {
-              lock = {
-                action = "lock";
-                enabled = true;
-                timeout = 300.0;
-              };
-              lock-and-suspend = {
-                action = "lock_and_suspend";
-                enabled = true;
-                timeout = 900.0;
-              };
-
-              screen-off = {
-                action = "screen_off";
-                enabled = true;
-                timeout = 600.0;
+            lockscreen_widget_clock = {
+              box_height = 112.0;
+              box_width = 288.0;
+              cx = monitor.width / 2;
+              cy = monitor.height * 0.3 - 112.0;
+              placement_height = monitor.height;
+              placement_width = monitor.width;
+              output = monitorPort;
+              type = "clock";
+              settings = {
+                background = false;
+                shadow = false;
               };
             };
           };
         };
+        control_center = {
+          sidebar = "none";
+          sidebar_section = "none";
+          hidden_tabs = [
+            "media"
+            "audio"
+            "monitor"
+            "system"
+            "power"
+            "network"
+            "bluetooth"
+            "weather"
+            "calendar"
+            "notifications"
+            "screen-time"
+          ];
+          shortcuts = [
+            {
+              type = "caffeine";
+            }
+            {
+              type = "wallpaper";
+            }
+          ];
+        };
+
+        widget = {
+          brightness.show_label = false;
+          date.format = "{::%H:%M %a, %b %d}";
+          network.show_label = false;
+          workspaces.show_labels = false;
+          tray = {
+            drawer = true;
+            pinned = [
+              "udiskie"
+            ];
+          };
+          volume.show_label = false;
+          input_volume.show_label = false;
+        };
+        nightlight.enabled = true;
+        location = {
+          sunrise = "07:00";
+          sunset = "20:00";
+          custom_schedule = true;
+        };
+        weather.enabled = false;
+
+        theme.templates = {
+          enable_builtin_templates = false;
+          enable_community_templates = false;
+        };
+
+        wallpaper.directory = "/etc/wallpapers";
+        idle = {
+          behavior_order = [
+            "lock"
+            "screen-off"
+            "lock-and-suspend"
+          ];
+
+          behavior = {
+            lock = {
+              action = "lock";
+              enabled = true;
+              timeout = 300.0;
+            };
+            lock-and-suspend = {
+              action = "lock_and_suspend";
+              enabled = true;
+              timeout = 900.0;
+            };
+
+            screen-off = {
+              action = "screen_off";
+              enabled = true;
+              timeout = 600.0;
+            };
+          };
+        };
+      };
+  };
+
+  perSystem = {
+    packages.noctalia = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
+      imports = [ self.wrappersModules.noctalia ];
     };
   };
 }

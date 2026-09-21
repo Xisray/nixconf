@@ -12,10 +12,11 @@ let
       specialArgs = { inherit inputs hostname; };
       modules = [
         { networking.hostName = hostname; }
+        inputs.disko.nixosModules.disko
+        inputs.wrappers.flakeModules.wrappers
         self.nixosModules."${hostname}Configuration"
         self.nixosModules."${hostname}Hardware"
         self.diskoConfigurations.${hostname}
-        inputs.disko.nixosModules.disko
         self.nixosModules.general
       ];
     };
