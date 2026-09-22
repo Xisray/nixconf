@@ -8,6 +8,7 @@
       pkgs,
       lib,
       config,
+      wlib,
       ...
     }:
     {
@@ -19,74 +20,131 @@
       home.files.".config/niri/config.kdl".text =
         let
           cfg = config.preferences;
-
           blur =
-            if cfg.ui.blur.enable then
-              ''
-                blur {
-                  passes 2
-                  offset 3.0
-                  noise 0.03
-                  saturation 1.0
-                }
-              ''
-            else
-              "";
-          mouse = ''
-            input {
-              mouse {
-                ${lib.optionalString (
-                  cfg.mouse.accelProfile != null
-                ) ''accel-profile "${cfg.mouse.accelProfile}"''}
-                ${lib.optionalString (
-                  cfg.mouse.accelSpeed != null
-                ) "accel-speed ${toString cfg.mouse.accelSpeed}"}
-                ${lib.optionalString (
-                  cfg.mouse.scrollFactor != null
-                ) "scroll-factor ${toString cfg.mouse.scrollFactor}"}
-                ${lib.optionalString cfg.mouse.naturalScroll "natural-scroll"}
+            if cfg.ui.blur.enabled then
+              {
+                passes = 2;
+                offset = 3.0;
+                noise = 0.03;
+                saturation = 1.0;
               }
-            }
-          '';
+            else
+              { off = _: { }; };
+
+          mouse = lib.filterAttrs (_: v: v != null) {
+            accel-profile = cfg.mouse.accelProfile;
+            accel-speed = cfg.mouse.accelSpeed;
+            scroll-factor = cfg.mouse.scrollFactor;
+            natural-scroll = if cfg.mouse.naturalScroll then _: { } else null;
+          };
           binds =
             let
-              toArg = x: if lib.isDerivation x || lib.isPackage x then lib.getExe x else toString x;
-              renderAction =
+              toContent =
                 action:
-                let
-                  isList = builtins.isList action;
-                  args = if isList then action else [ action ];
-                  rendered = map toArg args;
-                in
-                if isList then
-                  "spawn ${lib.concatMapStringsSep " " (a: lib.escapeShellArg a) rendered}"
+                if builtins.isList action then
+                  { spawn = map (a: if lib.isDerivation a then lib.getExe a else a) action; }
+                else if lib.isDerivation action then
+                  { spawn = [ (lib.getExe action) ]; }
                 else
-                  "spawn-sh ${lib.escapeShellArg (builtins.head rendered)}";
-              renderBind =
-                name: value:
-                let
-                  actionStr = renderAction value.action;
-                  allowLocked =
-                    if value.allowLocked == null then
-                      ""
-                    else if value.allowLocked then
-                      " allow-when-locked=true"
-                    else
-                      " allow-when-locked=false";
-                in
-                "${name}${allowLocked} { ${actionStr} }";
-            in
-            ''
-              binds {
-                ${lib.concatStringsSep "\n\t" (lib.mapAttrsToList renderBind cfg.binds)}
-              }
-            '';
+                  { spawn-sh = action; };
 
+              toBind =
+                {
+                  action,
+                  allowLocked ? null,
+                }:
+                let
+                  content = toContent action;
+                in
+                if allowLocked == null then
+                  content
+                else
+                  (_: {
+                    props = {
+                      allow-when-locked = allowLocked;
+                    };
+                    inherit content;
+                  });
+            in
+            lib.mapAttrs (_: toBind) cfg.binds;
+
+          mkMonitor =
+            name: cfg:
+            let
+              content =
+                if cfg.enabled or true == false then
+                  {
+                    off = _: { };
+                  }
+                else
+                  let
+                    mode =
+                      "${toString cfg.width}x${toString cfg.height}"
+                      + lib.optionalString (cfg ? refreshRate && cfg.refreshRate != null) "@${toString cfg.refreshRate}";
+
+                    base = removeAttrs cfg [
+                      "width"
+                      "height"
+                      "refreshRate"
+                      "primary"
+                      "position"
+                      "enabled"
+                    ];
+                  in
+                  base
+                  // {
+                    inherit mode;
+
+                    position = _: {
+                      props = {
+                        x = cfg.position.x;
+                        y = cfg.position.y;
+                      };
+                    };
+                  }
+                  // lib.optionalAttrs (cfg.primary or false) {
+                    focus-at-startup = _: { };
+                  };
+            in
+            {
+              output = _: {
+                props = name;
+                inherit content;
+              };
+            };
+          output = lib.mapAttrsToList mkMonitor cfg.monitors;
+
+          toList = x: if x == null then [ ] else lib.toList x;
+
+          mkRule =
+            node: r:
+            let
+              allMatches = toList (r.matches or null) ++ toList (r.match or null);
+              matches = map (m: { match = _: { props = m; }; }) (toList allMatches);
+              excludes = map (m: { exclude = _: { props = m; }; }) (r.excludes or [ ]);
+              other = lib.mapAttrsToList (n: v: { ${n} = v; }) (
+                lib.attrsets.removeAttrs r [
+                  "matches"
+                  "excludes"
+                  "match"
+                ]
+              );
+            in
+            {
+              ${node} = matches ++ excludes ++ other;
+            };
+
+          settings = {
+            inherit blur;
+            input.mouse = mouse;
+            binds = binds;
+          };
         in
         ''
-          ${blur}
-          ${mouse}
-          ${binds}
+          ${wlib.toKdl settings}
+          ${wlib.toKdl output}
+          ${wlib.toKdl (map (mkRule "window-rule") cfg.wm.rules.windows)}
+          ${wlib.toKdl (map (mkRule "layer-rule") cfg.wm.rules.layers)}
         '';
     };
 }

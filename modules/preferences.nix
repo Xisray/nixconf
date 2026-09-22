@@ -59,6 +59,7 @@ let
       };
     };
   };
+
 in
 {
   options.preferences = {
