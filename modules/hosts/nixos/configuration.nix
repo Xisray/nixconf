@@ -5,6 +5,7 @@
       self.nixosModules.nvidia
       self.nixosModules.niri
       self.nixosModules.noctalia
+      self.nixosModules.firefox
       self.nixosModules.kitty
     ];
     systemd.tpm2.enable = false;
