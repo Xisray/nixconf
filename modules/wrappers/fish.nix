@@ -1,12 +1,15 @@
-{
+{ self, ... }: {
   flake.wrappers.fish =
     {
       lib,
       wlib,
       pkgs,
-      self',
       ...
     }:
+    let
+      git = self.packages.${pkgs.stdenv.hostPlatform.system}.git or pkgs.git;
+      neovim = self.packages.${pkgs.stdenv.hostPlatform.system}.neovim or pkgs.neovim;
+    in
     {
       imports = [ wlib.wrapperModules.fish ];
       shellAliases = {
@@ -38,11 +41,11 @@
         pkgs.bat
         pkgs.zoxide
         pkgs.devenv
-        (self'.packages.git or pkgs.git)
-        (self'.packages.neovim or pkgs.neovim)
+        git
+        neovim
       ];
       env = {
-        EDITOR = lib.getExe (self'.packages.neovim or pkgs.neovim);
+        EDITOR = lib.getExe neovim;
       };
       configFile.content = ''
         zoxide init fish --cmd cd | source
