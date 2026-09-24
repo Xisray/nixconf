@@ -1,11 +1,8 @@
 {
   flake.wrappers.firefox = { wlib, pkgs, ... }: {
     imports = [ wlib.modules.default ];
-    package = pkgs.firefox;
-    constructFiles.policies = {
-      relPath = "lib/firefox/distribution/policies.json";
-      content = builtins.toJSON {
-        policies = {
+    package = pkgs.firefox.override {
+    extraPolicies = {
           DownloadDirectory = "\${home}/Downloads";
           RequestedLocales = [
             "ru"
@@ -544,8 +541,7 @@
               Status = "locked";
             };
           };
-        };
-      };
+	};
     };
   };
 }

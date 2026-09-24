@@ -139,12 +139,17 @@
             input.mouse = mouse;
             binds = binds;
           };
+	  toKdlV1 = value: wlib.toKdl (_: {
+	    version = 1;
+	    content = value;
+	  });
         in
         ''
-          ${wlib.toKdl settings}
-          ${wlib.toKdl output}
-          ${wlib.toKdl (map (mkRule "window-rule") cfg.wm.rules.windows)}
-          ${wlib.toKdl (map (mkRule "layer-rule") cfg.wm.rules.layers)}
+	  include optional=true "./noctalia.kdl"
+          ${toKdlV1 settings}
+          ${toKdlV1 output}
+          ${toKdlV1 (map (mkRule "window-rule") cfg.wm.rules.windows)}
+          ${toKdlV1 (map (mkRule "layer-rule") cfg.wm.rules.layers)}
         '';
     };
 }

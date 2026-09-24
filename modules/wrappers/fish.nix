@@ -13,6 +13,8 @@
     {
       imports = [ wlib.wrapperModules.fish ];
       shellAliases = {
+        vim = "nvim";
+        vi = "nvim";
         man = "tldr";
         grep = "rg";
         cat = "bat --paging=never";
@@ -41,6 +43,7 @@
         pkgs.bat
         pkgs.zoxide
         pkgs.devenv
+	pkgs.yazi
         git
         neovim
       ];

@@ -157,6 +157,7 @@
           };
         };
       };
+      include.files = [ "~/.config/noctalia/" ];
     };
   };
 

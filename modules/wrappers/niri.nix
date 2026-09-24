@@ -112,6 +112,8 @@
           "Mod+Shift+E".spawn-sh = "${pkgs.wl-clipboard}/bin/wl-paste | ${lib.getExe pkgs.swappy} -f -";
         };
         extraConfig = ''
+	  include optional=true "~/.config/niri/config.kdl"
+
           animations {
             workspace-switch {
               spring damping-ratio=0.75 stiffness=1600 epsilon=0.0001

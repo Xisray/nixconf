@@ -81,8 +81,8 @@
         ];
       };
 
-      home.files.".config/noctalia/dynamic.toml" = {
-        generator = (pkgs.formats.toml { }).generate "dynamic.toml";
+      home.files.".config/noctalia/settings.toml" = {
+        generator = (pkgs.formats.toml { }).generate "settings.toml";
         value =
           let
             cfg = config.preferences;
