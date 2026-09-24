@@ -9,7 +9,10 @@ let
   mkHost =
     hostname:
     inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs hostname; };
+      specialArgs = {
+        inherit inputs hostname;
+        wlib = inputs.wrappers.lib;
+      };
       modules = [
         { networking.hostName = hostname; }
         inputs.disko.nixosModules.disko

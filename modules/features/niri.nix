@@ -35,7 +35,7 @@
             accel-profile = cfg.mouse.accelProfile;
             accel-speed = cfg.mouse.accelSpeed;
             scroll-factor = cfg.mouse.scrollFactor;
-            natural-scroll = if cfg.mouse.naturalScroll then _: { } else null;
+            natural-scroll = if cfg.mouse.naturalScroll == true then _: { } else null;
           };
           binds =
             let

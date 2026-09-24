@@ -45,18 +45,20 @@
             default = false;
           };
           position = lib.mkOption {
-            type = lib.types.nullOr lib.types.submodule {
-              options = {
-                x = lib.mkOption {
-                  type = lib.types.int;
-                  default = 0;
+            type = lib.types.nullOr (
+              lib.types.submodule {
+                options = {
+                  x = lib.mkOption {
+                    type = lib.types.int;
+                    default = 0;
+                  };
+                  y = lib.mkOption {
+                    type = lib.types.int;
+                    default = 0;
+                  };
                 };
-                y = lib.mkOption {
-                  type = lib.types.int;
-                  default = 0;
-                };
-              };
-            };
+              }
+            );
             default = null;
           };
         };
