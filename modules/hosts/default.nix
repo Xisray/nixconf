@@ -13,11 +13,11 @@ let
       modules = [
         { networking.hostName = hostname; }
         inputs.disko.nixosModules.disko
-        inputs.wrappers.flakeModules.wrappers
+        inputs.hjem.nixosModules.default
+
         self.nixosModules."${hostname}Configuration"
         self.nixosModules."${hostname}Hardware"
         self.diskoConfigurations.${hostname}
-        inputs.hjem.nixosModules.default
 
         self.nixosModules.impermanence
         self.nixosModules.nix
@@ -32,15 +32,11 @@ let
     };
 in
 {
-  options = {
-    hosts = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-      description = "Список зарегистрированных хостов";
-    };
+  options.hosts = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [ ];
+    description = "Список зарегистрированных хостов";
   };
 
-  config = {
-    flake.nixosConfigurations = lib.genAttrs config.hosts mkHost;
-  };
+  config.flake.nixosConfigurations = lib.genAttrs config.hosts mkHost;
 }
