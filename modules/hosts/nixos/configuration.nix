@@ -7,6 +7,7 @@
       self.nixosModules.noctalia
       self.nixosModules.firefox
       self.nixosModules.kitty
+      self.nixosModules.clashVerge
     ];
     systemd.tpm2.enable = false;
     boot.initrd.systemd.tpm2.enable = false;
