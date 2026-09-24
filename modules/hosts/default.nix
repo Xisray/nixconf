@@ -17,6 +17,7 @@ let
         self.nixosModules."${hostname}Configuration"
         self.nixosModules."${hostname}Hardware"
         self.diskoConfigurations.${hostname}
+        inputs.hjem.nixosModules.default
         self.nixosModules.general
       ];
     };

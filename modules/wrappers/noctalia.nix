@@ -1,13 +1,11 @@
 {
   flake.wrappers.noctalia =
     {
-      pkgs,
-      wlib,
-      lib,
+      config,
       ...
     }:
     {
-      imports = [ wlib.wrapperModules.noctalia ];
+      imports = [ config.flake.lib.wrapModules.noctalia-v5 ];
       settings = {
         backdrop.enabled = true;
         shell.session.actions = [
@@ -164,6 +162,63 @@
             };
           };
         };
+      };
+    };
+
+  flake.lib.wrapModules.noctalia-v5 =
+    {
+      config,
+      wlib,
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      tomlFmt = pkgs.formats.toml { };
+    in
+    {
+      imports = [ wlib.modules.default ];
+
+      options = {
+        generatedConfigDirname = lib.mkOption {
+          type = lib.types.str;
+          default = config.binName;
+          apply = x: lib.removePrefix "/" (lib.removeSuffix "/" x);
+        };
+        configDrvOutput = lib.mkOption {
+          type = lib.types.str;
+          default = config.outputName;
+        };
+        configPlaceholder = lib.mkOption {
+          type = lib.types.str;
+          default = "${placeholder config.configDrvOutput}/${config.generatedConfigDirname}";
+          readOnly = true;
+        };
+        settings = lib.mkOption {
+          type = wlib.types.structuredValueWith { typeName = "TOML"; };
+          default = { };
+        };
+        colors = lib.mkOption {
+          type = wlib.types.structuredValueWith { typeName = "TOML"; };
+          default = { };
+        };
+      };
+
+      config = {
+        env.NOCTALIA_CONFIG_HOME = "${placeholder config.configDrvOutput}";
+        constructFiles.settings = {
+          content = builtins.readFile (
+            tomlFmt.generate config.constructFiles.settings.relPath config.settings
+          );
+          output = lib.mkOverride 0 config.configDrvOutput;
+          relPath = lib.mkOverride 0 "noctalia/settings.toml";
+        };
+        constructFiles.colors = {
+          content = builtins.readFile (tomlFmt.generate config.constructFiles.colors.relPath config.colors);
+          output = lib.mkOverride 0 config.configDrvOutput;
+          relPath = lib.mkOverride 0 "noctalia/palettes/custom.toml";
+        };
+        package = lib.mkDefault pkgs.noctalia;
       };
     };
 }

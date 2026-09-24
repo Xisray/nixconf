@@ -149,15 +149,6 @@ in
         files = listOfStrings "Persistent cache files";
       };
     };
-    apps = {
-      terminal = lib.mkOption {
-        type =
-          let
-            terminals = builtins.attrNames config.flake.terminals;
-          in
-          lib.types.enum terminals;
-      };
-    };
   };
   config.assertions = [
     {

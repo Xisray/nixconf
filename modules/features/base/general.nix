@@ -6,6 +6,8 @@
       self.nixosModules.boot
       self.nixosModules.audio
       self.nixosModules.fonts
+      self.nixosModules.hjem
+      self.nixosModules.shell
     ];
     networking.networkmanager.enable = true;
     time.timeZone = "Asia/Yekaterinburg";
@@ -17,8 +19,6 @@
         "networkmanager"
         "input"
       ];
-      # shell = pkgs.${config.preferences.shell};
-
       hashedPasswordFile = "/persist/passwd";
     };
     preferences.persistence.data.directories = [

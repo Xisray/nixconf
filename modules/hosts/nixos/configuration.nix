@@ -3,6 +3,7 @@
   flake.nixosModules.nixosConfiguration = {
     imports = [
       self.nixosModules.nvidia
+      self.nixosModules.kitty
     ];
     systemd.tpm2.enable = false;
     boot.initrd.systemd.tpm2.enable = false;
@@ -10,7 +11,6 @@
 
     preferences = {
       user.shell = "fish";
-      apps.terminal = "kitty";
 
       monitors = {
         "DP-2" = {
