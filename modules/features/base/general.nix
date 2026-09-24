@@ -1,14 +1,5 @@
-{ self, ... }: {
+{
   flake.nixosModules.general = { config, ... }: {
-    imports = [
-      self.nixosModules.impermanence
-      self.nixosModules.nix
-      self.nixosModules.boot
-      self.nixosModules.audio
-      self.nixosModules.fonts
-      self.nixosModules.hjem
-      self.nixosModules.shell
-    ];
     networking.networkmanager.enable = true;
     time.timeZone = "Asia/Yekaterinburg";
 

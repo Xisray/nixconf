@@ -18,6 +18,15 @@ let
         self.nixosModules."${hostname}Hardware"
         self.diskoConfigurations.${hostname}
         inputs.hjem.nixosModules.default
+
+        self.nixosModules.impermanence
+        self.nixosModules.nix
+        self.nixosModules.boot
+        self.nixosModules.audio
+        self.nixosModules.fonts
+        self.nixosModules.preferences
+        self.nixosModules.hjem
+        self.nixosModules.shell
         self.nixosModules.general
       ];
     };

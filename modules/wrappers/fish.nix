@@ -28,7 +28,11 @@
       pkgs.btop
       pkgs.fastfetch
       pkgs.bat
+      pkgs.zoxide
       pkgs.devenv
     ];
+    configFile.content = ''
+      zoxide init fish --cmd cd | source
+    '';
   };
 }
