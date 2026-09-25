@@ -16,5 +16,6 @@
       enable = true;
       settings.default = [ "kitty.desktop" ];
     };
+    home.files.".local/share/applications/kitty.desktop".source = "${kitty}/share/applications/kitty.desktop";
   };
 }

@@ -1,7 +1,30 @@
 { self, ... }: {
-  flake.nixosModules.yazi = { config, pkgs, lib, ... }: {
+  flake.nixosModules.yazi = { config, pkgs, lib, ... }:
+  let
+  yaziDesktop = pkgs.makeDesktopItem {
+    name = "yazi";
+    desktopName = "Yazi File Manager";
+    genericName = "File Manager";
+    comment = "Blazing fast terminal file manager written in Rust, based on async I/O";
+    icon = "yazi";
+    exec = "xdg-terminal-exec --app-id=yazi yazi %f";
+    terminal = false;
+    type = "Application";
+    categories = [
+      "System"
+      "FileManager"
+      "FileTools"
+      "ConsoleOnly"
+    ];
+    mimeTypes = [
+      "inode/directory"
+      "inode/mount-point"
+    ];
+  };
+  in {
     environment.systemPackages = [
       pkgs.yazi
+      yaziDesktop
     ];
     home.files.".config/yazi/init.lua".text = ''
       Status:children_add(function(self)
@@ -66,5 +89,7 @@
       "inode/directory" = [ "yazi.desktop" ];
       "inode/mount-point" = [ "yazi.desktop" ];
     };
+    # home.files.".local/share/applications/yazi.desktop" = {
+    # };
   };
 }

@@ -27,14 +27,14 @@
         xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
         layout = {
           always-center-single-column = _: { };
-          gaps = 16;
+          gaps = 8;
           focus-ring = {
             width = 2;
           };
           struts = {
-            left = 1;
-            right = 1;
-            top = 1;
+            left = 0;
+            right = 0;
+            top = 0;
             bottom = 0;
           };
         };
