@@ -21,11 +21,6 @@
       url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    wallpapers = {
-      url = "github:Xisray/wallpapers";
-      flake = false;
-    };
   };
 
   outputs =

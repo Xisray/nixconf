@@ -1,0 +1,12 @@
+- [ ] starship user
+- [ ] nvim config + colorscheme
+- [x] nvim clipboard
+- [x] noctalia settings + corner radius
+- [ ] noctalia screenshot editor
+- [x] firefox extension for noctalia
+- [ ] cursor
+- [ ] usb
+- [ ] yazi def manager
+- [ ] yazi date settings
+- [ ] cliamp
+- [ ] voxtype

@@ -14,7 +14,7 @@
       programs.noctalia = {
         enable = true;
         systemd.enable = true;
-        package = self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia;
+        package = (self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia or pkgs.noctalia);
       };
       preferences = {
         binds =
@@ -92,6 +92,7 @@
             monitor = lib.findFirst (m: m.primary) (builtins.head monitors) monitors;
             showSecondaryBar = builtins.length monitors > 1;
             monitorPort = monitor.port;
+            hasOpacity = cfg.ui.opacity < 1.0;
           in
           {
             lockscreen_widgets = {
@@ -113,7 +114,6 @@
                   settings = {
                     background_opacity = 0.0;
                     center_password_text = true;
-                    input_opacity = cfg.ui.opacity;
                     layout = "compact";
                     show_caps_lock = true;
                     show_keyboard_layout = true;
@@ -122,6 +122,9 @@
                     show_session_buttons = true;
                     show_unlock_hint = false;
                     show_weather = false;
+                  }
+                  // lib.optionalAttrs hasOpacity {
+                    input_opacity = cfg.ui.opacity;
                   };
                 };
                 lockscreen_widget_clock = {
@@ -140,32 +143,25 @@
                 };
               };
             };
-            osd = {
-              background_opacity = cfg.ui.opacity;
-            };
-            notification = {
-              background_opacity = cfg.ui.opacity;
-            };
+            shell.corner_radius_scale = lib.max 0.0 (lib.min 2.0 (cfg.ui.corner.radius / 12.0));
             bar = {
-              widgets = {
-                background_opacity = cfg.ui.opacity;
-              }
-              // lib.optionalAttrs showSecondaryBar {
-                enabled = false;
-                monitor.${monitorPort}.enabled = true;
-              };
             }
             // lib.optionalAttrs showSecondaryBar {
               order = [
                 "widgets"
                 "secondary"
               ];
+              widgets = {
+                enabled = false;
+                monitor.${monitorPort}.enabled = true;
+                capsule_radius = cfg.ui.corner.radius;
+              };
               secondary = {
                 background_opacity = 0.0;
                 capsule = true;
+                capsule_radius = cfg.ui.corner.radius;
                 capsule_fill = "on_primary";
                 capsule_padding = 12.0;
-                capsule_opacity = cfg.ui.opacity;
                 center = [ "workspaces" ];
                 concave_edge_corners = false;
                 end = [ ];
@@ -175,6 +171,9 @@
                 start = [ ];
                 dead_zone.actions.right = "none";
                 monitor.${monitorPort}.enabled = false;
+              }
+              // lib.optionalAttrs hasOpacity {
+                capsule_opacity = cfg.ui.opacity;
               };
             };
           }
@@ -182,6 +181,12 @@
             osd.monitors = [ monitorPort ];
             notification.monitors = [ monitorPort ];
             lockscreen.monitors = [ monitorPort ];
+          }
+          // lib.optionalAttrs hasOpacity {
+            shell.panel.transparency_mode = "soft";
+            bar.widgets.background_opacity = cfg.ui.opacity;
+            osd.background_opacity = cfg.ui.opacity;
+            notification.background_opacity = cfg.ui.opacity;
           };
       };
     };

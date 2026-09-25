@@ -14,7 +14,7 @@
     {
       programs.niri = {
         enable = true;
-        package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
+        package = (self.packages.${pkgs.stdenv.hostPlatform.system}.niri or pkgs.niri);
       };
 
       home.files.".config/niri/config.kdl".text =

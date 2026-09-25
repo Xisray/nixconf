@@ -7,14 +7,24 @@
       ...
     }:
     let
-      git = self.packages.${pkgs.stdenv.hostPlatform.system}.git or pkgs.git;
-      neovim = self.packages.${pkgs.stdenv.hostPlatform.system}.neovim or pkgs.neovim;
+      self' = self.packages.${pkgs.stdenv.hostPlatform.system}; 
+      git = self'.git or pkgs.git;
+      neovim = self'.neovim or pkgs.neovim;
+      starship = self'.starship or pkgs.starship;
     in
     {
       imports = [ wlib.wrapperModules.fish ];
       shellAliases = {
         vim = "nvim";
         vi = "nvim";
+        ls = "lsd";
+        la = "ls -a";
+        ll = "ls -l";
+        lla = "ls -la";
+        lt = "ls --tree";
+        lta = "ls --tree -a";
+        ltl = "ls --tree -l";
+        ltla = "ls --tree -la";
         man = "tldr";
         grep = "rg";
         cat = "bat --paging=never";
@@ -43,15 +53,20 @@
         pkgs.bat
         pkgs.zoxide
         pkgs.devenv
-	pkgs.yazi
+	      pkgs.yazi
+        pkgs.wl-clipboard
         git
         neovim
+        starship
       ];
       env = {
         EDITOR = lib.getExe neovim;
       };
       configFile.content = ''
+        starship init fish | source
         zoxide init fish --cmd cd | source
+        fzf --fish | source
+        source ~/.config/fish/config.fish
       '';
     };
 }

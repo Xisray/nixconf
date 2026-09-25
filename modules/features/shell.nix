@@ -8,7 +8,7 @@
       users.users.${user.name}.shell = config.programs.${user.shell}.package;
       programs.${user.shell} = {
         enable = true;
-        package = self.packages.${pkgs.stdenv.hostPlatform.system}.${user.shell};
+        package = (self.packages.${pkgs.stdenv.hostPlatform.system}.${user.shell} or pkgs.${user.shell});
       };
     };
 }

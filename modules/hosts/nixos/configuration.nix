@@ -8,6 +8,9 @@
       self.nixosModules.firefox
       self.nixosModules.kitty
       self.nixosModules.clashVerge
+      self.nixosModules.syncthing
+      self.nixosModules.qbittorrent
+      self.nixosModules.keepassxc
     ];
     systemd.tpm2.enable = false;
     boot.initrd.systemd.tpm2.enable = false;

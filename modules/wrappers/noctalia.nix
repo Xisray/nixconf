@@ -48,7 +48,6 @@
         panel = {
           open_near_click_control_center = true;
           shadow = false;
-          transparency_mode = "soft";
         };
 
         launcher.providers.session.global = true;
@@ -105,7 +104,7 @@
 
       widget = {
         brightness.show_label = false;
-        date.format = "{::%h:%m %a, %b %d}";
+        date.format = "{::%H:%M %a, %b %d}";
         network.show_label = false;
         workspaces.show_labels = false;
         tray = {
@@ -130,7 +129,7 @@
         enable_community_templates = false;
       };
 
-      wallpaper.directory = "/etc/wallpapers";
+      wallpaper.directory = "~/Pictures/Wallpapers";
       idle = {
         behavior_order = [
           "lock"
