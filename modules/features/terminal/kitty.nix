@@ -1,5 +1,5 @@
 { self, ... }: {
-  flake.nixosModules.kitty = { config, pkgs, ... }:
+  flake.nixosModules.kitty = { config, pkgs, lib, ... }:
   let
     kitty = (self.packages.${pkgs.stdenv.hostPlatform.system}.kitty or pkgs.kitty);
   in {

@@ -1,4 +1,3 @@
-- [ ] starship user
 - [ ] nvim config + colorscheme
 - [x] nvim clipboard
 - [x] noctalia settings + corner radius
@@ -7,6 +6,8 @@
 - [ ] cursor
 - [ ] usb
 - [ ] yazi def manager
-- [ ] yazi date settings
+- [x] yazi date settings
 - [ ] cliamp
 - [ ] voxtype
+
+- [ ] gtk + qt styles

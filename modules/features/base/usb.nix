@@ -1,5 +1,5 @@
-{
-  flake.nixosModules.usb = {
+{ self, ... }: {
+  flake.nixosModules.usb = { lib, pkgs, ... }: {
     services.udisks2.enable = true;
     systemd.user.services.udiskie = {
       enable = true;
@@ -9,7 +9,7 @@
       after = [ "graphical-session.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${lib.getExe pkgs.udiskie} --smart-tray";
+        ExecStart = "${lib.getExe (self.packages.${pkgs.stdenv.hostPlatform.system}.udiskie or pkgs.udiskie)} --smart-tray";
         Restart = "on-failure";
       };
     };

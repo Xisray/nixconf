@@ -22,6 +22,7 @@ let
         self.nixosModules."${hostname}Hardware"
         self.diskoConfigurations.${hostname}
 
+        self.nixosModules.general
       ];
     };
 in
