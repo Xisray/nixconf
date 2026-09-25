@@ -11,6 +11,7 @@
       git = self'.git or pkgs.git;
       neovim = self'.neovim or pkgs.neovim;
       starship = self'.starship or pkgs.starship;
+      lazygit = self'.lazygit or pkgs.lazygit;
     in
     {
       imports = [ wlib.wrapperModules.fish ];
@@ -25,6 +26,7 @@
         lta = "ls --tree -a";
         ltl = "ls --tree -l";
         ltla = "ls --tree -la";
+        lg = "lazygit";
         man = "tldr";
         grep = "rg";
         cat = "bat --paging=never";
@@ -54,7 +56,7 @@
         pkgs.zoxide
         pkgs.devenv
         pkgs.wl-clipboard
-        pkgs.lazygit
+        lazygit
         git
         neovim
         starship

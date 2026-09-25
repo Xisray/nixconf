@@ -1,5 +1,18 @@
-{
+{ self, ... }: {
   flake.nixosModules.general = { config, ... }: {
+    imports = [
+      self.nixosModules.impermanence
+      self.nixosModules.nix
+      self.nixosModules.boot
+      self.nixosModules.usb
+      self.nixosModules.audio
+      self.nixosModules.fonts
+      self.nixosModules.preferences
+      self.nixosModules.gtk
+      self.nixosModules.qt
+      self.nixosModules.hjem
+      self.nixosModules.shell
+    ];
     networking.networkmanager.enable = true;
     time.timeZone = "Asia/Yekaterinburg";
 
@@ -12,6 +25,12 @@
       ];
       hashedPasswordFile = "/persist/passwd";
     };
+
+    xdg = {
+      portal.enable = true;
+      mime.enable = true;
+    };
+
     preferences.persistence.data.directories = [
       "nixconf"
       "Downloads"
