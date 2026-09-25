@@ -1,5 +1,5 @@
 {
-  flake.wrappers.starship = { wlib, ... }: {
+  flake.wrappers.starship = { wlib, lib, ... }: {
     imports = [ wlib.wrapperModules.starship ];
     settings = {
       add_newline = true;

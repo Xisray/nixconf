@@ -2,10 +2,10 @@
   flake.nixosModules.preferences =
     { lib, config, ... }:
     let
-      listOfStrings =
+      listOfAny =
         description:
         lib.mkOption {
-          type = lib.types.listOf lib.types.str;
+          # type = lib.types.listOf (lib.types.either lib.types.str or lib.types.attrs);
           default = [ ];
           description = description;
         };
@@ -142,15 +142,15 @@
             default = "btrfs_vg";
             description = "Btrfs volume group name";
           };
-          directories = listOfStrings "System directories to persist";
-          files = listOfStrings "System files to persist";
+          directories = listOfAny "System directories to persist";
+          files = listOfAny "System files to persist";
           data = {
-            directories = listOfStrings "Persistent user data directories";
-            files = listOfStrings "Persistent user data files";
+            directories = listOfAny "Persistent user data directories";
+            files = listOfAny "Persistent user data files";
           };
           cache = {
-            directories = listOfStrings "Persistent cache directories";
-            files = listOfStrings "Persistent cache files";
+            directories = listOfAny "Persistent cache directories";
+            files = listOfAny "Persistent cache files";
           };
         };
       };

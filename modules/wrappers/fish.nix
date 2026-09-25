@@ -53,8 +53,8 @@
         pkgs.bat
         pkgs.zoxide
         pkgs.devenv
-	      pkgs.yazi
         pkgs.wl-clipboard
+        pkgs.lazygit
         git
         neovim
         starship

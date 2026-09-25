@@ -9,7 +9,7 @@
     };
     preferences.persistence.directories = [
       {
-        directory = ${config.services.qbittorrent.profileDir};
+        directory = config.services.qbittorrent.profileDir;
         user = "qbittorrent";
         group = "qbittorrent";
         mode = "0750";

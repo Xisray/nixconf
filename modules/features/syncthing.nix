@@ -10,7 +10,7 @@
       dataDir = "/home/${username}/sync";
       configDir = "/home/${username}/.config/syncthing";
     };
-    preferences.persistance.data.directories = [
+    preferences.persistence.data.directories = [
       ".config/syncthing"
       "sync"
     ];

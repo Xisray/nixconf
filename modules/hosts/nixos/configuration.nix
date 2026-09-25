@@ -11,6 +11,7 @@
       self.nixosModules.syncthing
       self.nixosModules.qbittorrent
       self.nixosModules.keepassxc
+      self.nixosModules.yazi
     ];
     systemd.tpm2.enable = false;
     boot.initrd.systemd.tpm2.enable = false;
@@ -18,7 +19,10 @@
 
     preferences = {
       user.shell = "fish";
-
+      mouse = {
+        accelProfile = "flat";
+        accelSpeed = 0.0;
+      };
       monitors = {
         "DP-2" = {
           width = 2560;

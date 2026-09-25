@@ -1,18 +1,35 @@
 { self, ... }: {
-  flake.nixosModules.keepassxc = { pkgs, lib, ... }: {
+  flake.nixosModules.keepassxc = { pkgs, lib, ... }: 
+  let
+    keepassxc = self.packages.${pkgs.stdenv.hostPlatform.system}.keepassxc or pkgs.keepassxc;
+  in {
+    environment.systemPackages = [
+      keepassxc
+    ];
     systemd.user.services.keepassxc = {
-      Unit = {
-        Description = "KeePassXC";
-        PartOf = [ "graphical-session.target" ];
-      };
-      Service = 
-      let
-        keepassxc = self.packages.${pkgs.stdenv.hostPlatform.system}.keepassxc or pkgs.keepassxc;
-      in {
+      enable = true;
+      description = "KeePassXC";
+      wantedBy = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
         ExecStart = lib.getExe keepassxc;
         Restart = "on-failure";
       };
-      Install.WantedBy = [ "graphical-session.target" ];
+    };
+    preferences = {
+      persistence.cache.directories = [
+        ".cache/keepassxc"
+      ];
+     wm.rules.windows = [
+       {
+          match = {
+            app-id = "^KeePassXC$";
+            title = "^Unlock Database - KeePassXC$";
+          };
+          open-floating = true;
+        }
+      ];
     };
   };
 }
