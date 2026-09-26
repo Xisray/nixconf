@@ -62,6 +62,7 @@
             cmd=${pkgs.xdg-desktop-portal-termfilechooser}/share/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
             default_dir=$HOME
             env=PATH="$PATH:/run/current-system/sw/bin"
+            env=TERMCMD=xdg-terminal-exec --app-id=termfilechooser
             open_mode=suggested
             save_mode=last
           '';
@@ -94,7 +95,7 @@
     };
     preferences.wm.rules.windows = [
       {
-        match.title = "^termfilechooser$";
+        match.app-id = "^termfilechooser$";
         open-floating = true;
         default-window-height.proportion = 0.6;
         default-column-width.proportion = 0.45;
