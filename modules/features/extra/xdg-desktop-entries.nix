@@ -19,7 +19,7 @@
       valueToString = v:
         if lib.isBool v then (if v then "true" else "false")
         else if lib.isList v then lib.concatStringsSep ";" (map valueToString v)
-        else if lib.isNull v then null
+        else if v == null then null
         else if lib.isDerivation v then lib.getExe v
         else toString v;
       
@@ -37,26 +37,22 @@
           lib.concatStringsSep "\n" ([ "[Desktop Entry]"] ++ (builtins.filter (l: l != null) lines));
 
       entryType = lib.types.submodule {
-        freeformType = types.attrsOf (types.oneOf [
-          types.str
-          types.bool
-          types.int
-          types.float
-          types.path
-          (types.listOf (types.oneOf [ types.str types.bool types.int types.float types.path ]))
-        ]);
+        freeformType = 
+          let
+            primitives = [ lib.types.str lib.types.bool lib.types.int lib.types.float lib.types.path ];
+          in lib.types.attrsOf (lib.types.oneOf (primitives ++ [ (lib.types.listOf (lib.types.oneOf primitives)) ]));
         options = {
           version = lib.mkOption { type = lib.types.str; default = "1.0"; };
           name = lib.mkOption { type = lib.types.str; description = "Name="; };
           genericName = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
           comment = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
           icon = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
-          exec = lib.mkOption { type = (lib.either lib.types.package lib.types.str); };
-          terminal = lib.mkOption { type = lib.types.bool; default = false; };
+          exec = lib.mkOption { type = (lib.types.either lib.types.package lib.types.str); };
+          terminal = lib.mkOption { type = lib.types.nullOr lib.types.bool; default = null; };
           type = lib.mkOption { type = lib.types.str; default = "Application"; };
-          categories = lib.mkOption { type = lib.types.listOf lib.types.str; default = [ ]; };
-          mimeType = lib.mkOption { type = lib.types.listOf lib.types.str; default = [ ]; };
-          noDisplay = lib.mkOption { type = lib.types.bool; default = false; };
+          categories = lib.mkOption { type = lib.types.nullOr (lib.types.listOf lib.types.str); default = null; };
+          mimeType = lib.mkOption { type = lib.types.nullOr (lib.types.listOf lib.types.str); default = null; };
+          noDisplay = lib.mkOption { type = lib.types.nullOr lib.types.bool; default = null; };
         };
       };
   in {
@@ -70,7 +66,7 @@
     config.xdg.data.files = lib.mapAttrs' (name: value:
       lib.nameValuePair "applications/${name}.desktop" (
         if lib.isPath value || lib.isString value then { source = value; }
-        else { text = generateDesktopEntiry value }
+        else { text = generateDesktopEntry value; }
       )
     ) config.xdg.desktop-entries;
   };

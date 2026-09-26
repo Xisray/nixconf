@@ -2,7 +2,7 @@
   flake.nixosModules.usb = { lib, pkgs, ... }:
   let
     # udiskie = self.packages.${pkgs.stdenv.hostPlatform.system}.udiskie or pkgs.udiskie
-    udiskie = pkgs.udiskie
+    udiskie = pkgs.udiskie;
   in {
     services.udisks2.enable = true;
     home = {

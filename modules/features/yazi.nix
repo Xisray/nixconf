@@ -4,13 +4,13 @@
       extraPortals = with pkgs; [
         xdg-desktop-portal-termfilechooser
       ];
-      config.common."org.freedesktop.impl.portal.FileChooser" = [ "termfilechooser" ];
     };
     home = {
       packages = [
         pkgs.yazi
       ];
       xdg = {
+        portal.config.common."org.freedesktop.impl.portal.FileChooser" = "termfilechooser";
         config.files = {
           "yazi/init.lua".text = ''
             Status:children_add(function(self)
@@ -84,10 +84,11 @@
             "FileTools"
             "ConsoleOnly"
           ];
-          mimeTypes = [
+          mimeType = [
             "inode/directory"
             "inode/mount-point"
           ];
+          version = "1.5";
         };
       };
     };
