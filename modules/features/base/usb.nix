@@ -1,8 +1,7 @@
 { self, ... }: {
   flake.nixosModules.usb = { lib, pkgs, ... }:
   let
-    # udiskie = self.packages.${pkgs.stdenv.hostPlatform.system}.udiskie or pkgs.udiskie
-    udiskie = pkgs.udiskie;
+    udiskie = self.packages.${pkgs.stdenv.hostPlatform.system}.udiskie or pkgs.udiskie;
   in {
     services.udisks2.enable = true;
     home = {
@@ -11,12 +10,12 @@
       ];
       systemd.services.udiskie = {
         enable = true;
-        description = "UDiskie automounter";
+        description = "UDiskie mount daemon";
         wantedBy = [ "graphical-session.target" ];
         partOf = [ "graphical-session.target" ];
         after = [ "graphical-session.target" ];
+        # requires = [ "tray.target" ];
         serviceConfig = {
-          Type = "simple";
           ExecStart = lib.getExe udiskie;
           Restart = "on-failure";
         };
