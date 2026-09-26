@@ -81,7 +81,7 @@
         ];
       };
 
-      home.files.".config/noctalia/settings.toml" = {
+      home.xdg.config.files."noctalia/settings.toml" = {
         generator = (pkgs.formats.toml { }).generate "settings.toml";
         value =
           let

@@ -1,6 +1,6 @@
 { self, ... }: {
   flake.nixosModules.firefox = { pkgs, ... }: {
-    environment.systemPackages = [
+    home.packages = [
       (self.packages.${pkgs.stdenv.hostPlatform.system}.firefox or pkgs.firefox)
     ];
     preferences = {

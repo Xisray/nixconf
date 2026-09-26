@@ -3,18 +3,20 @@
   let
     keepassxc = self.packages.${pkgs.stdenv.hostPlatform.system}.keepassxc or pkgs.keepassxc;
   in {
-    environment.systemPackages = [
-      keepassxc
-    ];
-    systemd.user.services.keepassxc = {
-      enable = true;
-      description = "KeePassXC";
-      wantedBy = [ "graphical-session.target" ];
-      partOf = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
-      serviceConfig = {
-        ExecStart = lib.getExe keepassxc;
-        Restart = "on-failure";
+    home = {
+      packages = [
+        keepassxc
+      ];
+      systemd.services.keepassxc = {
+        enable = true;
+        description = "KeePassXC";
+        wantedBy = [ "graphical-session.target" ];
+        partOf = [ "graphical-session.target" ];
+        after = [ "graphical-session.target" ];
+        serviceConfig = {
+          ExecStart = lib.getExe keepassxc;
+          Restart = "on-failure";
+        };
       };
     };
     preferences = {

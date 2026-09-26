@@ -4,10 +4,6 @@
     kitty = (self.packages.${pkgs.stdenv.hostPlatform.system}.kitty or pkgs.kitty);
   in {
     preferences.binds."Mod+Return".action = kitty;
-    home.files.".config/kitty/kitty.conf".text = ''
-      include themes/noctalia.conf
-      background_opacity ${toString config.preferences.ui.opacity}
-    '';
     environment.sessionVariables = {
       TERMINAL = lib.getExe kitty;
       TERMCMD = "$TERMINAL";
@@ -16,6 +12,12 @@
       enable = true;
       settings.default = [ "kitty.desktop" ];
     };
-    home.files.".local/share/applications/kitty.desktop".source = "${kitty}/share/applications/kitty.desktop";
+    home.xdg = {
+      config.files."kitty/kitty.conf".text = ''
+        include themes/noctalia.conf
+        background_opacity ${toString config.preferences.ui.opacity}
+      '';
+      desktop-entries.kitty = "${kitty}/share/applications/kitty.desktop";
+    };
   };
 }

@@ -15,9 +15,10 @@
       programs.niri = {
         enable = true;
         package = (self.packages.${pkgs.stdenv.hostPlatform.system}.niri or pkgs.niri);
+        useNautilus = false;
       };
 
-      home.files.".config/niri/config.kdl".text =
+      home.xdg.config.files."niri/config.kdl".text =
         let
           cfg = config.preferences;
           blur =

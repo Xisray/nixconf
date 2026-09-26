@@ -1,4 +1,4 @@
-{
+{ self, ... }: {
   flake.nixosModules.hjem =
     { config, lib, ... }:
     let
@@ -9,5 +9,6 @@
         (lib.mkAliasOptionModule [ "home" ] [ "hjem" "users" username ])
       ];
       home.directory = "/home/${username}";
+      hjem.extraModules = [ self.hjemExtraModules.xdgDesktopEntries ];
     };
 }
