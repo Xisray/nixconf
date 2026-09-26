@@ -95,6 +95,9 @@
             hasOpacity = cfg.ui.opacity < 1.0;
           in
           {
+            bar.widgets.background_opacity = cfg.ui.opacity;
+            osd.background_opacity = cfg.ui.opacity;
+            notification.background_opacity = cfg.ui.opacity;
             lockscreen_widgets = {
               enabled = true;
               widget_order = [
@@ -184,9 +187,6 @@
           }
           // lib.optionalAttrs hasOpacity {
             shell.panel.transparency_mode = "soft";
-            bar.widgets.background_opacity = cfg.ui.opacity;
-            osd.background_opacity = cfg.ui.opacity;
-            notification.background_opacity = cfg.ui.opacity;
           };
       };
     };

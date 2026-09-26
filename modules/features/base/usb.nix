@@ -17,6 +17,10 @@
         # requires = [ "tray.target" ];
         serviceConfig = {
           ExecStart = lib.getExe udiskie;
+          Environment = [
+            "PATH=%h/.nix-profile/bin:/etc/profiles/per-user/%u/bin:/run/current-system/sw/bin"
+            "XDG_DATA_DIRS=%h/.local/share:%h/.nix-profile/share:/etc/profiles/per-user/%u/share:/run/current-system/sw/share"
+          ];
           Restart = "on-failure";
         };
       };

@@ -29,5 +29,18 @@
           pkgs.vimPlugins.base16-nvim
         ];
       };
+
+      languages = {
+        nixd = {
+          cmd = "nixd";
+          packages = pkgs.nixd;
+          settings = {
+            nixd = {
+              nixpkgs.expr = "import <nixpkgs> { }";
+              formatting.command = [ (lib.getExe pkgs.alejandra) ];
+            };
+          };
+        };
+      };
     };
 }
