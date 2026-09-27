@@ -9,16 +9,15 @@
     package = inputs.cliamp.packages.${pkgs.stdenv.hostPlatform.system}.default;
     constructFiles.cliamp-config = {
       relPath = "share/cliamp/config.toml";
-      content = pkgs.formats.toml {} {
-        yandex = {
-          enabled = true;
-          token = "$YANDEX_MUSIC_TOKEN";
-        };
-      };
+      content = ''
+        [yandex]
+        enabled = true
+        token = "$YANDEX_MUSIC_TOKEN"
+      '';
     };
     env = {
       CLIAMP_CONFIG_DIR = {
-        data = "${config.constructFiles.cliamp-config.path}";
+        data = "${dirOf config.constructFiles.cliamp-config.path}";
         esc-fn = wlib.escapeShellArgWithEnv;
       };
       YANDEX_MUSIC_TOKEN = {
