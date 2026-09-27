@@ -22,6 +22,9 @@ let
         self.nixosModules."${hostname}Hardware"
         self.diskoConfigurations.${hostname}
 
+        self.nixosModules.impermanence
+        self.nixosModules.sops
+        self.nixosModules.hjem
         self.nixosModules.general
       ];
     };

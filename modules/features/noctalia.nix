@@ -95,9 +95,11 @@
             hasOpacity = cfg.ui.opacity < 1.0;
           in
           {
-            bar.widgets.background_opacity = cfg.ui.opacity;
             osd.background_opacity = cfg.ui.opacity;
-            notification.background_opacity = cfg.ui.opacity;
+            notification = {
+              background_opacity = cfg.ui.opacity;
+              offset_x = 5;
+            };
             lockscreen_widgets = {
               enabled = true;
               widget_order = [
@@ -148,6 +150,7 @@
             };
             shell.corner_radius_scale = lib.max 0.0 (lib.min 2.0 (cfg.ui.corner.radius / 12.0));
             bar = {
+              widgets.background_opacity = cfg.ui.opacity;
             }
             // lib.optionalAttrs showSecondaryBar {
               order = [
@@ -158,6 +161,7 @@
                 enabled = false;
                 monitor.${monitorPort}.enabled = true;
                 capsule_radius = cfg.ui.corner.radius;
+                widget_spacing = 9;
               };
               secondary = {
                 background_opacity = 0.0;

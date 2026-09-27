@@ -1,7 +1,6 @@
 { self, ... }: {
   flake.nixosModules.general = { config, ... }: {
     imports = [
-      self.nixosModules.impermanence
       self.nixosModules.nix
       self.nixosModules.boot
       self.nixosModules.usb
@@ -10,7 +9,6 @@
       self.nixosModules.preferences
       self.nixosModules.gtk
       self.nixosModules.qt
-      self.nixosModules.hjem
       self.nixosModules.shell
     ];
     networking.networkmanager.enable = true;
