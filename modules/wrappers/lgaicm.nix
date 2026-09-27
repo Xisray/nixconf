@@ -14,7 +14,7 @@
         owner = "rakotomandimby";
         repo = "lgaicm";
         rev = "080cd554638ae4addde9173c0820e0922fd044ba";
-        hash = lib.fakeHash;
+        hash = "sha256-6gMs2mNN31nInG2Si1jSJk86zL24i0k3/E6umn8EM00=";
       };
       dontBuild = true;
       installPhase = ''
@@ -34,9 +34,15 @@
 
     runtimePkgs = with pkgs; [bash git curl jq coreutils];
 
-    env.GOOGLEAI_API_KEY = {
-      data = "$(cat /run/secrets/googleai-api-key)";
-      esc-fn = wlib.escapeShellArgWithEnv;
+    env = {
+      GOOGLEAI_API_KEY = {
+        data = "$(cat /run/secrets/gemini_api_key)";
+        esc-fn = wlib.escapeShellArgWithEnv;
+      };
+      LGAICM_API_URL = {
+        data = "https://generativelanguage.googleapis.com/v1beta/models";
+        esc-fn = wlib.escapeShellArgWithEnv;
+      };
     };
   };
 }

@@ -12,6 +12,7 @@
       self.nixosModules.qbittorrent
       self.nixosModules.keepassxc
       self.nixosModules.yazi
+      self.nixosModules.cliamp
     ];
     systemd.tpm2.enable = false;
     boot.initrd.systemd.tpm2.enable = false;
