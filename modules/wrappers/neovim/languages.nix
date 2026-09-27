@@ -57,15 +57,41 @@
     };
     config = let
       cfg = config.languages;
+      lspConfigs = lib.mapAttrsToList mkLspConfig cfg;
     in {
       runtimePkgs = lib.flatten (lib.mapAttrsToList (_: lang: lib.toList lang.packages) cfg);
+      specs.languages = {
+        data = null;
+        config = lib.concatStringsSep "\n" lspConfigs;
+      };
+      plugins = {
+        "nvim-lspconfig" = {
+          package = pkgs.vimPlugins.nvim-lspconfig;
+          lazy = false;
+          after = null;
+          before.extraConfig = ''
+            local on_attach = function(client, bufnr)
+              local opts = { noremap = true, silent = true, buffer = bufnr }
 
-      specs =
-        lib.mapAttrs (name: lang: {
-          data = [pkgs.vimPlugins.nvim-lspconfig];
-          config = mkLspConfig name lang;
-        })
-        cfg;
+              vim.keymap.set('v', 'F', vim.lsp.buf.format, opts)
+              vim.keymap.set('n', '<leader>F', vim.lsp.buf.format, opts)
+              vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float, opts)
+              vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+              vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
+            end
+
+            local ok, blink = pcall(require, "blink.cmp")
+            local capabilities = ok 
+              and blink.get_lsp_capabilities() 
+              or vim.lsp.protocol.make_client_capabilities()
+
+            vim.lsp.config('*', {
+              capabilities = capabilities,
+              on_attach = on_attach,
+            })
+          '';
+        };
+      };
     };
   };
 }

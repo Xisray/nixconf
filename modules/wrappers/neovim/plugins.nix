@@ -13,22 +13,25 @@
     typeOrListOfType = type: lib.types.either type (lib.types.listOf type);
     strOrListOfStrType = typeOrListOfType lib.types.str;
 
-namedSetupType = lib.types.submodule {
-    options = {
-      setup = mkNullOption (lib.types.attrsOf lib.types.anything);
+    namedSetupType = lib.types.submodule {
+      options = {
+        setup = mkNullOption (lib.types.attrsOf lib.types.anything);
+      };
     };
-  };
 
     afterFnType = lib.types.submodule {
-freeformType = lib.types.attrsOf namedSetupType;
+      freeformType = lib.types.attrsOf namedSetupType;
       options = {
-        setup = lib.mkOption { type = lib.types.nullOr (lib.types.attrsOf lib.types.anything); default = { }; };
+        setup = lib.mkOption {
+          type = lib.types.nullOr (lib.types.attrsOf lib.types.anything);
+          default = {};
+        };
         extraConfig = mkNullOption lib.types.str;
       };
     };
 
     beforeFnType = lib.types.submodule {
-freeformType = lib.types.attrsOf namedSetupType;
+      freeformType = lib.types.attrsOf namedSetupType;
       options = {
         extraConfig = mkNullOption lib.types.str;
       };
@@ -41,14 +44,18 @@ freeformType = lib.types.attrsOf namedSetupType;
       };
     });
 
-    keyType = lib.types.either strOrListOfStrType (lib.types.listOf (lib.types.submodule {
-      options = {
-        key = lib.mkOption {type = lib.types.str;};
-        action = mkNullOption lib.types.str;
-        description = mkNullOption lib.types.str;
-        mode = mkNullOption strOrListOfStrType;
-      };
-    }));
+    keyType = lib.types.listOf (
+      lib.types.coercedTo lib.types.str
+      (key: {inherit key;})
+      (lib.types.submodule {
+        options = {
+          key = lib.mkOption {type = lib.types.str;};
+          action = mkNullOption lib.types.str;
+          description = mkNullOption lib.types.str;
+          mode = mkNullOption strOrListOfStrType;
+        };
+      })
+    );
 
     pluginType = lib.types.submodule {
       options = {
@@ -56,7 +63,10 @@ freeformType = lib.types.attrsOf namedSetupType;
         enabled = mkNullOption lib.types.bool;
         beforeAll = mkNullOption beforeFnType;
         before = mkNullOption beforeFnType;
-        after = mkNullOption afterFnType;
+        after = lib.mkOption {
+          type = lib.types.nullOr afterFnType;
+          default = {setup = {};};
+        };
         event = mkNullOption eventType;
         cmd = mkNullOption strOrListOfStrType;
         ft = mkNullOption strOrListOfStrType;
@@ -67,28 +77,34 @@ freeformType = lib.types.attrsOf namedSetupType;
       };
     };
 
-    mkSetupCall = name: args: if args == null then null else "require(\"${name}\").setup(${if args == {} then "" else lib.generators.toLua {} args})";
+    mkSetupCall = name: args:
+      if args == null
+      then null
+      else "require(\"${name}\").setup(${
+        if args == {}
+        then ""
+        else lib.generators.toLua {} args
+      })";
 
     mkHook = pluginName: isAfter: fn:
       if fn == null
       then null
       else let
-        namedEntries = lib.filterAttrs (n: _: n != "setup" && n != "extraConfig" ) fn;
-hasSelfSetupKey = namedEntries ? ${pluginName};
-selfSetup =
-      if isAfter
-      then
-        assert lib.assertMsg (!hasSelfSetupKey)
-          "Neovim plugin \"${pluginName}\": use `setup` instead of `\"${pluginName}\".setup` for the plugin's own setup call in after";
-        mkSetupCall pluginName (fn.setup or null)
-      else
-        assert lib.assertMsg (!hasSelfSetupKey)
-          "Neovim plugin \"${pluginName}\": setup for the plugin itself is not allowed in before and beforeAll, only in after";
-        null;
+        namedEntries = lib.filterAttrs (n: _: n != "setup" && n != "extraConfig") fn;
+        hasSelfSetupKey = namedEntries ? ${pluginName};
+        selfSetup =
+          if isAfter
+          then
+            assert lib.assertMsg (!hasSelfSetupKey)
+            "Neovim plugin \"${pluginName}\": use `setup` instead of `\"${pluginName}\".setup` for the plugin's own setup call in after";
+              mkSetupCall pluginName (fn.setup or null)
+          else
+            assert lib.assertMsg (!hasSelfSetupKey)
+            "Neovim plugin \"${pluginName}\": setup for the plugin itself is not allowed in before and beforeAll, only in after"; null;
 
-      namedSetups = lib.mapAttrsToList (name: v: mkSetupCall name (v.setup or null)) namedEntries;
+        namedSetups = lib.mapAttrsToList (name: v: mkSetupCall name (v.setup or null)) namedEntries;
 
-      parts = lib.filter (s: s != null && s != "") ([selfSetup] ++ namedSetups ++ [(fn.extraConfig or null)]);
+        parts = lib.filter (s: s != null && s != "") ([selfSetup] ++ namedSetups ++ [(fn.extraConfig or null)]);
       in
         if parts == []
         then null
@@ -119,12 +135,8 @@ selfSetup =
         else lib.generators.toLua {} filtered;
 
     mkKeys = ks:
-      if ks == null
+      if ks == null || ks == []
       then null
-      else if ks == [] || ks == ""
-      then null
-      else if builtins.isString ks || (builtins.isList ks && lib.all builtins.isString ks)
-      then lib.generators.toLua {} ks
       else let
         mkOne = k: let
           positional = [k.key] ++ lib.optional (k.action != null) k.action;
@@ -170,33 +182,51 @@ selfSetup =
         default = {};
       };
     };
-    config = {
-      sepcs = {
-        lz-n.data = [pkgs.vimPlugins.lz-n];
-        plugins = let
-          allPackages = lib.flatten (lib.mapAttrsToList (_: p: lib.toList p.package) config.plugins);
-          specTables = lib.mapAttrsToList mkPluginSpec config.plugins;
-        in {
-          data = allPackages;
-          config = ''
-            require("lz.n").load {
-            ${lib.concatStringsSep ",\n" specTables}
-            }
-          '';
+    config = let
+      mkPluginSpecs = name: extra: pluginsAttr: let
+        allPackages = lib.flatten (lib.mapAttrsToList (_: p: lib.toList p.package) pluginsAttr);
+        specTables = lib.mapAttrsToList mkPluginSpec pluginsAttr;
+      in
+        lib.optionalAttrs (specTables != []) {
+          ${name} =
+            extra
+            // {
+              data = allPackages;
+              config = ''
+                require("lz.n").load {
+                  ${lib.concatStringsSep ",\n" specTables}
+                }
+              '';
+            };
         };
-        lazyPlugins = let
-          allPackages = lib.flatten (lib.mapAttrsToList (_: p: lib.toList p.package) config.lazyPlugins);
-          specTables = lib.mapAttrsToList mkPluginSpec config.lazyPlugins;
-        in {
-          data = allPackages;
-          lazy = true;
-          config = ''
-            require("lz.n").load {
-            ${lib.concatStringsSep ",\n" specTables}
-            }
-          '';
-        };
-      };
+    in {
+      specs =
+        {lz-n.data = [pkgs.vimPlugins.lz-n];}
+        // mkPluginSpecs "plugins" {} config.plugins
+        // mkPluginSpecs "lazyPlugins" {lazy = true;} config.lazyPlugins;
+      # plugins = let
+      #   allPackages = lib.flatten (lib.mapAttrsToList (_: p: lib.toList p.package) config.plugins);
+      #   specTables = lib.mapAttrsToList mkPluginSpec config.plugins;
+      # in {
+      #   data = allPackages;
+      #   config = ''
+      #     require("lz.n").load {
+      #     ${lib.concatStringsSep ",\n" specTables}
+      #     }
+      #   '';
+      # };
+      # lazyPlugins = let
+      #   allPackages = lib.flatten (lib.mapAttrsToList (_: p: lib.toList p.package) config.lazyPlugins);
+      #   specTables = lib.mapAttrsToList mkPluginSpec config.lazyPlugins;
+      # in {
+      #   data = allPackages;
+      #   lazy = true;
+      #   config = ''
+      #     require("lz.n").load {
+      #     ${lib.concatStringsSep ",\n" specTables}
+      #     }
+      #   '';
+      # };
     };
   };
 }

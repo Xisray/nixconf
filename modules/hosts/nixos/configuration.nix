@@ -3,6 +3,7 @@
   flake.nixosModules.nixosConfiguration = {
     imports = [
       self.nixosModules.nvidia
+      self.nixosModules.bluetooth
       self.nixosModules.niri
       self.nixosModules.noctalia
       self.nixosModules.firefox
