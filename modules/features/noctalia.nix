@@ -11,6 +11,7 @@
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia or pkgs.noctalia;
     };
     preferences = {
+      theme.provider = "noctalia";
       binds = let
         noctalia = config.programs.noctalia.package;
       in {
@@ -77,15 +78,23 @@
       generator = (pkgs.formats.toml {}).generate "settings.toml";
       value = let
         cfg = config.preferences;
+        theme = cfg.theme;
         monitors = builtins.filter (mon: mon.enabled) (
           lib.mapAttrsToList (port: mon: mon // {port = port;}) cfg.monitors
         );
         monitor = lib.findFirst (m: m.primary) (builtins.head monitors) monitors;
         showSecondaryBar = builtins.length monitors > 1;
         monitorPort = monitor.port;
-        hasOpacity = cfg.theme.opacity < 1.0;
+        hasOpacity = theme.opacity < 1.0;
       in
         {
+          osd.background_opacity = theme.opacity;
+          notification.background_opacity = theme.opacity;
+          shell.corner_radius_scale = lib.max 0.0 (lib.min 2.0 (theme.corner.radius / 12.0));
+          shell.panel.transparency_mode =
+            if theme.opacity < 1.0
+            then "soft"
+            else "solid";
           lockscreen_widgets = {
             enabled = true;
             widget_order = [
@@ -116,7 +125,7 @@
                     show_weather = false;
                   }
                   // lib.optionalAttrs hasOpacity {
-                    input_opacity = cfg.theme.opacity;
+                    input_opacity = theme.opacity;
                   };
               };
               lockscreen_widget_clock = {
@@ -135,36 +144,43 @@
               };
             };
           };
-          bar = lib.mkIf showSecondaryBar {
-            order = [
-              "default"
-              "secondary"
-            ];
-            default = {
-              enabled = false;
-              monitor.${monitorPort}.enabled = true;
-            };
-            secondary =
-              {
-                background_opacity = 0.0;
-                capsule = true;
-                capsule_radius = cfg.theme.corner.radius;
-                capsule_fill = "on_primary";
-                capsule_padding = 12.0;
-                center = ["workspaces"];
-                concave_edge_corners = false;
-                end = [];
-                margin_ends = 0;
-                radius = 0;
-                shadow = false;
-                start = [];
-                dead_zone.actions.right = "none";
-                monitor.${monitorPort}.enabled = false;
-              }
-              // lib.optionalAttrs hasOpacity {
-                capsule_opacity = cfg.theme.opacity;
+          bar =
+            {
+              default = {
+                background_opacity = theme.opacity;
+                capsule_radius = theme.corner.radius;
               };
-          };
+            }
+            // lib.optionalAttrs showSecondaryBar {
+              order = [
+                "default"
+                "secondary"
+              ];
+              default = {
+                enabled = false;
+                monitor.${monitorPort}.enabled = true;
+              };
+              secondary =
+                {
+                  background_opacity = 0.0;
+                  capsule = true;
+                  capsule_radius = theme.corner.radius;
+                  capsule_fill = "on_primary";
+                  capsule_padding = 12.0;
+                  center = ["workspaces"];
+                  concave_edge_corners = false;
+                  end = [];
+                  margin_ends = 0;
+                  radius = 0;
+                  shadow = false;
+                  start = [];
+                  dead_zone.actions.right = "none";
+                  monitor.${monitorPort}.enabled = false;
+                }
+                // lib.optionalAttrs hasOpacity {
+                  capsule_opacity = theme.opacity;
+                };
+            };
         }
         // lib.optionalAttrs showSecondaryBar {
           osd.monitors = [monitorPort];

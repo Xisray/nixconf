@@ -1,4 +1,4 @@
-{ self, lib, config, ... }: {
+{ self, lib, ... }: {
   options.flake.hjemExtraModules = lib.mkOption {
     type = lib.types.lazyAttrsOf lib.types.deferredModule;
     default = { };

@@ -7,7 +7,6 @@
       self.nixosModules.audio
       self.nixosModules.fonts
       self.nixosModules.preferences
-      self.nixosModules.theme
       self.nixosModules.gtk
       self.nixosModules.qt
       self.nixosModules.shell

@@ -48,22 +48,25 @@
               mgr.linemode = "size_and_mtime";
             };
           };
-          # "yazi/theme.toml" = {
-          #   generator = (pkgs.formats.toml { }).generate "theme.toml";
-          #   value =
-          #   let
-          #     block = { open = "█"; close = "█"; };
-          #   in
-          #     lib.optionalAttrs config.programs.noctalia.enable {
-          #       flavor.dark = "noctalia";
-          #       flavor.light = "noctalia";
-          #     }
-          #     // lib.optionalAttrs (config.preferences.ui.corner.radius == 0) {
-          #       status.sep_left = block;
-          #       status.sep_right = block;
-          #       indicator.padding = block;
-          #     };
-          # };
+          "yazi/theme.toml" = {
+            generator = (pkgs.formats.toml {}).generate "theme.toml";
+            value = let
+              cfg = config.preferences.theme;
+              block = {
+                open = "█";
+                close = "█";
+              };
+            in
+              {
+                flavor.dark = cfg.provider;
+                flavor.light = cfg.provider;
+              }
+              // lib.optionalAttrs (config.preferences.theme.corner.radius == 0) {
+                status.sep_left = block;
+                status.sep_right = block;
+                indicator.padding = block;
+              };
+          };
           "xdg-desktop-portal-termfilechooser/config".text = ''
             [filechooser]
             cmd=${pkgs.xdg-desktop-portal-termfilechooser}/share/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh

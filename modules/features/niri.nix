@@ -16,11 +16,12 @@
       generator = value:
         wlib.toKdl (_: {
           version = 1;
-          content = value;
+          content = value.nodes;
         });
 
-      value = let
+      value.nodes = let
         cfg = config.preferences;
+        theme = cfg.theme;
 
         mouse = lib.filterAttrs (_: v: v != null) {
           accel-profile = cfg.mouse.accelProfile;
@@ -125,6 +126,32 @@
         };
       in
         [
+          {
+            include = _: {
+              props = {
+                optional = true;
+                "\"./${theme.provider}.kdl\"" = _: {};
+              };
+            };
+            blur =
+              if theme.blur.enable
+              then {
+                passes = 2;
+                offset = 3.0;
+                noise = 0.03;
+                saturation = 1.0;
+              }
+              else {off = _: {};};
+            rounded_corners = theme.corner.radius > 0;
+          }
+          (lib.optionals (cfg.corner.radius > 0) [
+            {
+              window-rule = {
+                geometry-corner-radius = cfg.corner.radius;
+                clip-to-geometry = true;
+              };
+            }
+          ])
           {input.mouse = mouse;}
           {inherit binds;}
         ]

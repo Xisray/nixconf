@@ -68,7 +68,7 @@
       content = lib.generators.toYAML {} lazygitConfig;
     };
     env.LG_CONFIG_FILE = {
-      data = "${config.constructFiles.lazygit-config.path},$HOME/.config/lazygit/config.yml";
+      data = "${config.constructFiles.lazygit-config.path},$HOME/.config/lazygit/config.yml,$HOME/.config/lazygit/custom.yml";
       esc-fn = wlib.escapeShellArgWithEnv;
     };
   };
