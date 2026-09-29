@@ -1,6 +1,6 @@
-{ self, ... }: {
+{self, ...}: {
   flake.wrappers.noctalia = {
-    imports = [ self.lib.wrapModules.noctalia-v5 ];
+    imports = [self.lib.wrapModules.noctalia-v5];
     settings = {
       backdrop.enabled = true;
       shell.session.actions = [
@@ -53,9 +53,10 @@
         launcher.providers.session.global = true;
       };
       bar = {
-        widgets = {
+        default = {
+          widget_spacing = 9;
           shadow = false;
-          center = [ "date" ];
+          center = ["date"];
           end = [
             "tray"
             "network"
@@ -71,6 +72,7 @@
           start = [
             "session"
             "workspaces"
+            "media"
             "audio_visualizer"
           ];
           concave_edge_corners = false;
@@ -79,6 +81,7 @@
       control_center = {
         sidebar = "none";
         sidebar_section = "none";
+        calendar.show_events_card = false;
         hidden_tabs = [
           "media"
           "audio"
@@ -115,6 +118,11 @@
         };
         volume.show_label = false;
         input_volume.show_label = false;
+        audio_visualizer.interactive = false;
+        media = {
+          hide_album_art = true;
+          hide_when_no_media = true;
+        };
       };
       nightlight.enabled = true;
       location = {
@@ -128,6 +136,7 @@
         enable_builtin_templates = false;
         enable_community_templates = false;
       };
+      notification.offset_x = 8;
 
       wallpaper.directory = "~/Pictures/Wallpapers";
       idle = {
@@ -156,64 +165,61 @@
           };
         };
       };
-      include.files = [ "~/.config/noctalia/" ];
+      include.files = ["~/.config/noctalia/"];
     };
   };
 
-  flake.lib.wrapModules.noctalia-v5 =
-    {
-      config,
-      wlib,
-      lib,
-      pkgs,
-      ...
-    }:
-    let
-      tomlFmt = pkgs.formats.toml { };
-    in
-    {
-      imports = [ wlib.modules.default ];
+  flake.lib.wrapModules.noctalia-v5 = {
+    config,
+    wlib,
+    lib,
+    pkgs,
+    ...
+  }: let
+    tomlFmt = pkgs.formats.toml {};
+  in {
+    imports = [wlib.modules.default];
 
-      options = {
-        generatedConfigDirname = lib.mkOption {
-          type = lib.types.str;
-          default = config.binName;
-          apply = x: lib.removePrefix "/" (lib.removeSuffix "/" x);
-        };
-        configDrvOutput = lib.mkOption {
-          type = lib.types.str;
-          default = config.outputName;
-        };
-        configPlaceholder = lib.mkOption {
-          type = lib.types.str;
-          default = "${placeholder config.configDrvOutput}/${config.generatedConfigDirname}";
-          readOnly = true;
-        };
-        settings = lib.mkOption {
-          type = wlib.types.structuredValueWith { typeName = "TOML"; };
-          default = { };
-        };
-        colors = lib.mkOption {
-          type = wlib.types.structuredValueWith { typeName = "TOML"; };
-          default = { };
-        };
+    options = {
+      generatedConfigDirname = lib.mkOption {
+        type = lib.types.str;
+        default = config.binName;
+        apply = x: lib.removePrefix "/" (lib.removeSuffix "/" x);
       };
-
-      config = {
-        env.NOCTALIA_CONFIG_HOME = "${placeholder config.configDrvOutput}";
-        constructFiles.settings = {
-          content = builtins.readFile (
-            tomlFmt.generate config.constructFiles.settings.relPath config.settings
-          );
-          output = lib.mkOverride 0 config.configDrvOutput;
-          relPath = lib.mkOverride 0 "noctalia/settings.toml";
-        };
-        constructFiles.colors = {
-          content = builtins.readFile (tomlFmt.generate config.constructFiles.colors.relPath config.colors);
-          output = lib.mkOverride 0 config.configDrvOutput;
-          relPath = lib.mkOverride 0 "noctalia/palettes/custom.toml";
-        };
-        package = lib.mkDefault pkgs.noctalia;
+      configDrvOutput = lib.mkOption {
+        type = lib.types.str;
+        default = config.outputName;
+      };
+      configPlaceholder = lib.mkOption {
+        type = lib.types.str;
+        default = "${placeholder config.configDrvOutput}/${config.generatedConfigDirname}";
+        readOnly = true;
+      };
+      settings = lib.mkOption {
+        type = wlib.types.structuredValueWith {typeName = "TOML";};
+        default = {};
+      };
+      colors = lib.mkOption {
+        type = wlib.types.structuredValueWith {typeName = "TOML";};
+        default = {};
       };
     };
+
+    config = {
+      env.NOCTALIA_CONFIG_HOME = "${placeholder config.configDrvOutput}";
+      constructFiles.settings = {
+        content = builtins.readFile (
+          tomlFmt.generate config.constructFiles.settings.relPath config.settings
+        );
+        output = lib.mkOverride 0 config.configDrvOutput;
+        relPath = lib.mkOverride 0 "noctalia/settings.toml";
+      };
+      constructFiles.colors = {
+        content = builtins.readFile (tomlFmt.generate config.constructFiles.colors.relPath config.colors);
+        output = lib.mkOverride 0 config.configDrvOutput;
+        relPath = lib.mkOverride 0 "noctalia/palettes/custom.toml";
+      };
+      package = lib.mkDefault pkgs.noctalia;
+    };
+  };
 }

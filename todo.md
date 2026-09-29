@@ -4,10 +4,10 @@
 - [ ] noctalia screenshot editor
 - [x] firefox extension for noctalia
 - [ ] cursor
-- [ ] usb
-- [ ] yazi def manager
+- [x] usb
+- [x] yazi def manager
 - [x] yazi date settings
-- [ ] cliamp
+- [x] cliamp
 - [ ] voxtype
 
 - [ ] gtk + qt styles

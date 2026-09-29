@@ -1,10 +1,17 @@
-{ self, ... }: {
-  flake.nixosModules.yazi = { config, pkgs, lib, ... }: {
+{self, ...}: {
+  flake.nixosModules.yazi = {
+    config,
+    pkgs,
+    lib,
+    ...
+  }: {
     xdg.portal = {
       extraPortals = with pkgs; [
         xdg-desktop-portal-termfilechooser
       ];
     };
+
+    preferences.theme.targets.yazi.enable = true;
     home = {
       packages = [
         pkgs.yazi
@@ -36,27 +43,27 @@
             end
           '';
           "yazi/yazi.toml" = {
-            generator = (pkgs.formats.toml { }).generate "yazi.toml";
+            generator = (pkgs.formats.toml {}).generate "yazi.toml";
             value = {
               mgr.linemode = "size_and_mtime";
             };
           };
-          "yazi/theme.toml" = {
-            generator = (pkgs.formats.toml { }).generate "theme.toml";
-            value = 
-            let
-              block = { open = "█"; close = "█"; };
-            in
-              lib.optionalAttrs config.programs.noctalia.enable {
-                flavor.dark = "noctalia";
-                flavor.light = "noctalia";
-              }
-              // lib.optionalAttrs (config.preferences.ui.corner.radius == 0) {
-                status.sep_left = block;
-                status.sep_right = block;
-                indicator.padding = block;
-              };
-          };
+          # "yazi/theme.toml" = {
+          #   generator = (pkgs.formats.toml { }).generate "theme.toml";
+          #   value =
+          #   let
+          #     block = { open = "█"; close = "█"; };
+          #   in
+          #     lib.optionalAttrs config.programs.noctalia.enable {
+          #       flavor.dark = "noctalia";
+          #       flavor.light = "noctalia";
+          #     }
+          #     // lib.optionalAttrs (config.preferences.ui.corner.radius == 0) {
+          #       status.sep_left = block;
+          #       status.sep_right = block;
+          #       indicator.padding = block;
+          #     };
+          # };
           "xdg-desktop-portal-termfilechooser/config".text = ''
             [filechooser]
             cmd=${pkgs.xdg-desktop-portal-termfilechooser}/share/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
@@ -68,8 +75,8 @@
           '';
         };
         mime-apps.default-applications = {
-          "inode/directory" = [ "yazi.desktop" ];
-          "inode/mount-point" = [ "yazi.desktop" ];
+          "inode/directory" = ["yazi.desktop"];
+          "inode/mount-point" = ["yazi.desktop"];
         };
         desktop-entries.yazi = {
           name = "Yazi File Manager";

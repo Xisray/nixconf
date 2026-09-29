@@ -8,17 +8,18 @@
       enable = true;
       settings.default = [ "kitty.desktop" ];
     };
+    preferences.theme.targets.kitty.enable = true;
     home = {
       packages = [
         kitty
       ];
-      xdg = {
-        config.files."kitty/kitty.conf".text = ''
-          include themes/noctalia.conf
-          background_opacity ${toString config.preferences.ui.opacity}
-        '';
+      # xdg = {
+        # config.files."kitty/kitty.conf".text = ''
+        #   include themes/noctalia.conf
+        #   background_opacity ${toString config.preferences.ui.opacity}
+        # '';
         #desktop-entries.kitty = "${kitty}/share/applications/kitty.desktop";
-      };
+      # };
     };
   };
 }

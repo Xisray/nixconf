@@ -10,5 +10,7 @@
         enable = true;
         package = (self.packages.${pkgs.stdenv.hostPlatform.system}.${user.shell} or pkgs.${user.shell});
       };
+      preferences.theme.targets.btop.enable = true;
+      preferences.theme.targets.fzf.enable = true;
     };
 }

@@ -204,29 +204,6 @@
         {lz-n.data = [pkgs.vimPlugins.lz-n];}
         // mkPluginSpecs "plugins" {} config.plugins
         // mkPluginSpecs "lazyPlugins" {lazy = true;} config.lazyPlugins;
-      # plugins = let
-      #   allPackages = lib.flatten (lib.mapAttrsToList (_: p: lib.toList p.package) config.plugins);
-      #   specTables = lib.mapAttrsToList mkPluginSpec config.plugins;
-      # in {
-      #   data = allPackages;
-      #   config = ''
-      #     require("lz.n").load {
-      #     ${lib.concatStringsSep ",\n" specTables}
-      #     }
-      #   '';
-      # };
-      # lazyPlugins = let
-      #   allPackages = lib.flatten (lib.mapAttrsToList (_: p: lib.toList p.package) config.lazyPlugins);
-      #   specTables = lib.mapAttrsToList mkPluginSpec config.lazyPlugins;
-      # in {
-      #   data = allPackages;
-      #   lazy = true;
-      #   config = ''
-      #     require("lz.n").load {
-      #     ${lib.concatStringsSep ",\n" specTables}
-      #     }
-      #   '';
-      # };
     };
   };
 }
