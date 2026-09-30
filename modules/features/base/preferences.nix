@@ -93,6 +93,25 @@
           type = lib.types.int;
           default = 0;
         };
+        cursor = lib.mkOption {
+          type = lib.types.nullOr (lib.types.submodule {
+            options = {
+              name = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+              };
+              package = lib.mkOption {
+                type = lib.types.nullOr lib.types.package;
+                default = null;
+              };
+              size = lib.mkOption {
+                type = lib.types.nullOr lib.types.int;
+                default = null;
+              };
+            };
+          });
+          default = null;
+        };
       };
       binds = lib.mkOption {
         type = lib.types.attrsOf bindsType;

@@ -13,8 +13,12 @@
       enable = true;
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.${user.shell} or pkgs.${user.shell};
     };
+    preferences.persistence.data.directories = [
+      ".local/state/lazygit"
+      ".config/fzf/themes"
+    ];
     home.xdg.config.files = {
-      "fish/conf.d/fzf-theme.fish".text = "source ~/.config/fzf/themes/${theme.provider}.fish";
+      "fish/config.fish".text = "source ~/.config/fzf/themes/${theme.provider}.fish; or true";
       "btop/btop.conf" = {
         generator = let
           btopGenerator = lib.generators.toKeyValue {

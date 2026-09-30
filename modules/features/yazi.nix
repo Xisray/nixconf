@@ -11,7 +11,6 @@
       ];
     };
 
-    preferences.theme.targets.yazi.enable = true;
     home = {
       packages = [
         pkgs.yazi

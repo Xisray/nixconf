@@ -11,7 +11,6 @@
       enable = true;
       settings.default = ["kitty.desktop"];
     };
-    preferences.theme.targets.kitty.enable = true;
     home = {
       packages = [
         kitty

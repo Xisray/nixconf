@@ -49,7 +49,8 @@
           open_near_click_control_center = true;
           shadow = false;
         };
-
+        app_icon_colorize = true;
+        setup_wizard_enabled = false;
         launcher.providers.session.global = true;
       };
       bar = {

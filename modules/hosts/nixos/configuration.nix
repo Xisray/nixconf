@@ -1,6 +1,6 @@
-{ self, ... }: {
-  hosts = [ "nixos" ];
-  flake.nixosModules.nixosConfiguration = {
+{self, ...}: {
+  hosts = ["nixos"];
+  flake.nixosModules.nixosConfiguration = {pkgs, ...}: {
     imports = [
       self.nixosModules.nvidia
       self.nixosModules.bluetooth
@@ -21,6 +21,13 @@
 
     preferences = {
       user.shell = "fish";
+      theme = {
+        cursor = {
+          package = pkgs.bibata-cursors;
+          name = "Bibata-Modern-Classic";
+          size = 20;
+        };
+      };
       mouse = {
         accelProfile = "flat";
         accelSpeed = 0.0;

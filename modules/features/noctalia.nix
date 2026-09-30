@@ -146,25 +146,27 @@
           };
           bar =
             {
-              default = {
-                background_opacity = theme.opacity;
-                capsule_radius = theme.corner.radius;
-              };
+              default =
+                {
+                  background_opacity = theme.opacity;
+                }
+                // lib.optionalAttrs (theme.corner.radius == 0) {
+                  capsule_radius = 0;
+                }
+                // lib.optionalAttrs showSecondaryBar {
+                  enabled = false;
+                  monitor.${monitorPort}.enabled = true;
+                };
             }
             // lib.optionalAttrs showSecondaryBar {
               order = [
                 "default"
                 "secondary"
               ];
-              default = {
-                enabled = false;
-                monitor.${monitorPort}.enabled = true;
-              };
               secondary =
                 {
                   background_opacity = 0.0;
                   capsule = true;
-                  capsule_radius = theme.corner.radius;
                   capsule_fill = "on_primary";
                   capsule_padding = 12.0;
                   center = ["workspaces"];
@@ -179,6 +181,9 @@
                 }
                 // lib.optionalAttrs hasOpacity {
                   capsule_opacity = theme.opacity;
+                }
+                // lib.optionalAttrs (theme.corner.radius == 0) {
+                  capsule_radius = 0;
                 };
             };
         }
