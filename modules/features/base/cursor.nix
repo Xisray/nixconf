@@ -4,7 +4,7 @@
     lib,
     ...
   }: let
-    cursor = config.preferences.cursor;
+    cursor = config.preferences.theme.cursor;
   in {
     environment = lib.mkIf (cursor != null) {
       systemPackages = lib.mkIf (cursor.package != null) [
@@ -15,7 +15,7 @@
         XCURSOR_SIZE = lib.mkIf (cursor.size != null) (toString cursor.size);
       };
     };
-    home.files.".icons/default/index.theme".text = lib.mkIf (cursor.name != null) ''
+    home.files.".icons/default/index.theme".text = lib.mkIf (cursor != null && cursor.name != null) ''
       [Icon Theme]
       Name=Default
       Comment=Default Cursor Theme

@@ -15,7 +15,8 @@
           MinimizeToTray = true;
           MinimizeOnStartup = true;
           ShowTrayIcon = true;
-          TrayIconAppearance = "monochrome-light";
+          # TrayIconAppearance = "monochrome-light";
+          TrayIconAppearance = "colorful";
           ApplicationTheme = "classic";
         };
         Security = {

@@ -12,10 +12,6 @@
       useNautilus = false;
     };
 
-    home.packages = lib.mkIf (config.preferences.theme.cursor != null && config.preferences.theme.cursor.package != null) [
-      config.preferences.theme.cursor.package
-    ];
-
     home.xdg.config.files."niri/config.kdl".text = let
       cfg = config.preferences;
       theme = cfg.theme;
@@ -139,12 +135,6 @@
           window-rule = {
             geometry-corner-radius = theme.corner.radius;
             clip-to-geometry = true;
-          };
-        }
-        // lib.optionalAttrs (theme.cursor != null && (theme.cursor.name != null || theme.cursor.size != null)) {
-          cursor = {
-            xcursor-theme = theme.cursor.name;
-            xcursor-size = theme.cursor.size;
           };
         };
       toKdlV1 = value:
