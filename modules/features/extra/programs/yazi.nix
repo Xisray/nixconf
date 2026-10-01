@@ -12,14 +12,8 @@
     };
   in {
     options.programs.yazi = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.yazi;
-      };
+      enable = lib.mkEnableOption "yazi";
+      package = lib.mkPackageOption pkgs "yazi" {nullable = true;};
       settings = tomlOption;
       theme = tomlOption;
       vfs = tomlOption;
@@ -34,22 +28,12 @@
       cfg = config.programs.yazi;
     in
       lib.mkIf cfg.enable {
-        packages = [
-          cfg.package
-        ];
+        packages = lib.optional (cfg.package != null) cfg.package;
         xdg.config.files = {
-          "yazi/yazi.toml" = lib.mkIf (cfg.settings != {}) {
-            source = tomlFormat.generate "yazi-settings" cfg.settings;
-          };
-          "yazi/theme.toml" = lib.mkIf (cfg.theme != {}) {
-            source = tomlFormat.generate "yazi-theme" cfg.theme;
-          };
-          "yazi/vfs.toml" = lib.mkIf (cfg.vfs != {}) {
-            source = tomlFormat.generate "yazi-vfs" cfg.vfs;
-          };
-          "yazi/keymap.toml" = lib.mkIf (cfg.keymap != {}) {
-            source = tomlFormat.generate "yazi-keymap" cfg.keymap;
-          };
+          "yazi/yazi.toml".source = lib.mkIf (cfg.settings != {}) (tomlFormat.generate "yazi-settings" cfg.settings);
+          "yazi/theme.toml".source = lib.mkIf (cfg.theme != {}) (tomlFormat.generate "yazi-theme" cfg.theme);
+          "yazi/vfs.toml".source = lib.mkIf (cfg.vfs != {}) (tomlFormat.generate "yazi-vfs" cfg.vfs);
+          "yazi/keymap.toml".source = lib.mkIf (cfg.keymap != {}) (tomlFormat.generate "yazi-keymap" cfg.keymap);
           "yazi/init.lua" = lib.mkIf (cfg.initLua != null) (
             if builtins.isPath cfg.initLua
             then {source = cfg.initLua;}
