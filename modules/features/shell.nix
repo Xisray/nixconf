@@ -21,7 +21,7 @@
         ".config/fzf/themes"
       ];
       home = {
-        shell.fish.init = "source ~/.config/fzf/themes/${theme.provider}.fish; or true";
+        shells.fish.init = "source ~/.config/fzf/themes/${theme.provider}.fish; or true";
         programs.btop = {
           enable = true;
           package = null;

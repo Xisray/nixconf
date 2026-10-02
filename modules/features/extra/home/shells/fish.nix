@@ -1,5 +1,5 @@
 {
-  flake.hjemExtraModules.programs =
+  flake.hjemExtraModules.home =
     {
       lib,
       config,
@@ -7,7 +7,7 @@
       ...
     }:
     {
-      options.shell.fish = {
+      options.shells.fish = {
         init = lib.mkOption {
           type = lib.types.lines;
           default = "";
@@ -35,7 +35,7 @@
       };
       config =
         let
-          cfg = config.shell.fish;
+          cfg = config.shells.fish;
         in
         lib.mkIf osConfig.programs.fish.enable {
           xdg.config.files."fish/config.fish".text = ''

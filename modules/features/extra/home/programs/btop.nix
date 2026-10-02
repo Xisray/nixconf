@@ -1,5 +1,5 @@
 {
-  flake.hjemExtraModules.programs =
+  flake.hjemExtraModules.home =
     {
       lib,
       pkgs,

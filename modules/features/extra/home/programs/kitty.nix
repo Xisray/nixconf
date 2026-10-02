@@ -1,5 +1,5 @@
 {
-  flake.hjemExtraModules.programs =
+  flake.hjemExtraModules.home =
     {
       lib,
       pkgs,
@@ -56,7 +56,7 @@
                 // lib.optionalAttrs hasIntegration { shell_integration = "no_rc"; };
             in
             lib.mkIf (settings != { }) toKittyConf.generate "kitty.conf" settings;
-          shell.fish.interactiveInit = ''
+          shells.fish.interactiveInit = ''
             if set -q KITTY_INSTALLATION_DIR
               set --global KITTY_SHELL_INTEGRATION "no_rc"
               source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"

@@ -43,6 +43,10 @@
         data = "https://generativelanguage.googleapis.com/v1beta/models";
         esc-fn = wlib.escapeShellArgWithEnv;
       };
+      https_proxy = "http://127.0.0.1:7897";
+      http_proxy = "http://127.0.0.1:7897";
+      all_proxy = "socks5h://127.0.0.1:7897";
+      # no_proxy = "localhost,127.0.0.1";
     };
   };
 }

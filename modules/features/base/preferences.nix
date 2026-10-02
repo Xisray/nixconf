@@ -17,6 +17,7 @@
         action = lib.mkOption {
           type = lib.types.either bindActionType (lib.types.listOf bindActionType);
         };
+        shell = lib.mkEnableOption "Shell action";
         allowLocked = lib.mkOption {
           type = lib.types.nullOr lib.types.bool;
           default = null;
@@ -120,6 +121,7 @@
       };
       monitors = lib.mkOption {
         type = lib.types.attrsOf monitorType;
+        default = {};
       };
       mouse = {
         accelProfile = lib.mkOption {
