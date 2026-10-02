@@ -2,12 +2,12 @@
   flake.wrappers.kitty = { wlib, ... }: {
     imports = [ wlib.wrapperModules.kitty ];
     settings = {
-      window_padding_width = "0 10";
+      # window_padding_width = "0 10";
       enable_audio_bell = "no";
       cursor_shape = "beam";
-      cursor_trail = 1;
+      cursor_trail = 3;
+      cursor_trai_decay = "0.1 0.4";
       confirm_os_window_close = 0;
-      shell_integration = "enabled";
     };
     keybindings = {
       "ctrl+1" = "goto_tab 1";

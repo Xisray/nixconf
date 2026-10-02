@@ -153,7 +153,7 @@
         include optional=true "~/.config/niri/config.kdl"
         animations {
           workspace-switch {
-            spring damping-ratio=0.75 stiffness=1600 epsilon=0.0001
+            spring damping-ratio=1.0 stiffness=1600 epsilon=0.0001
           }
 
           window-open {
@@ -179,44 +179,63 @@
           window-close {
             duration-ms 500
             curve "ease-out-cubic"
+            # custom-shader r"
+            # vec4 close_color(vec3 coords_geo, vec3 size_geo) {
+            #   float p = 1.0 - niri_clamped_progress;
+            #   vec2 uv = coords_geo.xy;
+            #   float a = 4.0;
+            #   float b = 1.0;
+            #   float amplitude = 120.0;
+            #   float smoothness = 0.1;
+            #   vec2 dir = uv - vec2(0.5);
+            #   float dist = length(dir);
+            #   float xx = (a - b) * cos(p) + b * cos(p * ((a / b) - 1.0));
+            #   float yy = (a - b) * sin(p) - b * sin(p * ((a / b) - 1.0));
+            #   vec2 offset = dir * vec2(sin(p * dist * amplitude * xx), sin(p * dist * amplitude * yy)) / smoothness;
+            #   vec3 tc = niri_geo_to_tex * vec3(uv, 1.0);
+            #   vec4 win = texture2D(niri_tex, tc.st);
+            #   float reveal = smoothstep(0.2, 1.0, p);
+            #   return win * reveal;
+            # }"
+
             custom-shader r"
-            vec4 close_color(vec3 coords_geo, vec3 size_geo) {
-              float p = 1.0 - niri_clamped_progress;
-              vec2 uv = coords_geo.xy;
-              float a = 4.0;
-              float b = 1.0;
-              float amplitude = 120.0;
-              float smoothness = 0.1;
-              vec2 dir = uv - vec2(0.5);
-              float dist = length(dir);
-              float xx = (a - b) * cos(p) + b * cos(p * ((a / b) - 1.0));
-              float yy = (a - b) * sin(p) - b * sin(p * ((a / b) - 1.0));
-              vec2 offset = dir * vec2(sin(p * dist * amplitude * xx), sin(p * dist * amplitude * yy)) / smoothness;
-              vec3 tc = niri_geo_to_tex * vec3(uv, 1.0);
-              vec4 win = texture2D(niri_tex, tc.st);
-              float reveal = smoothstep(0.2, 1.0, p);
-              return win * reveal;
-            }"
+              vec4 close_color(vec3 coords_geo, vec3 size_geo) {
+                float p = 1.0 - niri_clamped_progress;
+                vec2 uv = coords_geo.xy;
+                vec3 tc = niri_geo_to_tex * vec3(uv, 1.0);
+                vec4 win = texture2D(niri_tex, tc.st);
+
+                vec2 dir = vec2(1.0, -1.0);
+                float smoothness = 0.5;
+                vec2 center = vec2(0.5, 0.5);
+                vec2 v = normalize(dir);
+                v /= abs(v.x) + abs(v.y);
+                float d = v.x * center.x + v.y * center.y;
+                float reveal = (1.0 - step(p, 0.0)) *
+                    (1.0 - smoothstep(-smoothness, 0.0, v.x * uv.x + v.y * uv.y - (d - 0.5 + p * (1.0 + smoothness))));
+
+                return win * reveal;
+              }"
           }
 
           horizontal-view-movement {
-            spring damping-ratio=0.75 stiffness=800 epsilon=0.0003
+            spring damping-ratio=1.0 stiffness=800 epsilon=0.0003
           }
 
           window-movement {
-            spring damping-ratio=0.6 stiffness=760 epsilon=0.0003
+            spring damping-ratio=1.0 stiffness=760 epsilon=0.0003
           }
 
           window-resize {
-            spring damping-ratio=0.45 stiffness=750 epsilon=0.0001
+            spring damping-ratio=1.0 stiffness=750 epsilon=0.0001
           }
 
           overview-open-close {
-            spring damping-ratio=0.40 stiffness=900 epsilon=0.001
+            spring damping-ratio=1.0 stiffness=900 epsilon=0.001
           }
 
           recent-windows-close {
-            spring damping-ratio=0.40 stiffness=900 epsilon=0.001
+            spring damping-ratio=1.0 stiffness=900 epsilon=0.001
           }
         }
       '';
