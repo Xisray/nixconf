@@ -1,24 +1,40 @@
-{self, ...}: {
-  flake.nixosModules.yazi = {
-    config,
-    pkgs,
-    lib,
-    ...
-  }: {
-    xdg.portal = {
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-termfilechooser
-      ];
-    };
+{
+  flake.nixosModules.yazi =
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      xdg.portal = {
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-termfilechooser
+        ];
+      };
 
-    home = {
-      packages = [
-        pkgs.yazi
-      ];
-      xdg = {
-        portal.config.common."org.freedesktop.impl.portal.FileChooser" = "termfilechooser";
-        config.files = {
-          "yazi/init.lua".text = ''
+      home = {
+        programs.yazi = {
+          enable = true;
+          settings.mgr.linemode = "size_and_mtime";
+          theme =
+            let
+              cfg = config.preferences.theme;
+              block = {
+                open = "█";
+                close = "█";
+              };
+            in
+            {
+              flavor.dark = cfg.provider;
+              flavor.light = cfg.provider;
+            }
+            // lib.optionalAttrs (config.preferences.theme.corner.radius == 0) {
+              status.sep_left = block;
+              status.sep_right = block;
+              indicator.padding = block;
+            };
+          initLua = ''
             Status:children_add(function(self)
               local h = self._current.hovered
               if h and h.link_to then
@@ -41,32 +57,10 @@
               return string.format("%s %s", size and ya.readable_size(size) or "", time)
             end
           '';
-          "yazi/yazi.toml" = {
-            generator = (pkgs.formats.toml {}).generate "yazi.toml";
-            value = {
-              mgr.linemode = "size_and_mtime";
-            };
-          };
-          "yazi/theme.toml" = {
-            generator = (pkgs.formats.toml {}).generate "theme.toml";
-            value = let
-              cfg = config.preferences.theme;
-              block = {
-                open = "█";
-                close = "█";
-              };
-            in
-              {
-                flavor.dark = cfg.provider;
-                flavor.light = cfg.provider;
-              }
-              // lib.optionalAttrs (config.preferences.theme.corner.radius == 0) {
-                status.sep_left = block;
-                status.sep_right = block;
-                indicator.padding = block;
-              };
-          };
-          "xdg-desktop-portal-termfilechooser/config".text = ''
+        };
+        xdg = {
+          portal.config.common."org.freedesktop.impl.portal.FileChooser" = "termfilechooser";
+          config.files."xdg-desktop-portal-termfilechooser/config".text = ''
             [filechooser]
             cmd=${pkgs.xdg-desktop-portal-termfilechooser}/share/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
             default_dir=$HOME
@@ -75,40 +69,39 @@
             open_mode=suggested
             save_mode=last
           '';
-        };
-        mime-apps.default-applications = {
-          "inode/directory" = ["yazi.desktop"];
-          "inode/mount-point" = ["yazi.desktop"];
-        };
-        desktop-entries.yazi = {
-          name = "Yazi File Manager";
-          genericName = "File Manager";
-          comment = "Blazing fast terminal file manager written in Rust, based on async I/O";
-          icon = "yazi";
-          exec = "xdg-terminal-exec --app-id=yazi yazi %f";
-          terminal = false;
-          type = "Application";
-          categories = [
-            "System"
-            "FileManager"
-            "FileTools"
-            "ConsoleOnly"
-          ];
-          mimeType = [
-            "inode/directory"
-            "inode/mount-point"
-          ];
-          version = "1.5";
+          mime-apps.default-applications = {
+            "inode/directory" = [ "yazi.desktop" ];
+            "inode/mount-point" = [ "yazi.desktop" ];
+          };
+          desktop-entries.yazi = {
+            name = "Yazi File Manager";
+            genericName = "File Manager";
+            comment = "Blazing fast terminal file manager written in Rust, based on async I/O";
+            icon = "yazi";
+            exec = "xdg-terminal-exec --app-id=yazi yazi %f";
+            terminal = false;
+            type = "Application";
+            categories = [
+              "System"
+              "FileManager"
+              "FileTools"
+              "ConsoleOnly"
+            ];
+            mimeType = [
+              "inode/directory"
+              "inode/mount-point"
+            ];
+            version = "1.5";
+          };
         };
       };
+      preferences.wm.rules.windows = [
+        {
+          match.app-id = "^termfilechooser$";
+          open-floating = true;
+          default-window-height.proportion = 0.6;
+          default-column-width.proportion = 0.45;
+        }
+      ];
     };
-    preferences.wm.rules.windows = [
-      {
-        match.app-id = "^termfilechooser$";
-        open-floating = true;
-        default-window-height.proportion = 0.6;
-        default-column-width.proportion = 0.45;
-      }
-    ];
-  };
 }
