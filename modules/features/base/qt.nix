@@ -13,43 +13,37 @@
       QT_QPA_PLATFORMTHEME = "qt5ct";
       QT_QPA_PLATFORM = "wayland;xcb";
     };
-    home.xdg.config.files =
-      lib.mkIf config.qt.enable
-      (let
-        provider = config.preferences.theme.provider;
-        fonts = config.fonts.fontconfig.defaultFonts;
-        firstOrNull = list:
-          if list == []
-          then null
-          else builtins.head list;
-        mono = firstOrNull fonts.monospace;
-        sans = firstOrNull fonts.sansSerif;
-        mkFont = name: size:
-          if name == null
-          then null
-          else ''"${name},${toString size}"'';
-        dropNulls = lib.filterAttrs (_: v: v != null);
-
-        qtctSettings = {
-          Appearance = dropNulls {
-            color_scheme_path =
-              if provider == null
-              then null
-              else "./colors/${provider}.conf";
-            custom_palette = true;
-            standard_dialogs = "default";
-            style = config.qt.style;
-          };
-          Fonts = dropNulls {
-            fixed = mkFont mono 12;
-            general = mkFont sans 12;
-          };
+    home.qt.settings = let
+      theme = config.preferences.theme;
+      fonts = config.fonts.fontconfig.defaultFonts;
+      firstOrNull = list:
+        if list == []
+        then null
+        else builtins.head list;
+      mono = firstOrNull fonts.monospace;
+      sans = firstOrNull fonts.sansSerif;
+      mkFont = name: size:
+        if name == null
+        then null
+        else ''"${name},${toString size}"'';
+    in {
+      Appearance =
+        {
+          custom_palette = true;
+          standard_dialogs = "default";
+        }
+        // lib.optionalAttrs (theme.provider != null) {
+          color_scheme_path = "./colors/${theme.provider}.conf";
         };
-
-        qtctConf = lib.generators.toINI {} qtctSettings;
-      in {
-        "qt5ct/qt5ct.conf".text = qtctConf;
-        "qt6ct/qt6ct.conf".text = qtctConf;
-      });
+      Fonts =
+        {
+        }
+        // lib.optionalAttrs (sans != null) {
+          general = mkFont sans 12;
+        }
+        // lib.optionalAttrs (mono != null) {
+          fixed = mkFont mono 12;
+        };
+    };
   };
 }

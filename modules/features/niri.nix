@@ -74,6 +74,9 @@
           geometry-corner-radius = theme.corner.radius;
           clip-to-geometry = true;
         })
+        ++ (lib.optional theme.blur.enable {
+          background-effects.blur = true;
+        })
         ++ cfg.wm.rules.windows;
       layerRules = cfg.wm.rules.layers;
       outputs = lib.mapAttrs toOutput cfg.monitors;

@@ -27,6 +27,9 @@
           name = "Bibata-Modern-Classic";
           size = 20;
         };
+        opacity = 0.9;
+        corner.radius = 12;
+        blur.enable = true;
       };
       mouse = {
         accelProfile = "flat";

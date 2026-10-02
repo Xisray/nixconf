@@ -213,7 +213,7 @@
           }
 
           overview-open-close {
-            spring damping-ratio=1.0 stiffness=900 epsilon=0.001
+            spring damping-ratio=1.0 stiffness=1500 epsilon=0.001
           }
 
           recent-windows-close {
