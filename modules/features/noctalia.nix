@@ -18,7 +18,7 @@
           let
             cfg = config.preferences;
             theme = cfg.theme;
-            monitors = builtins.filter (mon: mon.enabled) (
+            monitors = builtins.filter (mon: mon.enable) (
               lib.mapAttrsToList (port: mon: mon // { port = port; }) cfg.monitors
             );
             monitor = lib.findFirst (m: m.primary) (builtins.head monitors) monitors;

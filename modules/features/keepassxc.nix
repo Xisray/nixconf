@@ -2,7 +2,7 @@
   flake.nixosModules.keepassxc = { pkgs, ... }: {
     home.programs.keepassxc = {
       enable = true;
-      package = self.packages.${pkgs.stdenv.hostPlatform.system}.keepassxc or pkgs.keepassxc;
+      package = (self.packages.${pkgs.stdenv.hostPlatform.system}.keepassxc or pkgs.keepassxc);
       systemd.enable = true;
     };
     preferences = {

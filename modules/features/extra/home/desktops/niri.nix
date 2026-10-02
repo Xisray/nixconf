@@ -60,10 +60,9 @@
         default = {};
       };
     };
-    config.xdg.config.files."niri/config.kdl".text =
-      lib.mkIf osConfig.programs.niri.enable
-      (let
-        cfg = config.desktops.niri;
+    config.xdg.config.files."niri/config.kdl" = lib.mkIf osConfig.programs.niri.enable {
+      text = let
+        cfg = config.desktops.niri.settings;
         mkOutput = mon: val: {
           output = _: {
             props = [mon];
@@ -108,6 +107,7 @@
         ${toKdlV1 (map (mkRule "window-rule") cfg.windowRules)}
         ${toKdlV1 (map (mkRule "layer-rule") cfg.layerRules)}
         ${cfg.extraConfig}
-      '');
+      '';
+    };
   };
 }
