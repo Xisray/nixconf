@@ -1,4 +1,4 @@
-{
+{self, ...}: {
   flake.wrappers.niri = {
     pkgs,
     wlib,
@@ -38,6 +38,64 @@
       };
       binds = let
         playerCtl = lib.getExe pkgs.playerctl;
+        hyprpicker = lib.getExe (self.packages.${pkgs.stdenv.hostPlatform.system}.hyprpicker or pkgs.hyprpicker);
+        ocrPkg = self.packages.${pkgs.stdenv.hostPlatform.system}.ocr or null;
+        ocr =
+          if ocrPkg != null
+          then lib.getExe ocrPkg
+          else null;
+        sshot = self.packages.${pkgs.stdenv.hostPlatform.system}.sshot or null;
+        niri-windows = pkgs.writeShellApplication {
+          name = "niri-windows";
+          runtimeInputs = [pkgs.jq];
+          text = ''
+            case "''${1:-windows}" in
+              output)
+                niri msg -j focused-output | jq -r '.name'
+                ;;
+              focused)
+                output_json=$(niri msg -j focused-output)
+                ox=$(jq -r '.logical.x' <<<"$output_json")
+                oy=$(jq -r '.logical.y' <<<"$output_json")
+                niri msg -j focused-window | jq -r --argjson ox "$ox" --argjson oy "$oy" '
+                    "\((.layout.tile_pos_in_workspace_view[0] + $ox) | floor),\((.layout.tile_pos_in_workspace_view[1] + $oy) | floor) \(.layout.tile_size[0] | floor)x\(.layout.tile_size[1] | floor)"
+                '
+                ;;
+              windows)
+                output_json=$(niri msg -j focused-output)
+                oname=$(jq -r '.name' <<<"$output_json")
+                ox=$(jq -r '.logical.x' <<<"$output_json")
+                oy=$(jq -r '.logical.y' <<<"$output_json")
+                ws=$(niri msg -j workspaces | jq -r --arg o "$oname" '.[] | select(.output==$o and .is_active) | .id')
+                ws="''${ws:-null}"
+
+                niri msg -j windows | jq -r \
+                  --argjson ws "$ws" --argjson ox "$ox" --argjson oy "$oy" '
+                  .[]
+                  | select(.workspace_id == $ws and .layout.tile_pos_in_workspace_view != null)
+                  | "\((.layout.tile_pos_in_workspace_view[0] + $ox) | floor),\((.layout.tile_pos_in_workspace_view[1] + $oy) | floor) \(.layout.tile_size[0] | floor)x\(.layout.tile_size[1] | floor)"
+                '
+                ;;
+              *)
+                exit 2
+                ;;
+            esac
+          '';
+        };
+        shot = {
+          screen = {spawn-sh = "${lib.getExe sshot} -o \"$(${lib.getExe niri-windows} output)\"";};
+          window = {spawn-sh = "${lib.getExe sshot} -g \"$(${lib.getExe niri-windows} focused)\"";};
+          area = {spawn-sh = "${lib.getExe niri-windows} | ${lib.getExe sshot}";};
+        };
+        niriShot = {
+          screen = ["niri" "msg" "action" "screenshot-screen"];
+          window = ["niri" "msg" "action" "screenshot-window"];
+          area = ["niri" "msg" "action" "screenshot"];
+        };
+        pick = name:
+          if sshot != null
+          then shot.${name}
+          else niriShot.${name};
       in {
         "Mod+Q".close-window = _: {};
         "Mod+F".maximize-column = _: {};
@@ -142,12 +200,14 @@
           content.spawn = [playerCtl "previous"];
         };
 
-        "Print".spawn = ["niri" "msg" "action" "screenshot-screen"];
-        "Alt+Print".spawn = ["niri" "msg" "action" "screenshot-window"];
-        "Ctrl+Print".spawn = ["niri" "msg" "action" "screenshot"];
-        "Mod+Shift+S".spawn = ["niri" "msg" "action" "screenshot"];
+        "Print".spawn = pick "screen";
+        "Alt+Print".spawn = pick "window";
+        "Ctrl+Print".spawn = pick "area";
+        "Mod+Shift+S".spawn = pick "area";
 
         "Mod+Shift+E".spawn-sh = "${pkgs.wl-clipboard}/bin/wl-paste | ${lib.getExe pkgs.swappy} -f -";
+        "Mod+Shift+C".spawn = [hyprpicker "-a" "-n" "--scale=2.0" "--radius=100"];
+        "Mod+Shift+X" = lib.mkIf (ocr != null) {spawn = [ocr];};
       };
       extraConfig = ''
         include optional=true "~/.config/niri/config.kdl"

@@ -1,13 +1,19 @@
 - [ ] nvim config + colorscheme
 - [x] nvim clipboard
 - [x] noctalia settings + corner radius
-- [ ] noctalia screenshot editor
 - [x] firefox extension for noctalia
-- [ ] cursor
+- [x] cursor
 - [x] usb
 - [x] yazi def manager
 - [x] yazi date settings
 - [x] cliamp
 - [ ] voxtype
 
-- [ ] gtk + qt styles
+- [x] gtk + qt styles
+- [ ] gtk + qt opacity
+- [ ] icons + noctalia colors
+- [/] tg - доделать theming
+- [/] libreoffice - доделать theming
+- [ ] screenshot region
+- [ ] autoapply colors
+- [ ] доделать kvantum template for noctalia
