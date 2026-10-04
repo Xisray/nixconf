@@ -56,6 +56,7 @@
         pkgs.zoxide
         pkgs.devenv
         pkgs.wl-clipboard
+        pkgs.jq
         lazygit
         git
         neovim

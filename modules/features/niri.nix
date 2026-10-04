@@ -75,7 +75,7 @@
           clip-to-geometry = true;
         })
         ++ (lib.optional theme.blur.enable {
-          background-effects.blur = true;
+          background-effect.blur = true;
         })
         ++ cfg.wm.rules.windows;
       layerRules = cfg.wm.rules.layers;

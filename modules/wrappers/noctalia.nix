@@ -76,7 +76,6 @@
             "media"
             "audio_visualizer"
           ];
-          concave_edge_corners = false;
         };
       };
       control_center = {

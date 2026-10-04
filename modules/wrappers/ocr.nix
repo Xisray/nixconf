@@ -9,19 +9,39 @@
       runtimeInputs = with pkgs; [
         grim
         (self'.packages.slurp or slurp)
-        tesseract
+        (tesseract.override {
+          enableLanguages = ["rus" "eng"];
+        })
         wl-clipboard
         libnotify
       ];
       text = ''
         set -euo pipefail
-        geometry=slurp || exit 0
-        text=$(grim -g "$geometry" - | tesseract stdin stdout -l rus+eng 2>/dev/null || true)
-        if [ -n "''${text// }" ]; then
+        app="''${OCR_APP_NAME:-}"
+        lang="''${SSHOT_OCR_LANG:-rus+eng}"
+        while [ $# -gt 0 ]; do
+          case "$1" in
+            -a|--app-name) app="''${2:?need app name}"; shift 2 ;;
+            -l|--lang) lang="''${2:?need language code(s)}"; shift 2 ;;
+            *) echo "sshot: unknown argument: $1" >&2; exit 2 ;;
+          esac
+        done
+
+        notify_args=(-u low)
+        if [ -n "$app" ]; then
+          notify_args+=(-a "$app")
+        fi
+
+        geometry=$(slurp) || exit 0
+        [ -z "$geometry" ] && exit 0
+        text=$(grim -g "$geometry" - | tesseract stdin stdout -l "$lang" 2>/dev/null || true)
+        clean_text="$(printf '%s' "$text" | tr -d '[:space:]')"
+
+        if [ -n "$clean_text" ]; then
           printf '%s' "$text" | wl-copy
-          notify-send -u low "OCR" "Текст скопирован"
+          notify-send "''${notify_args[@]}" "Text Grab" "Text copied to clipboard"
         else
-          notify-send -u low "OCR" "Ничего не распознано"
+          notify-send "''${notify_args[@]}" "Text Grab" "No text recognized"
         fi
       '';
     };

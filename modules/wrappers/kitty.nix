@@ -2,7 +2,6 @@
   flake.wrappers.kitty = { wlib, ... }: {
     imports = [ wlib.wrapperModules.kitty ];
     settings = {
-      # window_padding_width = "0 10";
       enable_audio_bell = "no";
       cursor_shape = "beam";
       cursor_trail = 3;

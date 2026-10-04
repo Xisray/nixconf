@@ -9,7 +9,7 @@
   in {
     options.gtk = {
       settings = lib.mkOption {
-        type = iniFormat.type;
+        type = with lib.types; attrsOf (nullOr (oneOf [ bool int float str ]));
         default = {};
       };
     };

@@ -82,7 +82,6 @@
             bar = {
               default = {
                 background_opacity = theme.opacity;
-                concave_edge_corners = true;
                 radius_bottom_left = theme.corner.radius;
                 radius_bottom_right = theme.corner.radius;
               }

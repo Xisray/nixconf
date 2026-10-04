@@ -1,5 +1,9 @@
 {self, ...}: {
-  flake.nixosModules.general = {config, ...}: {
+  flake.nixosModules.general = {
+    config,
+    pkgs,
+    ...
+  }: {
     imports = [
       self.nixosModules.nix
       self.nixosModules.boot
@@ -25,6 +29,10 @@
       LC_TELEPHONE = "ru_RU.UTF-8";
       LC_TIME = "ru_RU.UTF-8";
     };
+    home.packages = [
+      pkgs.ayugram-desktop
+      pkgs.libreoffice
+    ];
 
     users.users.${config.preferences.user.name} = {
       isNormalUser = true;

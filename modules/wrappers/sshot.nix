@@ -16,43 +16,26 @@
       ];
       text = ''
         app="''${SSHOT_APP_NAME:--sshot}"
-        geom=""
-        output=""
         while [ $# -gt 0 ]; do
           case "$1" in
-            -g|--geometry) geom="''${2:?need geometry}"; shift 2 ;;
-            -o|--output) output="''${2:?need monitor name}"; shift 2 ;;
             -a|--app-name) app="''${2:?need app name}"; shift 2 ;;
             *) echo "sshot: unknown argument: $1" >&2; exit 2 ;;
           esac
         done
-
-        dir="''${$SSHOT_DIRECTORY:-$HOME/Pictures/Screenshots}"
-        dir="''${dir/#\~/$HOME}"
-        fmt="''${SSHOT_FORMAT:-%Y-%m-%d_%H-%M-%S}"
-
-        mkdir -p "$dir"
-        file="$dir/$(date +"$fmt").png"
-
-        fail() {
-          notify-send -u critical -a "$app" "Screenshot" "Failed to take the screenshot"
-          exit 1
-        }
-
-        if [ -n "$output" ]; then
-          grim -o "$output" "$file" || fail
+        if [ "''${SSHOT_DIRECTORY:-}" = "null" ]; then
+          file="$(mktemp --suffix=.png)"
+          trap 'rm -f "$file"' EXIT
         else
-          if [ -z "$geom" ]; then
-            regions=""
-            if [ ! -t 0 ]; then regions=$(cat); fi
-            if [ -n "$regions" ]; then regions="$regions"$'\n'; fi
-            geom=$(printf '%s' "$regions" | slurp) || exit 0
-          fi
-          grim -g "$geom" "$file" || fail
+          fmt="''${SSHOT_FORMAT:-%Y-%m-%d_%H-%M-%S}"
+          dir="''${SSHOT_DIRECTORY:-$HOME/Pictures/Screenshots}"
+          dir="''${dir/#\~/$HOME}"
+          mkdir -p "$dir"
+          file="$dir/$(date +"$fmt").png"
         fi
 
+        grim -g "$(slurp)" "$file" || exit 0
         wl-copy < "$file"
-        notify-send -i "$file" -a "$app" "Screenshot saved" "$file"$'\n'"Copied to clipboard"
+        notify-send -i "$file" -a "$app" "Screenshot captured" "You can paste the image from the clipboard"
       '';
     };
   };

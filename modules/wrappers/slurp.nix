@@ -25,9 +25,9 @@
           fi
         }
 
-        border_color=$(color borderColor '#89b4faff')
-        selection_color=$(color selectionColor '#89b4fa33')
-        dim_color=$(color dimColor '#00000066')
+        border_color=$(color borderColor '#ffffffff')
+        selection_color=$(color selectionColor '#00000000')
+        dim_color=$(color dimColor '#000000A0')
         box_color=$(color boxColor '#89b4fa22')
         border_width=$(get borderWidth 2)
         [[ $border_width =~ ^[0-9]+$ ]] || border_width=2

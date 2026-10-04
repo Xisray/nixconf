@@ -12,8 +12,8 @@
 - [x] gtk + qt styles
 - [ ] gtk + qt opacity
 - [ ] icons + noctalia colors
-- [/] tg - доделать theming
-- [/] libreoffice - доделать theming
-- [ ] screenshot region
+- [/] tg - доделать theming + path
+- [/] libreoffice - доделать theming + path
+- [x] screenshot region
 - [ ] autoapply colors
-- [ ] доделать kvantum template for noctalia
+- [/] доделать kvantum template for noctalia
