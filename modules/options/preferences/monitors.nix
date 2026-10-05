@@ -1,6 +1,10 @@
 {
-  flake.nixosModules.preferences = {lib, ...}: {
-    options.preference.monitors = with lib;
+  flake.nixosModules.preferences = {
+    lib,
+    config,
+    ...
+  }: {
+    options.preferences.monitors = with lib;
       mkOption {
         type = types.attrsOf (types.submodule {
           options = {
@@ -15,7 +19,7 @@
               type = types.int;
             };
             refreshRate = mkOption {
-              type = types.nullOr types.int;
+              type = types.nullOr types.float;
               default = null;
             };
             primary = mkOption {
@@ -43,5 +47,17 @@
         });
         default = {};
       };
+    config = {
+      assertions = [
+        {
+          assertion = config.preferences.monitors != {};
+          message = "There must be at least one monitor.";
+        }
+        {
+          assertion = lib.count (m: m.primary) (lib.attrValues config.preferences.monitors) <= 1;
+          message = "Only one monitor can be primary";
+        }
+      ];
+    };
   };
 }
