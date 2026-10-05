@@ -10,6 +10,7 @@
       self.nixosModules.impermanence
       self.nixosModules.xdg
       self.nixosModules.niri
+      self.nixosModules.noctalia
     ];
     preferences.persistence.data.directories = [
       "Downloads"
