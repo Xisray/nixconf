@@ -28,6 +28,7 @@
       imports = [
         inputs.wrappers.flakeModules.wrappers
         (inputs.import-tree ./modules)
+        ./hosts
       ];
     };
 }
