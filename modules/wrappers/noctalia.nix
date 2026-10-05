@@ -1,0 +1,196 @@
+{
+  flake.wrappers.noctalia = {
+    lib,
+    wlib,
+    pkgs,
+    config,
+    ...
+  }: let
+    tomlFmt = pkgs.formats.toml {};
+
+    files = lib.filterAttrs (_: v: v != {}) {
+      settings = config.settings;
+      colors = config.colors;
+    };
+
+    configDir = pkgs.linkFarm "noctalia-config" (
+      lib.mapAttrsToList (name: value: {
+        name = "${name}.toml";
+        path = tomlFmt.generate "${name}.toml" value;
+      })
+      files
+    );
+  in {
+    imports = [wlib.modules.default];
+
+    options = {
+      settings = lib.mkOption {
+        type = wlib.types.structuredValueWith {typeName = "TOML";};
+        default = {};
+      };
+      colors = lib.mkOption {
+        type = wlib.types.structuredValueWith {typeName = "TOML";};
+        default = {};
+      };
+    };
+
+    config = {
+      package = lib.mkDefault pkgs.noctalia;
+      env.NOCTALIA_CONFIG_HOME = "${configDir}";
+      settings = {
+        backdrop.enabled = true;
+        shell.session.actions = [
+          {
+            action = "lock";
+            countdown_seconds = 0.0;
+            enabled = true;
+            shortcut = "1";
+            variant = "default";
+          }
+          {
+            action = "lock_and_suspend";
+            countdown_seconds = 0.0;
+            enabled = true;
+            shortcut = "2";
+            variant = "default";
+          }
+          {
+            action = "reboot";
+            countdown_seconds = 0.0;
+            enabled = true;
+            shortcut = "3";
+            variant = "default";
+          }
+          {
+            action = "shutdown";
+            countdown_seconds = 0.0;
+            enabled = true;
+            shortcut = "4";
+            variant = "default";
+          }
+          {
+            action = "logout";
+            countdown_seconds = 0.0;
+            enabled = false;
+            shortcut = "5";
+            variant = "default";
+          }
+        ];
+        desktop_widgets.enabled = false;
+        dock.enabled = false;
+        shell = {
+          password_style = "random";
+          polkit_agent = true;
+          panel = {
+            open_near_click_control_center = true;
+            shadow = false;
+          };
+          app_icon_colorize = true;
+          setup_wizard_enabled = false;
+          launcher.providers.session.global = true;
+        };
+        bar = {
+          default = {
+            widget_spacing = 9;
+            shadow = false;
+            center = ["date"];
+            end = [
+              "tray"
+              "network"
+              "bluetooth"
+              "input_volume"
+              "volume"
+              "battery"
+              "keyboard_layout"
+              "notifications"
+            ];
+            margin_ends = 0;
+            radius = 0;
+            start = [
+              "session"
+              "workspaces"
+              "media"
+              "audio_visualizer"
+            ];
+          };
+        };
+        control_center = {
+          sidebar = "none";
+          sidebar_section = "none";
+          calendar.show_events_card = false;
+          hidden_tabs = [
+            "media"
+            "audio"
+            "monitor"
+            "system"
+            "power"
+            "network"
+            "bluetooth"
+            "weather"
+            "calendar"
+            "notifications"
+            "screen-time"
+          ];
+          shortcuts = [
+            {type = "caffeine";}
+            {type = "wallpaper";}
+          ];
+        };
+        widget = {
+          brightness.show_label = false;
+          date.format = "{::%H:%M %a, %b %d}";
+          network.show_label = false;
+          workspaces.show_labels = false;
+          tray = {
+            drawer = true;
+            pinned = ["udiskie"];
+          };
+          volume.show_label = false;
+          input_volume.show_label = false;
+          audio_visualizer.interactive = false;
+          media = {
+            hide_album_art = true;
+            hide_when_no_media = true;
+          };
+        };
+        nightlight.enabled = true;
+        location = {
+          sunrise = "07:00";
+          sunset = "20:00";
+          custom_schedule = true;
+        };
+        weather.enabled = false;
+        theme.templates = {
+          enable_builtin_templates = false;
+          enable_community_templates = false;
+        };
+        notification.offset_x = 8;
+        wallpaper.directory = "~/Pictures/Wallpapers";
+        idle = {
+          behavior_order = [
+            "lock"
+            "screen-off"
+            "lock-and-suspend"
+          ];
+          behavior = {
+            lock = {
+              action = "lock";
+              enabled = true;
+              timeout = 300.0;
+            };
+            lock-and-suspend = {
+              action = "lock_and_suspend";
+              enabled = true;
+              timeout = 900.0;
+            };
+            screen-off = {
+              action = "screen_off";
+              enabled = true;
+              timeout = 600.0;
+            };
+          };
+        };
+      };
+    };
+  };
+}
