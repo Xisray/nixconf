@@ -16,6 +16,7 @@
       url = "github:nix-community/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    base16.url = "github:SenchoPens/base16.nix";
   };
 
   outputs = inputs:
