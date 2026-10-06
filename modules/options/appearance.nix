@@ -17,6 +17,7 @@
         readOnly = true;
         description = "Processed scheme with base00..base0F, withHashtag, etc.";
       };
+      base24 = mkEnableOption "Use base24 instead base16";
       cursor = mkOption {
         type = types.nullOr (types.submodule {
           options = {
