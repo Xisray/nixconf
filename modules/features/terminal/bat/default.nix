@@ -1,6 +1,5 @@
 {self, ...}: {
   flake.shellModules.bat = {
-    pkgs,
     lib,
     appearance,
     ...
@@ -9,7 +8,7 @@
       if appearance.base24
       then "base24"
       else "base16";
-    bat = self.packages.${pkgs.stdenv.hostPlatform.system}.bat or null;
+    bat = self.wrappers.bat or null;
     hasScheme = appearance.scheme != null;
   in {
     packages.bat = lib.mkIf (bat != null && hasScheme) (

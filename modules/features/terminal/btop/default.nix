@@ -10,7 +10,7 @@
       if appearance.base24
       then "base24"
       else "base16";
-    btop = self.packages.${pkgs.stdenv.hostPlatform.system}.btop or wlib.wrapperModules.btop;
+    btop = self.wrappers.btop or wlib.wrapperModules.btop;
     hasScheme = appearance.scheme != null;
     flat = appearance.rounding == 0;
   in {

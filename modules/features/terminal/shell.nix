@@ -10,11 +10,10 @@
   config.flake.nixosModules.shell = {
     config,
     lib,
-    pkgs,
     ...
   }: let
     user = config.preferences.user;
-    shell = self.packages.${pkgs.stdenv.hostPlatform.system}.${user.shell}.wrap {
+    shell = self.wrappers.${user.shell}.wrap {
       imports = lib.attrValues self.shellModules;
       _module.args.appearance = config.appearance;
     };
@@ -26,7 +25,6 @@
     };
     preferences.persistence.data.directories = [
       ".local/state/lazygit"
-      ".config/fzf/themes"
     ];
   };
 }
