@@ -9,6 +9,14 @@
         type = types.str;
         default = "xisray";
       };
+      packages = mkOption {
+        type = types.listOf types.package;
+        default = [];
+      };
+      shell = lib.mkOption {
+        type = lib.types.enum ["fish"];
+        default = "fish";
+      };
     };
     config.users.users.${config.preferences.user.name} = {
       isNormalUser = true;
@@ -18,6 +26,7 @@
         "input"
       ];
       hashedPasswordFile = "/persist/passwd";
+      packages = config.preferences.user.packages;
     };
   };
 }
