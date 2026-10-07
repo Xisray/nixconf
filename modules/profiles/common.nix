@@ -8,6 +8,7 @@
       self.nixosModules.locale
       self.nixosModules.nix
       self.nixosModules.impermanence
+      self.nixosModules.sops
       self.nixosModules.xdg
       self.nixosModules.niri
       self.nixosModules.noctalia
