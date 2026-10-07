@@ -59,7 +59,9 @@
         if test -f /etc/fish/nixos-env-preinit.fish
           source /etc/fish/nixos-env-preinit.fish
         end
-        source ~/.config/fish/config.fish
+        if test -f ~/.config/fish/config.fish
+          source ~/.config/fish/config.fish
+        end
         if test -d ~/.config/fish/conf.d
           for f in ~/.config/fish/conf.d/*.fish
             source $f
