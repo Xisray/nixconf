@@ -6,7 +6,7 @@
     config,
     ...
   }: let
-    tomlFmt = pkgs.formats.toml {};
+    format = pkgs.formats.toml {};
 
     files = lib.filterAttrs (_: v: v != {}) {
       settings = config.settings;
@@ -16,7 +16,7 @@
     configDir = pkgs.linkFarm "noctalia-config" (
       lib.mapAttrsToList (name: value: {
         name = "${name}.toml";
-        path = tomlFmt.generate "${name}.toml" value;
+        path = format.generate "${name}.toml" value;
       })
       files
     );
@@ -25,11 +25,11 @@
 
     options = {
       settings = lib.mkOption {
-        type = wlib.types.structuredValueWith {typeName = "TOML";};
+        type = format.type;
         default = {};
       };
       colors = lib.mkOption {
-        type = wlib.types.structuredValueWith {typeName = "TOML";};
+        type = format.type;
         default = {};
       };
     };
