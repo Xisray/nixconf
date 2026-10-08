@@ -5,7 +5,7 @@
       enable_audio_bell = "no";
       cursor_shape = "beam";
       cursor_trail = 3;
-      cursor_trai_decay = "0.1 0.4";
+      cursor_trail_decay = "0.1 0.4";
       confirm_os_window_close = 0;
     };
     keybindings = {
