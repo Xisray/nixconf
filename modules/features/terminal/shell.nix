@@ -23,8 +23,14 @@
       enable = true;
       package = shell;
     };
-    preferences.persistence.data.directories = [
-      ".local/state/lazygit"
-    ];
+    preferences.persistence = {
+      data.directories = [
+        ".local/state/lazygit"
+        ".local/share/devenv"
+      ];
+      cache.directories = [
+        ".cache/nix"
+      ];
+    };
   };
 }
