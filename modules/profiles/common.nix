@@ -12,6 +12,13 @@
       self.nixosModules.xdg
       self.nixosModules.niri
       self.nixosModules.noctalia
+      self.nixosModules.qbittorrent
+      self.nixosModules.syncthing
+      self.nixosModules.firefox
+      self.nixosModules.clash-verge
+      self.nixosModules.keepassxc
+      self.nixosModules.kitty
+      self.nixosModules.shell
     ];
     preferences.persistence.data.directories = [
       "Downloads"
