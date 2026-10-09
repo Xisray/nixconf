@@ -5,7 +5,7 @@
     users.users.xisray.packages = [
       keepassxc
       (pkgs.makeAutostartItem {
-        name = "keepassxc";
+        name = "org.keepassxc.KeePassXC";
         package = keepassxc;
       })
     ];
