@@ -26,6 +26,9 @@
       layout = {
         always-center-single-column = _: {};
         gaps = 8;
+        border = {
+          off = _: {};
+        };
         focus-ring = {
           width = 2;
         };
@@ -161,7 +164,6 @@
         "Mod+Shift+X" = lib.mkIf (ocr != null) {spawn = [(lib.getExe ocr) "-a" "niri"];};
       };
       extraConfig = ''
-        include optional=true "~/.config/niri/config.kdl"
         animations {
           workspace-switch {
             spring damping-ratio=1.0 stiffness=1600 epsilon=0.0001
