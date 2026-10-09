@@ -14,6 +14,9 @@
     config = let
       dynamic = config.mode == "dynamic";
     in {
+      runtimePkgs = [
+        pkgs.wl-clipboard
+      ];
       settings.config_directory = lib.mkIf dynamic (lib.generators.mkLuaInline "vim.uv.os_homedir() .. '/nixconf/modules/wrappers/neovim'");
       settings.compile_generated_lua = false;
       specs.init = lib.mkIf dynamic {

@@ -22,7 +22,7 @@
         else "base16";
       keys = base16Keys ++ lib.optionals cfg.base24 base24Keys;
       palette = lib.getAttrs keys cfg.colors;
-      scheme = {variant = "";} // palette;
+      scheme = {variant = "dark";} // palette;
     in {
       specs.colorscheme = lib.mkIf (cfg.colors != {}) {
         data = [pkgs.vimPlugins.tinted-nvim];
