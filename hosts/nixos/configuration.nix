@@ -1,4 +1,8 @@
-{self, pkgs, ...}: {
+{
+  self,
+  pkgs,
+  ...
+}: {
   imports = [
     self.nixosModules.common
     self.nixosModules.nvidia
@@ -39,6 +43,25 @@
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Classic";
       size = 20;
+    };
+    fonts = {
+      # serif = {
+      #   package = pkgs.ubuntu-sans;
+      #   name = "Ubuntu Sans";
+      # };
+      # sansSerif = {
+      #   package = pkgs.ubuntu-sans;
+      #   name = "Ubuntu Sans";
+      # };
+      monospace = {
+        package = pkgs.nerd-fonts.jetbrains-mono;
+        name = "JetBrainsMono Nerd Font Mono";
+      };
+    };
+    icons = {
+      package = pkgs.papirus-icon-theme;
+      dark = "Papirus-Dark";
+      light = "Papirus-Light";
     };
   };
 }
