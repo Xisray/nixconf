@@ -10,6 +10,7 @@
       self.nixosModules.impermanence
       self.nixosModules.sops
       self.nixosModules.xdg
+      self.nixosModules.gtk
       self.nixosModules.niri
       self.nixosModules.noctalia
       self.nixosModules.qbittorrent
