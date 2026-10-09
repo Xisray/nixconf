@@ -1,4 +1,5 @@
 {
+  self,
   lib,
   inputs,
   ...
@@ -8,6 +9,7 @@
   );
   mkHost = hostname:
     inputs.nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit self inputs; };
       modules = [
         {networking.hostName = hostname;}
         ./${hostname}/configuration.nix
