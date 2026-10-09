@@ -2,9 +2,13 @@
   flake.wrappers.yazi = {
     wlib,
     config,
+    pkgs,
     ...
   }: {
     imports = [wlib.wrapperModules.yazi];
+    runtimePkgs = [
+      pkgs.wl-clipboard
+    ];
     settings.yazi.mgr.linemode = "size_and_mtime";
     constructFiles.initLua = {
       relPath = "${config.binName}-config/init.lua";
