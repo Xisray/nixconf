@@ -146,7 +146,14 @@
         XCURSOR_SIZE = cfg.cursor.size;
       };
       fonts = {
-        packages = cfg.fonts.packages ++ cfg.fonts.emoji.package ++ cfg.fonts.monospace.package ++ cfg.fonts.sansSerif.package ++ cfg.fonts.serif.package;
+        packages =
+          cfg.fonts.packages
+          ++ map (f: f.package) [
+            cfg.fonts.emoji
+            cfg.fonts.monospace
+            cfg.fonts.sansSerif
+            cfg.fonts.serif
+          ];
         fontconfig = {
           enable = true;
           defaultFonts = {
