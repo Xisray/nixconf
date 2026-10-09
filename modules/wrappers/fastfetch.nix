@@ -8,7 +8,7 @@
     imports = [wlib.wrapperModules.fastfetch];
     options = {
       border = lib.mkOption {
-        type = lib.types.enam ["square" "rounded"];
+        type = lib.types.enum ["square" "rounded"];
         default = "square";
       };
     };
