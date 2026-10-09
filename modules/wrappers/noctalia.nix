@@ -13,11 +13,11 @@
     configDir = pkgs.linkFarm "noctalia-config" (
       lib.optional (config.settings != {}) {
         name = "noctalia/config.toml";
-	path = tomlFormat.generate "config.toml" config.settings;
+        path = tomlFormat.generate "config.toml" config.settings;
       }
       ++ lib.optional (config.colors != {}) {
         name = "noctalia/palettes/${paletteName}.json";
-	path = jsonFormat.generate "${paletteName}.json" {dark = config.colors;};
+        path = jsonFormat.generate "${paletteName}.json" {dark = config.colors;};
       }
     );
   in {
@@ -39,14 +39,14 @@
       env.NOCTALIA_CONFIG_HOME = "${configDir}";
       settings = {
         backdrop.enabled = true;
-	lockscreen = {
-	  fingerprint = false;
-	  transition = ["disc" "stripes"];
-	  transition_duration = 800;
-	};
+        lockscreen = {
+          fingerprint = false;
+          transition = ["disc" "stripes"];
+          transition_duration = 800;
+        };
         shell = {
-	  offline_mode = true;
-	  session.actions = [
+          offline_mode = true;
+          session.actions = [
             {
               action = "lock";
               countdown_seconds = 0.0;
@@ -83,7 +83,7 @@
               variant = "default";
             }
           ];
-	};
+        };
         desktop_widgets.enabled = false;
         dock.enabled = false;
         shell = {
@@ -168,15 +168,17 @@
           custom_schedule = true;
         };
         weather.enabled = false;
-        theme = {
-	  templates = {
-            enable_builtin_templates = false;
-            enable_community_templates = false;
-	  };
-        } // lib.optionalAttrs (config.colors != {}) {
-	  source = lib.mkForce "custom";
-	  custom_palette = lib.mkForce paletteName;
-	};
+        theme =
+          {
+            templates = {
+              enable_builtin_templates = false;
+              enable_community_templates = false;
+            };
+          }
+          // lib.optionalAttrs (config.colors != {}) {
+            source = lib.mkForce "custom";
+            custom_palette = lib.mkForce paletteName;
+          };
         notification.offset_x = 8;
         wallpaper.directory = "~/Pictures/Wallpapers";
         idle = {
