@@ -10,10 +10,12 @@
   config.flake.nixosModules.shell = {
     config,
     lib,
+    pkgs,
     ...
   }: let
     user = config.preferences.user;
     shell = self.wrappers.${user.shell}.wrap {
+      inherit pkgs;
       imports = lib.attrValues self.shellModules;
       _module.args.appearance = config.appearance;
     };

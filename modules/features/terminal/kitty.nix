@@ -2,6 +2,7 @@
   flake.nixosModules.kitty = {
     pkgs,
     config,
+    lib,
     ...
   }: let
     kittyWrapper = self.wrappers.kitty or null;
@@ -11,9 +12,10 @@
       else
         (
           if config.appearance.scheme == null
-          then kittyWrapper
+          then self.packages.${pkgs.stdenv.hostPlatform.system}.kitty
           else
             kittyWrapper.wrap {
+              inherit pkgs;
               settings = with config.appearance.colors.withHashtag; {
                 color0 = base03;
                 color1 = base08;
@@ -76,10 +78,10 @@
             }
         );
   in {
-    preferences.binds."Mod+Return".action = kitty;
+    preferences.binds."Mod+Return".action = lib.getExe kitty;
     xdg.terminal-exec = {
       enable = true;
-      terminal-exec.setting.default = ["kitty.desktop"];
+      settings.default = ["kitty.desktop"];
     };
     preferences.user.packages = [
       kitty

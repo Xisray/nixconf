@@ -2,6 +2,7 @@
   flake.shellModules.bat = {
     lib,
     appearance,
+    pkgs,
     ...
   }: let
     variant =
@@ -13,6 +14,7 @@
   in {
     packages.bat = lib.mkIf (bat != null && hasScheme) (
       bat.wrap {
+        inherit pkgs;
         themes.${variant} = appearance.colors {
           template = ./${variant}.tmTheme.mustache;
           extension = ".tmTheme";

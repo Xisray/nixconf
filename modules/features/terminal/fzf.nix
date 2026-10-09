@@ -7,6 +7,7 @@
     ...
   }: {
     packages.fzf = lib.mkIf (appearance.scheme != null) (wlib.wrapPackage {
+      inherit pkgs;
       package = pkgs.fzf;
       env = let
         border =

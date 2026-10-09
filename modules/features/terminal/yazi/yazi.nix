@@ -28,6 +28,7 @@
     ];
   in {
     packages.yazi = lib.mkIf (yazi != null) (yazi.wrap {
+      inherit pkgs;
       settings.theme = let
         block = {
           open =
