@@ -12,6 +12,7 @@
       then self.packages.${pkgs.stdenv.hostPlatform.system}.firefox
       else
         (firefoxWrapper.wrap {
+          inherit pkgs;
           colors = with config.appearance.colors.withHashtag; {
             bookmark_text = base05;
             button_background_active = base02;

@@ -236,7 +236,7 @@
           };
         };
         ExtensionSettings = let
-          colors = lib.mapAttrs (_name: c: "rgb(${toString c.r}, ${toString c.g}, ${toString c.b})") (lib.filterAttrs (_name: val: val != null) config.colors);
+          colors = lib.filterAttrs (_name: val: val != null) config.colors;
           themeExtensionId = "custom-nix-theme@local";
           manifestDir = pkgs.writeTextDir "manifest.json" (builtins.toJSON {
             manifest_version = 2;
