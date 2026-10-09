@@ -9,6 +9,7 @@
   in {
     environment.systemPackages = [
       pkgs.adw-gtk3
+      pkgs.glib
     ];
     programs.dconf.enable = true;
 
@@ -46,7 +47,7 @@
           }
           // lib.optionalAttrs (style.cursor != null) {
             cursor-theme = style.cursor.name;
-            cursor-size = style.cursor.size;
+            cursor-size = lib.gvariant.mkUint32 style.cursor.size;
           };
       }
     ];
