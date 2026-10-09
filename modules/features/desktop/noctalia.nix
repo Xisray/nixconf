@@ -68,8 +68,20 @@
           };
           settings =
             {
-              osd.background_opacity = style.opacity.popups;
-              notification.background_opacity = style.opacity.popups;
+              osd =
+                {
+                  background_opacity = style.opacity.popups;
+                }
+                // lib.optionalAttrs showSecondaryBar {
+                  monitors = [monitorPort];
+                };
+              notification =
+                {
+                  background_opacity = style.opacity.popups;
+                }
+                // lib.optionalAttrs showSecondaryBar {
+                  monitors = [monitorPort];
+                };
 
               shell.corner_radius_scale = lib.max 0.0 (lib.min 2.0 (style.rounding / 12.0));
               shell.panel.transparency_mode =
@@ -171,8 +183,6 @@
               };
             }
             // lib.optionalAttrs showSecondaryBar {
-              osd.monitors = [monitorPort];
-              notification.monitors = [monitorPort];
               lockscreen.monitors = [monitorPort];
             };
         };
