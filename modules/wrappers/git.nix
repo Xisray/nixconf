@@ -9,6 +9,8 @@
         name = "Xisray";
         email = "safixxkir@yandex.ru";
       };
+      http.proxy = "http://127.0.0.1:7897";
+      https.proxy = "http://127.0.0.1:7897";
     };
   };
 }
