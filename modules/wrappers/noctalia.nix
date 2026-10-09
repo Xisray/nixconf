@@ -6,30 +6,30 @@
     config,
     ...
   }: let
-    format = pkgs.formats.toml {};
+    tomlFormat = pkgs.formats.toml {};
+    jsonFormat = pkgs.formats.json {};
 
-    files = lib.filterAttrs (_: v: v != {}) {
-      settings = config.settings;
-      colors = config.colors;
-    };
-
+    paletteName = "nix";
     configDir = pkgs.linkFarm "noctalia-config" (
-      lib.mapAttrsToList (name: value: {
-        name = "${name}.toml";
-        path = format.generate "${name}.toml" value;
-      })
-      files
+      lib.optional (config.settings != {}) {
+        name = "noctalia/config.toml";
+	path = tomlFormat.generate "config.toml" config.settings;
+      }
+      ++ lib.optional (config.colors != {}) {
+        name = "noctalia/palettes/${paletteName}.json";
+	path = jsonFormat.generate "${paletteName}.json" {dark = config.colors;};
+      }
     );
   in {
     imports = [wlib.modules.default];
 
     options = {
       settings = lib.mkOption {
-        type = format.type;
+        type = tomlFormat.type;
         default = {};
       };
       colors = lib.mkOption {
-        type = format.type;
+        type = jsonFormat.type;
         default = {};
       };
     };
@@ -39,43 +39,51 @@
       env.NOCTALIA_CONFIG_HOME = "${configDir}";
       settings = {
         backdrop.enabled = true;
-        shell.session.actions = [
-          {
-            action = "lock";
-            countdown_seconds = 0.0;
-            enabled = true;
-            shortcut = "1";
-            variant = "default";
-          }
-          {
-            action = "lock_and_suspend";
-            countdown_seconds = 0.0;
-            enabled = true;
-            shortcut = "2";
-            variant = "default";
-          }
-          {
-            action = "reboot";
-            countdown_seconds = 0.0;
-            enabled = true;
-            shortcut = "3";
-            variant = "default";
-          }
-          {
-            action = "shutdown";
-            countdown_seconds = 0.0;
-            enabled = true;
-            shortcut = "4";
-            variant = "default";
-          }
-          {
-            action = "logout";
-            countdown_seconds = 0.0;
-            enabled = false;
-            shortcut = "5";
-            variant = "default";
-          }
-        ];
+	lockscreen = {
+	  fingerprint = false;
+	  transition = ["disc" "stripes"];
+	  transition_duration = 800;
+	};
+        shell = {
+	  offline_mode = true;
+	  session.actions = [
+            {
+              action = "lock";
+              countdown_seconds = 0.0;
+              enabled = true;
+              shortcut = "1";
+              variant = "default";
+            }
+            {
+              action = "lock_and_suspend";
+              countdown_seconds = 0.0;
+              enabled = true;
+              shortcut = "2";
+              variant = "default";
+            }
+            {
+              action = "reboot";
+              countdown_seconds = 0.0;
+              enabled = true;
+              shortcut = "3";
+              variant = "default";
+            }
+            {
+              action = "shutdown";
+              countdown_seconds = 0.0;
+              enabled = true;
+              shortcut = "4";
+              variant = "default";
+            }
+            {
+              action = "logout";
+              countdown_seconds = 0.0;
+              enabled = false;
+              shortcut = "5";
+              variant = "default";
+            }
+          ];
+	};
         desktop_widgets.enabled = false;
         dock.enabled = false;
         shell = {
@@ -160,10 +168,15 @@
           custom_schedule = true;
         };
         weather.enabled = false;
-        theme.templates = {
-          enable_builtin_templates = false;
-          enable_community_templates = false;
-        };
+        theme = {
+	  templates = {
+            enable_builtin_templates = false;
+            enable_community_templates = false;
+	  };
+        } // lib.optionalAttrs (config.colors != {}) {
+	  source = lib.mkForce "custom";
+	  custom_palette = lib.mkForce paletteName;
+	};
         notification.offset_x = 8;
         wallpaper.directory = "~/Pictures/Wallpapers";
         idle = {
