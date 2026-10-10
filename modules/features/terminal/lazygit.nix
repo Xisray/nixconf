@@ -11,13 +11,13 @@
       inherit pkgs;
       settings.gui = with appearance.colors.withHashtag; {
         theme = {
-          activeBorderColor = [base0E "bold"];
-          inactiveBorderColor = [base05];
-          searchingActiveBorderColor = [base0A];
+          activeBorderColor = [base0D "bold"];
+          inactiveBorderColor = [base03];
+          searchingActiveBorderColor = [base09];
           optionsTextColor = [base0D];
           selectedLineBgColor = [base02];
           inactiveViewSelectedLineBgColor = [base04];
-          cherryPickedCommitFgColor = [base0E];
+          cherryPickedCommitFgColor = [base0D];
           cherryPickedCommitBgColor = [base03];
           markedBaseCommitFgColor = [base0D];
           markedBaseCommitBgColor = [base0A];
