@@ -14,14 +14,14 @@
       {
         name = "flavor.toml";
         path = appearance.colors {
-          template = ./${variant}.toml.mustache;
+          template = ./base16.toml.mustache;
           extension = ".toml";
         };
       }
       {
         name = "tmtheme.xml";
         path = appearance.colors {
-          template = ./${variant}.tmTheme.mustache;
+          template = ../bat/${variant}.tmTheme.mustache;
           extension = ".xml";
         };
       }
