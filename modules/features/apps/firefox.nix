@@ -1,65 +1,468 @@
-{self, ...}: {
+{
   flake.nixosModules.firefox = {
-    pkgs,
-    config,
-    ...
-  }: let
-    firefoxWrapper = self.wrappers.firefox or null;
-    firefox =
-      if (firefoxWrapper == null)
-      then pkgs.firefox
-      else if (config.appearance.scheme == null)
-      then self.packages.${pkgs.stdenv.hostPlatform.system}.firefox
-      else
-        (firefoxWrapper.wrap {
-          inherit pkgs;
-          colors = with config.appearance.colors.withHashtag; {
-            bookmark_text = base05;
-            button_background_active = base02;
-            button_background_hover = base01;
-            icons = base05;
-            icons_attention = base0D;
-            frame = if config.appearance.base24 then base10 else base00;
-            frame_inactive = if config.appearance.base24 then base10 else base00;
-            ntp_background = base00;
-            ntp_card_background = base01;
-            ntp_text = base05;
-            popup = base01;
-            popup_border = base02;
-            popup_highlight = base02;
-            popup_highlight_text = base05;
-            popup_text = base05;
-            sidebar = base01;
-            sidebar_border = base02;
-            sidebar_highlight = base02;
-            sidebar_highlight_text = base05;
-            sidebar_text = base05;
-            tab_background_separator = base02;
-            tab_background_text = base04;
-            tab_line = base0D;
-            tab_loading = base0D;
-            tab_selected = base00; # сливается с toolbar
-            tab_text = base05;
-            toolbar = base00;
-            toolbar_bottom_separator = base02;
-            toolbar_top_separator = base02;
-            toolbar_vertical_separator = base02;
-            toolbar_text = base05;
-            toolbar_field = base01;
-            toolbar_field_border = base02;
-            toolbar_field_border_focus = base0D;
-            toolbar_field_focus = base02;
-            toolbar_field_highlight = base0D; # цвет выделения текста в адресной строке
-            toolbar_field_highlight_text = base00;
-            toolbar_field_separator = base02;
-            toolbar_field_text = base05;
-            toolbar_field_text_focus = base05;
-          };
-        });
-  in {
     programs.firefox = {
       enable = true;
-      package = firefox;
+      languagePacks = ["ru"];
+      autoConfig = ''
+        // Nimbus / Experiments
+        lockPref("nimbus.debug", false);
+        lockPref("nimbus.rollouts.enabled", false);
+        lockPref("services.sync.prefs.sync.nimbus.rollouts.enabled", false);
+
+        // Normandy / Shield
+        lockPref("app.normandy.enabled", false);
+        lockPref("app.normandy.api_url", "");
+        lockPref("app.shield.optoutstudies.enabled", false);
+
+        // Telemetry (то, что не покрывается DisableTelemetry)
+        lockPref("toolkit.telemetry.unified", false);
+        lockPref("toolkit.telemetry.server", "");
+        lockPref("toolkit.telemetry.cachedClientID", "");
+        lockPref("toolkit.telemetry.newProfilePing.enabled", false);
+        lockPref("toolkit.telemetry.shutdownPingSender.enabled", false);
+        lockPref("toolkit.telemetry.updatePing.enabled", false);
+        lockPref("toolkit.telemetry.firstShutdownPing.enabled", false);
+        lockPref("toolkit.telemetry.bhrPing.enabled", false);
+        lockPref("datareporting.healthreport.service.enabled", false);
+        lockPref("breakpad.reportURL", "");
+
+        // Beacon
+        lockPref("beacon.enabled", false);
+
+        // Privacy (не все privacy.* разрешены в Preferences policy)
+        lockPref("privacy.donottrackheader.enabled", true);
+        lockPref("privacy.query_stripping.enabled", true);
+        lockPref("privacy.usercontext.about_newtab_segregation.enabled", true);
+
+        // Security
+        lockPref("security.ssl.disable_session_identifiers", true);
+
+        // Device sensors
+        lockPref("device.sensors.enabled", false);
+        lockPref("device.sensors.ambientLight.enabled", false);
+        lockPref("device.sensors.motion.enabled", false);
+        lockPref("device.sensors.orientation.enabled", false);
+        lockPref("device.sensors.proximity.enabled", false);
+
+        // Sync-related (services.* не разрешены)
+        lockPref("services.sync.prefs.sync.browser.newtabpage.activity-stream.showSponsoredTopSite", false);
+      '';
+      policies = {
+        DownloadDirectory = "\${home}/Downloads";
+        RequestedLocales = [
+          "ru"
+          "en-US"
+        ];
+        Homepage = {
+          Locked = false;
+          StartPage = "previous-session";
+        };
+        SkipTermsOfUse = true;
+        DisableFirefoxScreenshots = true;
+        HttpsOnlyMode = "force_enabled";
+        AppAutoUpdate = false;
+        DisableProfileRefresh = true;
+        DontCheckDefaultBrowser = true;
+        DisablePocket = true;
+        DisableTelemetry = true;
+        DisableFirefoxStudies = true;
+        DisableMasterPasswordCreation = true;
+        GenerativeAI = {
+          Enabled = false;
+          Chatbot = false;
+          LinkPreviews = false;
+          TabGroups = false;
+          Locked = true;
+        };
+        AIControls = {
+          Default = {
+            Value = "blocked";
+            Locked = true;
+          };
+          Translations = {
+            Value = "available";
+            Locked = true;
+          };
+          PDFAltText = {
+            Value = "blocked";
+            Locked = true;
+          };
+          SmartTabGroups = {
+            Value = "blocked";
+            Locked = true;
+          };
+          LinkPreviewKeyPoints = {
+            Value = "blocked";
+            Locked = true;
+          };
+          SidebarChatbot = {
+            Value = "blocked";
+            Locked = true;
+          };
+          SmartWindow = {
+            Value = "blocked";
+            Locked = true;
+          };
+        };
+        DNSOverHTTPS = {
+          Enabled = false;
+        };
+        EnableTrackingProtection = {
+          Value = true;
+          Locked = true;
+          Cryptomining = true;
+          Fingerprinting = true;
+          EmailTracking = true;
+          SuspectedFingerprinting = true;
+        };
+        CaptivePortal = false;
+        NetworkPrediction = false;
+        DisableFirefoxAccounts = true;
+        DisableFormHistory = true;
+        NewTabPage = false;
+        AutofillAddressEnabled = false;
+        AutofillCreditCardEnabled = false;
+        NoDefaultBookmarks = true;
+        EncryptedMediaExtensions = {
+          Enabled = false;
+          Locked = true;
+        };
+        OfferToSaveLogins = false;
+        SanitizeOnShutdown = {
+          Cache = true;
+          Cookies = true;
+          FormData = true;
+          History = false;
+          Sessions = true;
+          SiteSettings = true;
+          Locked = true;
+        };
+        SearchSuggestEnabled = false;
+        FirefoxHome = {
+          TopSites = false;
+          SponsoredTopSites = false;
+          Highlights = false;
+          Pocket = false;
+          Stories = false;
+          SponsoredPocket = false;
+          SponsoredStories = false;
+          Snippets = false;
+          Locked = true;
+        };
+        Cookies = {
+          Allow = [
+            "https://github.com"
+            "https://yandex.ru"
+            "https://deepseek.com"
+            "https://reyohoho.gitlab.io"
+            "https://grok.com"
+            "https://mail.ru"
+            "https://habr.com"
+            "https://chatgpt.com"
+            "https://claude.ai"
+            "https://vk.com"
+            "https://google.com"
+            "https://steampowered.com"
+            "https://steamcommunity.com"
+            "https://perplexity.ai"
+            "https://max.ru"
+            "https://discord.com"
+          ];
+          AllowSession = [];
+          Block = [];
+          Locked = true;
+          Behavior = "reject-foreign";
+          BehaviorPrivateBrowsing = "reject";
+        };
+        Permissions = {
+          Camera = {
+            Allow = [];
+            Block = [];
+            BlockNewRequests = true;
+            Locked = true;
+          };
+          Microphone = {
+            Allow = [
+              "https://telemost.yandex.ru"
+            ];
+            Block = [];
+            BlockNewRequests = true;
+            Locked = true;
+          };
+          Location = {
+            Allow = [];
+            Block = [];
+            BlockNewRequests = true;
+            Locked = true;
+          };
+          Notifications = {
+            Allow = [];
+            Block = [];
+            BlockNewRequests = true;
+            Locked = true;
+          };
+          Autoplay = {
+            Allow = [
+              "https://telemost.yandex.ru"
+            ];
+            Block = [];
+            Default = "block-audio-video";
+            Locked = true;
+          };
+          VirtualReality = {
+            Allow = [];
+            Block = [];
+            BlockNewRequests = true;
+            Locked = true;
+          };
+          ScreenShare = {
+            Allow = [];
+            Block = [];
+            BlockNewRequests = true;
+            Locked = true;
+          };
+        };
+        ExtensionSettings = {
+          "uBlock0@raymondhill.net" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "sponsorBlocker@ajay.app" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "jid1-BoFifL9Vbdl2zQ@jetpack" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "CanvasBlocker@kkapsner.de" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/canvasblocker/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "keepassxc-browser@keepassxc.org" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/keepassxc-browser/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/refined-github-/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "firefox-extension@steamdb.info" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/steam-database/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "floccus@handmadeideas.org" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/floccus/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "offline-qr-code@rugk.github.io" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/offline-qr-code-generator/latest.xpi";
+            installation_mode = "force_installed";
+          };
+        };
+        Preferences = {
+          "general.autoScroll" = {
+            Value = true;
+            Status = "locked";
+          };
+          "browser.crashReports.unsubmittedCheck.autoSubmit2" = {
+            Value = false;
+            Status = "locked";
+          };
+          "sidebar.visibility" = {
+            Value = "hide-sidebar";
+            Status = "locked";
+          };
+          "browser.startup.windowsLaunchOnLogin.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.startup.homepage_override.mstone" = {
+            Value = "ignore";
+            Status = "locked";
+          };
+          "browser.tabs.crashReporting.sendReport" = {
+            Value = false;
+            Status = "locked";
+          };
+          "media.video_stats.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "privacy.globalprivacycontrol.enabled" = {
+            Value = true;
+            Status = "locked";
+          };
+          "privacy.globalprivacycontrol.functionality.enabled" = {
+            Value = true;
+            Status = "locked";
+          };
+          "browser.send_pings" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.safebrowsing.blockedURIs.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.safebrowsing.downloads.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.safebrowsing.downloads.remote.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.safebrowsing.downloads.remote.url" = {
+            Value = "";
+            Status = "locked";
+          };
+          "browser.safebrowsing.malware.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.safebrowsing.phishing.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "network.http.speculative-parallel-limit" = {
+            Value = 15;
+            Status = "locked";
+          };
+          "network.predictor.enable-prefetch" = {
+            Value = false;
+            Status = "locked";
+          };
+          "network.predictor.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "network.prefetch-next" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.speculativeConnect.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "media.gmp-widevinecdm.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "media.navigator.enabled" = {
+            Value = true;
+            Status = "user";
+          };
+          "media.peerconnection.enabled" = {
+            Value = true;
+            Status = "locked";
+          };
+          "browser.newtab.preload" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.newtabpage.activity-stream.section.highlights.includePocket" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.groupLabels.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.quicksuggest.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.trimURLs" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.aboutConfig.showWarning" = {
+            Value = false;
+            Status = "locked";
+          };
+          "extensions.autoDisableScopes" = {
+            Value = 14;
+            Status = "locked";
+          };
+          "extensions.getAddons.cache.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "extensions.getAddons.showPane" = {
+            Value = false;
+            Status = "locked";
+          };
+          "extensions.webservice.discoverURL" = {
+            Value = "";
+            Status = "locked";
+          };
+          "dom.battery.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "webgl.disabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.sessionstore.privacy_level" = {
+            Value = 0;
+            Status = "locked";
+          };
+          "signon.autofillForms" = {
+            Value = false;
+            Status = "locked";
+          };
+          "dom.private-attribution.submission.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "signon.generation.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.search.suggest.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.showSearchTerms.enabled" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.showSearchSuggestionsFirst" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.suggest.trending" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.suggest.recentsearches" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.suggest.history" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.suggest.topsites" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.suggest.engines" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.urlbar.suggest.quickactions" = {
+            Value = false;
+            Status = "locked";
+          };
+          "browser.search.separatePrivateDefault.ui.enabled" = {
+            Value = true;
+            Status = "locked";
+          };
+        };
+      };
     };
     preferences = {
       wm.rules.windows = [
