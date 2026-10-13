@@ -20,52 +20,52 @@
       // lib.optionalAttrs (noctalia != null) {
         package = noctalia.wrap {
           inherit pkgs;
-          colors = with style.colors.withHashtag; {
-            mPrimary = base0E;
+          colors = lib.mkIf (style.scheme != null) (with style.colors.withHashtag; {
+            mPrimary = primary;
             mOnPrimary = base00;
-            mSecondary = base07;
+            mSecondary = secondary;
             mOnSecondary = base00;
-            mTertiary = base0C;
+            mTertiary = tertiary;
             mOnTertiary = base00;
             mError = base08;
             mOnError = base00;
             mSurface = base00;
             mOnSurface = base05;
-            mSurfaceVariant = base02;
-            mOnSurfaceVariant = base04;
-            mOutline = base04;
-            mShadow = base00;
-            mHover = base03;
+            mSurfaceVariant = base01;
+            mOnSurfaceVariant = base06;
+            mHover = base02;
             mOnHover = base05;
+            mOutline = base03;
+            mShadow = base11;
             terminal = {
-              background = base00;
               foreground = base05;
-              cursor = base06;
+              background = base00;
+              cursor = base05;
               cursorText = base00;
-              selectionBg = base04;
               selectionFg = base05;
+              selectionBg = base02;
               normal = {
-                black = base03;
+                black = base01;
                 red = base08;
-                green = base0B;
                 yellow = base0A;
-                blue = base0D;
-                magenta = base09;
+                green = base0B;
                 cyan = base0C;
+                blue = base0D;
+                magenta = base0E;
                 white = base05;
               };
               bright = {
-                black = base04;
-                red = base08;
-                green = base0B;
-                yellow = base0A;
-                blue = base0D;
-                magenta = base09;
-                cyan = base0C;
+                black = base03;
+                red = base12;
+                yellow = base13;
+                green = base14;
+                cyan = base15;
+                blue = base16;
+                magenta = base17;
                 white = base07;
               };
             };
-          };
+          });
           settings =
             {
               osd =

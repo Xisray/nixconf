@@ -12,7 +12,7 @@
       mode = "dynamic";
       colorscheme = {
         colors = appearance.colors.withHashtag;
-        base24 = appearance.base24;
+        base24 = true;
       };
     });
   };

@@ -16,11 +16,11 @@
           else "rounded";
       in {
         FZF_DEFAULT_OPTS = with appearance.colors.withHashtag; ''
-          --color=bg+:${base01},bg:${base00},spinner:${base0C},hl:${base0D}
-          --color=fg:${base05},header:${base0D},info:${base0A},pointer:${base0C}
-          --color=marker:${base0C},fg+:${base06},prompt:${base0A},hl+:${base0D}
-          --color=selected-bg:${base03}
-          --color=border:${base04},label:${base05}
+          --color=bg+:${base01},bg:${base00},spinner:${base05},hl:${base08}
+          --color=fg:${base05},header:${base08},info:${primary},pointer:${base05}
+          --color=marker:${base06},fg+:${base05},prompt:${primary},hl+:${base08}
+          --color=selected-bg:${base01}
+          --color=border:${base02},label:${base05}
           --border="${border}" --preview-window="border-${border}"
         '';
       };

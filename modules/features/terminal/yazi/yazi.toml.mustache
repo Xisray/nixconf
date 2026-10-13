@@ -1,0 +1,913 @@
+# : Manager [[[
+
+[mgr]
+cwd = { fg = "{{base05-hash}}" }
+
+# Find
+find_keyword = { fg = "{{base08-hash}}", bold = true, italic = true, underline = true }
+find_position = { fg = "{{base08-hash}}", bold = true, italic = true }
+
+# Marker
+marker_copied = { fg = "{{tertiary-hash}}", bg = "{{tertiary-hash}}" }
+marker_cut = { fg = "{{tertiary-hash}}", bg = "{{tertiary-hash}}" }
+marker_marked = { fg = "{{base08-hash}}", bg = "{{base08-hash}}" }
+marker_selected = { fg = "{{tertiary-hash}}", bg = "{{tertiary-hash}}" }
+
+# Count
+count_copied = { fg = "{{tertiary-hash}}", bg = "{{tertiary-hash}}" }
+count_cut = { fg = "{{tertiary-hash}}", bg = "{{tertiary-hash}}" }
+count_selected = { fg = "{{base00-hash}}", bg = "{{tertiary-hash}}" }
+
+# Border
+border_style  = { fg = "{{primary-hash}}" }
+
+# : ]]]
+
+
+# : Status [[[
+
+[status]
+overall = { fg = "{{primary-hash}}" }
+
+# Progress
+progress_label = { bold = true }
+progress_normal = { fg = "{{primary-hash}}", bg = "{{base00-hash}}" }
+progress_error = { fg = "{{base08-hash}}", bg = "{{base00-hash}}" }
+
+# Permissions
+perm_type = { fg = "{{secondary-hash}}" }
+perm_write = { fg = "{{tertiary-hash}}" }
+perm_exec = { fg = "{{base08-hash}}" }
+perm_read = { fg = "{{tertiary-hash}}" }
+perm_sep = { fg = "{{primary-hash}}" }
+
+# : ]]]
+
+
+# : Mode [[[
+
+[mode]
+
+normal_main = { bg = "{{primary-hash}}", fg = "{{base00-hash}}", bold = true }
+normal_alt  = { bg = "{{base01-hash}}", fg = "{{base06-hash}}" }
+
+select_main = { bg = "{{secondary-hash}}", fg = "{{base00-hash}}", bold = true }
+select_alt  = { bg = "{{base01-hash}}", fg = "{{base06-hash}}" }
+
+unset_main = { bg = "{{tertiary-hash}}", fg = "{{base00-hash}}", bold = true }
+unset_alt  = { bg = "{{base01-hash}}", fg = "{{base06-hash}}" }
+
+# : ]]]
+
+
+# : Input [[[
+
+[input]
+border = { fg = "{{primary-hash}}" }
+title = {}
+value = { fg = "{{base05-hash}}" }
+selected = { reversed = true }
+
+# : ]]]
+
+
+# : Tabs [[[
+
+[tabs]
+active = { fg = "{{base00-hash}}", bold = true, bg = "{{primary-hash}}" }
+inactive = { fg = "{{secondary-hash}}", bg = "{{base00-hash}}" }
+sep_inner = { open = "", close = "" }
+
+# : ]]]
+
+
+# : Completion [[[
+
+[cmp]
+border = { fg = "{{primary-hash}}", bg = "{{base00-hash}}" }
+
+# : ]]]
+
+
+# : Tasks [[[
+
+[tasks]
+border = { fg = "{{primary-hash}}" }
+title = {}
+hovered = { fg = "{{tertiary-hash}}", underline = true }
+
+# : ]]]
+
+
+# : Which [[[
+
+[which]
+cols = 3
+mask = { bg = "{{base00-hash}}" }
+cand = { fg = "{{primary-hash}}" }
+rest = { fg = "{{base00-hash}}" }
+desc = { fg = "{{base05-hash}}" }
+separator = " ▶ "
+separator_style = { fg = "{{base05-hash}}" }
+
+# : ]]]
+
+# : Spotter [[[
+
+[spot]
+border   = { fg = "{{primary-hash}}" }
+title    = { fg = "{{primary-hash}}" }
+tbl_col  = { fg = "{{base05-hash}}" }
+tbl_cell = { fg = "{{base05-hash}}", bg = "{{base00-hash}}" }
+
+# : ]]]
+
+
+# : Help [[[
+
+[help]
+on = { fg = "{{base05-hash}}" }
+run = { fg = "{{base05-hash}}" }
+hovered = { reversed = true, bold = true }
+footer = { fg = "{{base00-hash}}", bg = "{{secondary-hash}}" }
+
+# : ]]]
+
+
+# : Notify [[[
+
+[notify]
+title_info = { fg = "{{tertiary-hash}}" }
+title_warn = { fg = "{{primary-hash}}" }
+title_error = { fg = "{{base08-hash}}" }
+
+# : ]]]
+
+
+# : File-specific styles [[[
+
+[filetype]
+
+rules = [
+    # Images
+    { mime = "image/*", fg = "{{primary-hash}}" },
+
+    # Media
+    { mime = "{audio,video}/*", fg = "{{tertiary-hash}}" },
+
+    # Archives
+    { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "{{secondary-hash}}" },
+
+    # Documents
+    { mime = "application/{pdf,doc,rtf}", fg = "{{tertiary-hash}}" },
+
+    # Special files
+    { mime = "*", is = "orphan", fg = "{{base00-hash}}", bg = "{{base08-hash}}" },
+    { mime = "application/*exec*", fg = "{{base08-hash}}" },
+
+    # Fallback
+    { url = "*", fg = "{{base05-hash}}" },
+    { url = "*/", fg = "{{primary-hash}}" },
+]
+
+# : ]]]
+
+
+[icon]
+globs = []
+dirs  = [
+	{ name = ".config", text = "", fg = "{{primary-hash}}" },
+	{ name = ".git", text = "", fg = "{{primary-hash}}" },
+	{ name = ".github", text = "", fg = "{{primary-hash}}" },
+	{ name = ".npm", text = "", fg = "{{primary-hash}}" },
+	{ name = "Desktop", text = "", fg = "{{primary-hash}}" },
+	{ name = "Development", text = "", fg = "{{primary-hash}}" },
+	{ name = "Documents", text = "", fg = "{{primary-hash}}" },
+	{ name = "Downloads", text = "", fg = "{{primary-hash}}" },
+	{ name = "Library", text = "", fg = "{{primary-hash}}" },
+	{ name = "Movies", text = "", fg = "{{primary-hash}}" },
+	{ name = "Music", text = "", fg = "{{primary-hash}}" },
+	{ name = "Pictures", text = "", fg = "{{primary-hash}}" },
+	{ name = "Public", text = "", fg = "{{primary-hash}}" },
+	{ name = "Videos", text = "", fg = "{{primary-hash}}" },
+]
+files = [
+	{ name = ".babelrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".bash_profile", text = "", fg = "{{primary-hash}}" },
+	{ name = ".bashrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".clang-format", text = "", fg = "{{primary-hash}}" },
+	{ name = ".clang-tidy", text = "", fg = "{{primary-hash}}" },
+	{ name = ".codespellrc", text = "󰓆", fg = "{{primary-hash}}" },
+	{ name = ".condarc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".dockerignore", text = "󰡨", fg = "{{primary-hash}}" },
+	{ name = ".ds_store", text = "", fg = "{{primary-hash}}" },
+	{ name = ".editorconfig", text = "", fg = "{{primary-hash}}" },
+	{ name = ".env", text = "", fg = "{{primary-hash}}" },
+	{ name = ".eslintignore", text = "", fg = "{{primary-hash}}" },
+	{ name = ".eslintrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".git-blame-ignore-revs", text = "", fg = "{{primary-hash}}" },
+	{ name = ".gitattributes", text = "", fg = "{{primary-hash}}" },
+	{ name = ".gitconfig", text = "", fg = "{{primary-hash}}" },
+	{ name = ".gitignore", text = "", fg = "{{primary-hash}}" },
+	{ name = ".gitlab-ci.yml", text = "", fg = "{{primary-hash}}" },
+	{ name = ".gitmodules", text = "", fg = "{{primary-hash}}" },
+	{ name = ".gtkrc-2.0", text = "", fg = "{{primary-hash}}" },
+	{ name = ".gvimrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".justfile", text = "", fg = "{{primary-hash}}" },
+	{ name = ".luacheckrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".luaurc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".mailmap", text = "󰊢", fg = "{{primary-hash}}" },
+	{ name = ".nanorc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".npmignore", text = "", fg = "{{primary-hash}}" },
+	{ name = ".npmrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".nuxtrc", text = "󱄆", fg = "{{primary-hash}}" },
+	{ name = ".nvmrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".pnpmfile.cjs", text = "", fg = "{{primary-hash}}" },
+	{ name = ".pre-commit-config.yaml", text = "󰛢", fg = "{{primary-hash}}" },
+	{ name = ".prettierignore", text = "", fg = "{{primary-hash}}" },
+	{ name = ".prettierrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".prettierrc.cjs", text = "", fg = "{{primary-hash}}" },
+	{ name = ".prettierrc.js", text = "", fg = "{{primary-hash}}" },
+	{ name = ".prettierrc.json", text = "", fg = "{{primary-hash}}" },
+	{ name = ".prettierrc.json5", text = "", fg = "{{primary-hash}}" },
+	{ name = ".prettierrc.mjs", text = "", fg = "{{primary-hash}}" },
+	{ name = ".prettierrc.toml", text = "", fg = "{{primary-hash}}" },
+	{ name = ".prettierrc.yaml", text = "", fg = "{{primary-hash}}" },
+	{ name = ".prettierrc.yml", text = "", fg = "{{primary-hash}}" },
+	{ name = ".pylintrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".settings.json", text = "", fg = "{{primary-hash}}" },
+	{ name = ".SRCINFO", text = "󰣇", fg = "{{primary-hash}}" },
+	{ name = ".vimrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".Xauthority", text = "", fg = "{{primary-hash}}" },
+	{ name = ".xinitrc", text = "", fg = "{{primary-hash}}" },
+	{ name = ".Xresources", text = "", fg = "{{primary-hash}}" },
+	{ name = ".xsession", text = "", fg = "{{primary-hash}}" },
+	{ name = ".zprofile", text = "", fg = "{{primary-hash}}" },
+	{ name = ".zshenv", text = "", fg = "{{primary-hash}}" },
+	{ name = ".zshrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "_gvimrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "_vimrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "AUTHORS", text = "", fg = "{{primary-hash}}" },
+	{ name = "AUTHORS.txt", text = "", fg = "{{primary-hash}}" },
+	{ name = "brewfile", text = "", fg = "{{primary-hash}}" },
+	{ name = "bspwmrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "build", text = "", fg = "{{primary-hash}}" },
+	{ name = "build.gradle", text = "", fg = "{{primary-hash}}" },
+	{ name = "build.zig.zon", text = "", fg = "{{primary-hash}}" },
+	{ name = "bun.lock", text = "", fg = "{{primary-hash}}" },
+	{ name = "bun.lockb", text = "", fg = "{{primary-hash}}" },
+	{ name = "cantorrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "checkhealth", text = "󰓙", fg = "{{primary-hash}}" },
+	{ name = "cmakelists.txt", text = "", fg = "{{primary-hash}}" },
+	{ name = "code_of_conduct", text = "", fg = "{{primary-hash}}" },
+	{ name = "code_of_conduct.md", text = "", fg = "{{primary-hash}}" },
+	{ name = "commit_editmsg", text = "", fg = "{{primary-hash}}" },
+	{ name = "commitlint.config.js", text = "󰜘", fg = "{{primary-hash}}" },
+	{ name = "commitlint.config.ts", text = "󰜘", fg = "{{primary-hash}}" },
+	{ name = "compose.yaml", text = "󰡨", fg = "{{primary-hash}}" },
+	{ name = "compose.yml", text = "󰡨", fg = "{{primary-hash}}" },
+	{ name = "config", text = "", fg = "{{primary-hash}}" },
+	{ name = "containerfile", text = "󰡨", fg = "{{primary-hash}}" },
+	{ name = "copying", text = "", fg = "{{primary-hash}}" },
+	{ name = "copying.lesser", text = "", fg = "{{primary-hash}}" },
+	{ name = "Directory.Build.props", text = "", fg = "{{primary-hash}}" },
+	{ name = "Directory.Build.targets", text = "", fg = "{{primary-hash}}" },
+	{ name = "Directory.Packages.props", text = "", fg = "{{primary-hash}}" },
+	{ name = "docker-compose.yaml", text = "󰡨", fg = "{{primary-hash}}" },
+	{ name = "docker-compose.yml", text = "󰡨", fg = "{{primary-hash}}" },
+	{ name = "dockerfile", text = "󰡨", fg = "{{primary-hash}}" },
+	{ name = "eslint.config.cjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "eslint.config.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "eslint.config.mjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "eslint.config.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "ext_typoscript_setup.txt", text = "", fg = "{{primary-hash}}" },
+	{ name = "favicon.ico", text = "", fg = "{{primary-hash}}" },
+	{ name = "fp-info-cache", text = "", fg = "{{primary-hash}}" },
+	{ name = "fp-lib-table", text = "", fg = "{{primary-hash}}" },
+	{ name = "FreeCAD.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "Gemfile", text = "", fg = "{{primary-hash}}" },
+	{ name = "gnumakefile", text = "", fg = "{{primary-hash}}" },
+	{ name = "go.mod", text = "", fg = "{{primary-hash}}" },
+	{ name = "go.sum", text = "", fg = "{{primary-hash}}" },
+	{ name = "go.work", text = "", fg = "{{primary-hash}}" },
+	{ name = "gradle-wrapper.properties", text = "", fg = "{{primary-hash}}" },
+	{ name = "gradle.properties", text = "", fg = "{{primary-hash}}" },
+	{ name = "gradlew", text = "", fg = "{{primary-hash}}" },
+	{ name = "groovy", text = "", fg = "{{primary-hash}}" },
+	{ name = "gruntfile.babel.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "gruntfile.coffee", text = "", fg = "{{primary-hash}}" },
+	{ name = "gruntfile.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "gruntfile.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "gtkrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "gulpfile.babel.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "gulpfile.coffee", text = "", fg = "{{primary-hash}}" },
+	{ name = "gulpfile.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "gulpfile.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "hypridle.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "hyprland.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "hyprlandd.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "hyprlock.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "hyprpaper.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "hyprsunset.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "i18n.config.js", text = "󰗊", fg = "{{primary-hash}}" },
+	{ name = "i18n.config.ts", text = "󰗊", fg = "{{primary-hash}}" },
+	{ name = "i3blocks.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "i3status.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "index.theme", text = "", fg = "{{primary-hash}}" },
+	{ name = "ionic.config.json", text = "", fg = "{{primary-hash}}" },
+	{ name = "Jenkinsfile", text = "", fg = "{{primary-hash}}" },
+	{ name = "justfile", text = "", fg = "{{primary-hash}}" },
+	{ name = "kalgebrarc", text = "", fg = "{{primary-hash}}" },
+	{ name = "kdeglobals", text = "", fg = "{{primary-hash}}" },
+	{ name = "kdenlive-layoutsrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "kdenliverc", text = "", fg = "{{primary-hash}}" },
+	{ name = "kritadisplayrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "kritarc", text = "", fg = "{{primary-hash}}" },
+	{ name = "license", text = "", fg = "{{primary-hash}}" },
+	{ name = "license.md", text = "", fg = "{{primary-hash}}" },
+	{ name = "lxde-rc.xml", text = "", fg = "{{primary-hash}}" },
+	{ name = "lxqt.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "makefile", text = "", fg = "{{primary-hash}}" },
+	{ name = "mix.lock", text = "", fg = "{{primary-hash}}" },
+	{ name = "mpv.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "next.config.cjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "next.config.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "next.config.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "node_modules", text = "", fg = "{{primary-hash}}" },
+	{ name = "nuxt.config.cjs", text = "󱄆", fg = "{{primary-hash}}" },
+	{ name = "nuxt.config.js", text = "󱄆", fg = "{{primary-hash}}" },
+	{ name = "nuxt.config.mjs", text = "󱄆", fg = "{{primary-hash}}" },
+	{ name = "nuxt.config.ts", text = "󱄆", fg = "{{primary-hash}}" },
+	{ name = "package-lock.json", text = "", fg = "{{primary-hash}}" },
+	{ name = "package.json", text = "", fg = "{{primary-hash}}" },
+	{ name = "PKGBUILD", text = "", fg = "{{primary-hash}}" },
+	{ name = "platformio.ini", text = "", fg = "{{primary-hash}}" },
+	{ name = "playwright.config.cjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "playwright.config.cts", text = "", fg = "{{primary-hash}}" },
+	{ name = "playwright.config.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "playwright.config.mjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "playwright.config.mts", text = "", fg = "{{primary-hash}}" },
+	{ name = "playwright.config.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "pnpm-lock.yaml", text = "", fg = "{{primary-hash}}" },
+	{ name = "pnpm-workspace.yaml", text = "", fg = "{{primary-hash}}" },
+	{ name = "pom.xml", text = "", fg = "{{primary-hash}}" },
+	{ name = "prettier.config.cjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "prettier.config.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "prettier.config.mjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "prettier.config.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "prisma.config.mts", text = "", fg = "{{primary-hash}}" },
+	{ name = "prisma.config.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "procfile", text = "", fg = "{{primary-hash}}" },
+	{ name = "PrusaSlicer.ini", text = "", fg = "{{primary-hash}}" },
+	{ name = "PrusaSlicerGcodeViewer.ini", text = "", fg = "{{primary-hash}}" },
+	{ name = "py.typed", text = "", fg = "{{primary-hash}}" },
+	{ name = "QtProject.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "rakefile", text = "", fg = "{{primary-hash}}" },
+	{ name = "readme", text = "󰂺", fg = "{{primary-hash}}" },
+	{ name = "readme.md", text = "󰂺", fg = "{{primary-hash}}" },
+	{ name = "rmd", text = "", fg = "{{primary-hash}}" },
+	{ name = "robots.txt", text = "󰚩", fg = "{{primary-hash}}" },
+	{ name = "security", text = "󰒃", fg = "{{primary-hash}}" },
+	{ name = "security.md", text = "󰒃", fg = "{{primary-hash}}" },
+	{ name = "settings.gradle", text = "", fg = "{{primary-hash}}" },
+	{ name = "svelte.config.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "sxhkdrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "sym-lib-table", text = "", fg = "{{primary-hash}}" },
+	{ name = "tailwind.config.js", text = "󱏿", fg = "{{primary-hash}}" },
+	{ name = "tailwind.config.mjs", text = "󱏿", fg = "{{primary-hash}}" },
+	{ name = "tailwind.config.ts", text = "󱏿", fg = "{{primary-hash}}" },
+	{ name = "tmux.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "tmux.conf.local", text = "", fg = "{{primary-hash}}" },
+	{ name = "tsconfig.json", text = "", fg = "{{primary-hash}}" },
+	{ name = "unlicense", text = "", fg = "{{primary-hash}}" },
+	{ name = "vagrantfile", text = "", fg = "{{primary-hash}}" },
+	{ name = "vercel.json", text = "", fg = "{{primary-hash}}" },
+	{ name = "vite.config.cjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "vite.config.cts", text = "", fg = "{{primary-hash}}" },
+	{ name = "vite.config.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "vite.config.mjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "vite.config.mts", text = "", fg = "{{primary-hash}}" },
+	{ name = "vite.config.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "vitest.config.cjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "vitest.config.cts", text = "", fg = "{{primary-hash}}" },
+	{ name = "vitest.config.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "vitest.config.mjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "vitest.config.mts", text = "", fg = "{{primary-hash}}" },
+	{ name = "vitest.config.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "vlcrc", text = "󰕼", fg = "{{primary-hash}}" },
+	{ name = "webpack", text = "󰜫", fg = "{{primary-hash}}" },
+	{ name = "weston.ini", text = "", fg = "{{primary-hash}}" },
+	{ name = "workspace", text = "", fg = "{{primary-hash}}" },
+	{ name = "wrangler.jsonc", text = "", fg = "{{primary-hash}}" },
+	{ name = "wrangler.toml", text = "", fg = "{{primary-hash}}" },
+	{ name = "xdph.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "xmobarrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "xmobarrc.hs", text = "", fg = "{{primary-hash}}" },
+	{ name = "xmonad.hs", text = "", fg = "{{primary-hash}}" },
+	{ name = "xorg.conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "xsettingsd.conf", text = "", fg = "{{primary-hash}}" },
+]
+exts = [
+	{ name = "3gp", text = "", fg = "{{primary-hash}}" },
+	{ name = "3mf", text = "󰆧", fg = "{{primary-hash}}" },
+	{ name = "7z", text = "", fg = "{{primary-hash}}" },
+	{ name = "a", text = "", fg = "{{primary-hash}}" },
+	{ name = "aac", text = "", fg = "{{primary-hash}}" },
+	{ name = "ada", text = "", fg = "{{primary-hash}}" },
+	{ name = "adb", text = "", fg = "{{primary-hash}}" },
+	{ name = "ads", text = "", fg = "{{primary-hash}}" },
+	{ name = "ai", text = "", fg = "{{primary-hash}}" },
+	{ name = "aif", text = "", fg = "{{primary-hash}}" },
+	{ name = "aiff", text = "", fg = "{{primary-hash}}" },
+	{ name = "android", text = "", fg = "{{primary-hash}}" },
+	{ name = "ape", text = "", fg = "{{primary-hash}}" },
+	{ name = "apk", text = "", fg = "{{primary-hash}}" },
+	{ name = "apl", text = "", fg = "{{primary-hash}}" },
+	{ name = "app", text = "", fg = "{{primary-hash}}" },
+	{ name = "applescript", text = "", fg = "{{primary-hash}}" },
+	{ name = "asc", text = "󰦝", fg = "{{primary-hash}}" },
+	{ name = "asm", text = "", fg = "{{primary-hash}}" },
+	{ name = "ass", text = "󰨖", fg = "{{primary-hash}}" },
+	{ name = "astro", text = "", fg = "{{primary-hash}}" },
+	{ name = "avif", text = "", fg = "{{primary-hash}}" },
+	{ name = "awk", text = "", fg = "{{primary-hash}}" },
+	{ name = "azcli", text = "", fg = "{{primary-hash}}" },
+	{ name = "bak", text = "󰁯", fg = "{{primary-hash}}" },
+	{ name = "bash", text = "", fg = "{{primary-hash}}" },
+	{ name = "bat", text = "", fg = "{{primary-hash}}" },
+	{ name = "bazel", text = "", fg = "{{primary-hash}}" },
+	{ name = "bib", text = "󱉟", fg = "{{primary-hash}}" },
+	{ name = "bicep", text = "", fg = "{{primary-hash}}" },
+	{ name = "bicepparam", text = "", fg = "{{primary-hash}}" },
+	{ name = "bin", text = "", fg = "{{primary-hash}}" },
+	{ name = "blade.php", text = "", fg = "{{primary-hash}}" },
+	{ name = "blend", text = "󰂫", fg = "{{primary-hash}}" },
+	{ name = "blp", text = "󰺾", fg = "{{primary-hash}}" },
+	{ name = "bmp", text = "", fg = "{{primary-hash}}" },
+	{ name = "bqn", text = "", fg = "{{primary-hash}}" },
+	{ name = "brep", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "bz", text = "", fg = "{{primary-hash}}" },
+	{ name = "bz2", text = "", fg = "{{primary-hash}}" },
+	{ name = "bz3", text = "", fg = "{{primary-hash}}" },
+	{ name = "bzl", text = "", fg = "{{primary-hash}}" },
+	{ name = "c", text = "", fg = "{{primary-hash}}" },
+	{ name = "c++", text = "", fg = "{{primary-hash}}" },
+	{ name = "cache", text = "", fg = "{{primary-hash}}" },
+	{ name = "cast", text = "", fg = "{{primary-hash}}" },
+	{ name = "cbl", text = "", fg = "{{primary-hash}}" },
+	{ name = "cc", text = "", fg = "{{primary-hash}}" },
+	{ name = "ccm", text = "", fg = "{{primary-hash}}" },
+	{ name = "cfc", text = "", fg = "{{primary-hash}}" },
+	{ name = "cfg", text = "", fg = "{{primary-hash}}" },
+	{ name = "cfm", text = "", fg = "{{primary-hash}}" },
+	{ name = "cjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "clj", text = "", fg = "{{primary-hash}}" },
+	{ name = "cljc", text = "", fg = "{{primary-hash}}" },
+	{ name = "cljd", text = "", fg = "{{primary-hash}}" },
+	{ name = "cljs", text = "", fg = "{{primary-hash}}" },
+	{ name = "cmake", text = "", fg = "{{primary-hash}}" },
+	{ name = "cob", text = "", fg = "{{primary-hash}}" },
+	{ name = "cobol", text = "", fg = "{{primary-hash}}" },
+	{ name = "coffee", text = "", fg = "{{primary-hash}}" },
+	{ name = "conda", text = "", fg = "{{primary-hash}}" },
+	{ name = "conf", text = "", fg = "{{primary-hash}}" },
+	{ name = "config.ru", text = "", fg = "{{primary-hash}}" },
+	{ name = "cow", text = "󰆚", fg = "{{primary-hash}}" },
+	{ name = "cp", text = "", fg = "{{primary-hash}}" },
+	{ name = "cpp", text = "", fg = "{{primary-hash}}" },
+	{ name = "cppm", text = "", fg = "{{primary-hash}}" },
+	{ name = "cpy", text = "", fg = "{{primary-hash}}" },
+	{ name = "cr", text = "", fg = "{{primary-hash}}" },
+	{ name = "crdownload", text = "", fg = "{{primary-hash}}" },
+	{ name = "cs", text = "󰌛", fg = "{{primary-hash}}" },
+	{ name = "csh", text = "", fg = "{{primary-hash}}" },
+	{ name = "cshtml", text = "󱦗", fg = "{{primary-hash}}" },
+	{ name = "cson", text = "", fg = "{{primary-hash}}" },
+	{ name = "csproj", text = "󰪮", fg = "{{primary-hash}}" },
+	{ name = "css", text = "", fg = "{{primary-hash}}" },
+	{ name = "csv", text = "", fg = "{{primary-hash}}" },
+	{ name = "cts", text = "", fg = "{{primary-hash}}" },
+	{ name = "cu", text = "", fg = "{{primary-hash}}" },
+	{ name = "cue", text = "󰲹", fg = "{{primary-hash}}" },
+	{ name = "cuh", text = "", fg = "{{primary-hash}}" },
+	{ name = "cxx", text = "", fg = "{{primary-hash}}" },
+	{ name = "cxxm", text = "", fg = "{{primary-hash}}" },
+	{ name = "d", text = "", fg = "{{primary-hash}}" },
+	{ name = "d.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "dart", text = "", fg = "{{primary-hash}}" },
+	{ name = "db", text = "", fg = "{{primary-hash}}" },
+	{ name = "dconf", text = "", fg = "{{primary-hash}}" },
+	{ name = "desktop", text = "", fg = "{{primary-hash}}" },
+	{ name = "diff", text = "", fg = "{{primary-hash}}" },
+	{ name = "dll", text = "", fg = "{{primary-hash}}" },
+	{ name = "doc", text = "󰈬", fg = "{{primary-hash}}" },
+	{ name = "Dockerfile", text = "󰡨", fg = "{{primary-hash}}" },
+	{ name = "dockerignore", text = "󰡨", fg = "{{primary-hash}}" },
+	{ name = "docx", text = "󰈬", fg = "{{primary-hash}}" },
+	{ name = "dot", text = "󱁉", fg = "{{primary-hash}}" },
+	{ name = "download", text = "", fg = "{{primary-hash}}" },
+	{ name = "drl", text = "", fg = "{{primary-hash}}" },
+	{ name = "dropbox", text = "", fg = "{{primary-hash}}" },
+	{ name = "dump", text = "", fg = "{{primary-hash}}" },
+	{ name = "dwg", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "dxf", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "ebook", text = "", fg = "{{primary-hash}}" },
+	{ name = "ebuild", text = "", fg = "{{primary-hash}}" },
+	{ name = "edn", text = "", fg = "{{primary-hash}}" },
+	{ name = "eex", text = "", fg = "{{primary-hash}}" },
+	{ name = "ejs", text = "", fg = "{{primary-hash}}" },
+	{ name = "el", text = "", fg = "{{primary-hash}}" },
+	{ name = "elc", text = "", fg = "{{primary-hash}}" },
+	{ name = "elf", text = "", fg = "{{primary-hash}}" },
+	{ name = "elm", text = "", fg = "{{primary-hash}}" },
+	{ name = "eln", text = "", fg = "{{primary-hash}}" },
+	{ name = "env", text = "", fg = "{{primary-hash}}" },
+	{ name = "eot", text = "", fg = "{{primary-hash}}" },
+	{ name = "epp", text = "", fg = "{{primary-hash}}" },
+	{ name = "epub", text = "", fg = "{{primary-hash}}" },
+	{ name = "erb", text = "", fg = "{{primary-hash}}" },
+	{ name = "erl", text = "", fg = "{{primary-hash}}" },
+	{ name = "ex", text = "", fg = "{{primary-hash}}" },
+	{ name = "exe", text = "", fg = "{{primary-hash}}" },
+	{ name = "exs", text = "", fg = "{{primary-hash}}" },
+	{ name = "f#", text = "", fg = "{{primary-hash}}" },
+	{ name = "f3d", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "f90", text = "󱈚", fg = "{{primary-hash}}" },
+	{ name = "fbx", text = "󰆧", fg = "{{primary-hash}}" },
+	{ name = "fcbak", text = "", fg = "{{primary-hash}}" },
+	{ name = "fcmacro", text = "", fg = "{{primary-hash}}" },
+	{ name = "fcmat", text = "", fg = "{{primary-hash}}" },
+	{ name = "fcparam", text = "", fg = "{{primary-hash}}" },
+	{ name = "fcscript", text = "", fg = "{{primary-hash}}" },
+	{ name = "fcstd", text = "", fg = "{{primary-hash}}" },
+	{ name = "fcstd1", text = "", fg = "{{primary-hash}}" },
+	{ name = "fctb", text = "", fg = "{{primary-hash}}" },
+	{ name = "fctl", text = "", fg = "{{primary-hash}}" },
+	{ name = "fdmdownload", text = "", fg = "{{primary-hash}}" },
+	{ name = "feature", text = "", fg = "{{primary-hash}}" },
+	{ name = "fish", text = "", fg = "{{primary-hash}}" },
+	{ name = "flac", text = "", fg = "{{primary-hash}}" },
+	{ name = "flc", text = "", fg = "{{primary-hash}}" },
+	{ name = "flf", text = "", fg = "{{primary-hash}}" },
+	{ name = "fnl", text = "", fg = "{{primary-hash}}" },
+	{ name = "fodg", text = "", fg = "{{primary-hash}}" },
+	{ name = "fodp", text = "", fg = "{{primary-hash}}" },
+	{ name = "fods", text = "", fg = "{{primary-hash}}" },
+	{ name = "fodt", text = "", fg = "{{primary-hash}}" },
+	{ name = "frag", text = "", fg = "{{primary-hash}}" },
+	{ name = "fs", text = "", fg = "{{primary-hash}}" },
+	{ name = "fsi", text = "", fg = "{{primary-hash}}" },
+	{ name = "fsscript", text = "", fg = "{{primary-hash}}" },
+	{ name = "fsx", text = "", fg = "{{primary-hash}}" },
+	{ name = "gcode", text = "󰐫", fg = "{{primary-hash}}" },
+	{ name = "gd", text = "", fg = "{{primary-hash}}" },
+	{ name = "gemspec", text = "", fg = "{{primary-hash}}" },
+	{ name = "geom", text = "", fg = "{{primary-hash}}" },
+	{ name = "gif", text = "", fg = "{{primary-hash}}" },
+	{ name = "git", text = "", fg = "{{primary-hash}}" },
+	{ name = "glb", text = "", fg = "{{primary-hash}}" },
+	{ name = "gleam", text = "", fg = "{{primary-hash}}" },
+	{ name = "glsl", text = "", fg = "{{primary-hash}}" },
+	{ name = "gnumakefile", text = "", fg = "{{primary-hash}}" },
+	{ name = "go", text = "", fg = "{{primary-hash}}" },
+	{ name = "godot", text = "", fg = "{{primary-hash}}" },
+	{ name = "gpr", text = "", fg = "{{primary-hash}}" },
+	{ name = "gql", text = "", fg = "{{primary-hash}}" },
+	{ name = "gradle", text = "", fg = "{{primary-hash}}" },
+	{ name = "graphql", text = "", fg = "{{primary-hash}}" },
+	{ name = "gresource", text = "", fg = "{{primary-hash}}" },
+	{ name = "gv", text = "󱁉", fg = "{{primary-hash}}" },
+	{ name = "gz", text = "", fg = "{{primary-hash}}" },
+	{ name = "h", text = "", fg = "{{primary-hash}}" },
+	{ name = "haml", text = "", fg = "{{primary-hash}}" },
+	{ name = "hbs", text = "", fg = "{{primary-hash}}" },
+	{ name = "heex", text = "", fg = "{{primary-hash}}" },
+	{ name = "hex", text = "", fg = "{{primary-hash}}" },
+	{ name = "hh", text = "", fg = "{{primary-hash}}" },
+	{ name = "hpp", text = "", fg = "{{primary-hash}}" },
+	{ name = "hrl", text = "", fg = "{{primary-hash}}" },
+	{ name = "hs", text = "", fg = "{{primary-hash}}" },
+	{ name = "htm", text = "", fg = "{{primary-hash}}" },
+	{ name = "html", text = "", fg = "{{primary-hash}}" },
+	{ name = "http", text = "", fg = "{{primary-hash}}" },
+	{ name = "huff", text = "󰡘", fg = "{{primary-hash}}" },
+	{ name = "hurl", text = "", fg = "{{primary-hash}}" },
+	{ name = "hx", text = "", fg = "{{primary-hash}}" },
+	{ name = "hxx", text = "", fg = "{{primary-hash}}" },
+	{ name = "ical", text = "", fg = "{{primary-hash}}" },
+	{ name = "icalendar", text = "", fg = "{{primary-hash}}" },
+	{ name = "ico", text = "", fg = "{{primary-hash}}" },
+	{ name = "ics", text = "", fg = "{{primary-hash}}" },
+	{ name = "ifb", text = "", fg = "{{primary-hash}}" },
+	{ name = "ifc", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "ige", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "iges", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "igs", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "image", text = "", fg = "{{primary-hash}}" },
+	{ name = "img", text = "", fg = "{{primary-hash}}" },
+	{ name = "import", text = "", fg = "{{primary-hash}}" },
+	{ name = "info", text = "", fg = "{{primary-hash}}" },
+	{ name = "ini", text = "", fg = "{{primary-hash}}" },
+	{ name = "ino", text = "", fg = "{{primary-hash}}" },
+	{ name = "ipynb", text = "", fg = "{{primary-hash}}" },
+	{ name = "iso", text = "", fg = "{{primary-hash}}" },
+	{ name = "ixx", text = "", fg = "{{primary-hash}}" },
+	{ name = "jar", text = "", fg = "{{primary-hash}}" },
+	{ name = "java", text = "", fg = "{{primary-hash}}" },
+	{ name = "jl", text = "", fg = "{{primary-hash}}" },
+	{ name = "jpeg", text = "", fg = "{{primary-hash}}" },
+	{ name = "jpg", text = "", fg = "{{primary-hash}}" },
+	{ name = "js", text = "", fg = "{{primary-hash}}" },
+	{ name = "json", text = "", fg = "{{primary-hash}}" },
+	{ name = "json5", text = "", fg = "{{primary-hash}}" },
+	{ name = "jsonc", text = "", fg = "{{primary-hash}}" },
+	{ name = "jsx", text = "", fg = "{{primary-hash}}" },
+	{ name = "jwmrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "jxl", text = "", fg = "{{primary-hash}}" },
+	{ name = "kbx", text = "󰯄", fg = "{{primary-hash}}" },
+	{ name = "kdb", text = "", fg = "{{primary-hash}}" },
+	{ name = "kdbx", text = "", fg = "{{primary-hash}}" },
+	{ name = "kdenlive", text = "", fg = "{{primary-hash}}" },
+	{ name = "kdenlivetitle", text = "", fg = "{{primary-hash}}" },
+	{ name = "kicad_dru", text = "", fg = "{{primary-hash}}" },
+	{ name = "kicad_mod", text = "", fg = "{{primary-hash}}" },
+	{ name = "kicad_pcb", text = "", fg = "{{primary-hash}}" },
+	{ name = "kicad_prl", text = "", fg = "{{primary-hash}}" },
+	{ name = "kicad_pro", text = "", fg = "{{primary-hash}}" },
+	{ name = "kicad_sch", text = "", fg = "{{primary-hash}}" },
+	{ name = "kicad_sym", text = "", fg = "{{primary-hash}}" },
+	{ name = "kicad_wks", text = "", fg = "{{primary-hash}}" },
+	{ name = "ko", text = "", fg = "{{primary-hash}}" },
+	{ name = "kpp", text = "", fg = "{{primary-hash}}" },
+	{ name = "kra", text = "", fg = "{{primary-hash}}" },
+	{ name = "krz", text = "", fg = "{{primary-hash}}" },
+	{ name = "ksh", text = "", fg = "{{primary-hash}}" },
+	{ name = "kt", text = "", fg = "{{primary-hash}}" },
+	{ name = "kts", text = "", fg = "{{primary-hash}}" },
+	{ name = "lck", text = "", fg = "{{primary-hash}}" },
+	{ name = "leex", text = "", fg = "{{primary-hash}}" },
+	{ name = "less", text = "", fg = "{{primary-hash}}" },
+	{ name = "lff", text = "", fg = "{{primary-hash}}" },
+	{ name = "lhs", text = "", fg = "{{primary-hash}}" },
+	{ name = "lib", text = "", fg = "{{primary-hash}}" },
+	{ name = "license", text = "", fg = "{{primary-hash}}" },
+	{ name = "liquid", text = "", fg = "{{primary-hash}}" },
+	{ name = "lock", text = "", fg = "{{primary-hash}}" },
+	{ name = "log", text = "󰌱", fg = "{{primary-hash}}" },
+	{ name = "lrc", text = "󰨖", fg = "{{primary-hash}}" },
+	{ name = "lua", text = "", fg = "{{primary-hash}}" },
+	{ name = "luac", text = "", fg = "{{primary-hash}}" },
+	{ name = "luau", text = "", fg = "{{primary-hash}}" },
+	{ name = "m", text = "", fg = "{{primary-hash}}" },
+	{ name = "m3u", text = "󰲹", fg = "{{primary-hash}}" },
+	{ name = "m3u8", text = "󰲹", fg = "{{primary-hash}}" },
+	{ name = "m4a", text = "", fg = "{{primary-hash}}" },
+	{ name = "m4v", text = "", fg = "{{primary-hash}}" },
+	{ name = "magnet", text = "", fg = "{{primary-hash}}" },
+	{ name = "makefile", text = "", fg = "{{primary-hash}}" },
+	{ name = "markdown", text = "", fg = "{{primary-hash}}" },
+	{ name = "material", text = "", fg = "{{primary-hash}}" },
+	{ name = "md", text = "", fg = "{{primary-hash}}" },
+	{ name = "md5", text = "󰕥", fg = "{{primary-hash}}" },
+	{ name = "mdx", text = "", fg = "{{primary-hash}}" },
+	{ name = "mint", text = "󰌪", fg = "{{primary-hash}}" },
+	{ name = "mjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "mk", text = "", fg = "{{primary-hash}}" },
+	{ name = "mkv", text = "", fg = "{{primary-hash}}" },
+	{ name = "ml", text = "", fg = "{{primary-hash}}" },
+	{ name = "mli", text = "", fg = "{{primary-hash}}" },
+	{ name = "mm", text = "", fg = "{{primary-hash}}" },
+	{ name = "mo", text = "", fg = "{{primary-hash}}" },
+	{ name = "mobi", text = "", fg = "{{primary-hash}}" },
+	{ name = "mojo", text = "", fg = "{{primary-hash}}" },
+	{ name = "mov", text = "", fg = "{{primary-hash}}" },
+	{ name = "mp3", text = "", fg = "{{primary-hash}}" },
+	{ name = "mp4", text = "", fg = "{{primary-hash}}" },
+	{ name = "mpp", text = "", fg = "{{primary-hash}}" },
+	{ name = "msf", text = "", fg = "{{primary-hash}}" },
+	{ name = "mts", text = "", fg = "{{primary-hash}}" },
+	{ name = "mustache", text = "", fg = "{{primary-hash}}" },
+	{ name = "nfo", text = "", fg = "{{primary-hash}}" },
+	{ name = "nim", text = "", fg = "{{primary-hash}}" },
+	{ name = "nix", text = "", fg = "{{primary-hash}}" },
+	{ name = "norg", text = "", fg = "{{primary-hash}}" },
+	{ name = "nswag", text = "", fg = "{{primary-hash}}" },
+	{ name = "nu", text = "", fg = "{{primary-hash}}" },
+	{ name = "o", text = "", fg = "{{primary-hash}}" },
+	{ name = "obj", text = "󰆧", fg = "{{primary-hash}}" },
+	{ name = "odf", text = "", fg = "{{primary-hash}}" },
+	{ name = "odg", text = "", fg = "{{primary-hash}}" },
+	{ name = "odin", text = "󰟢", fg = "{{primary-hash}}" },
+	{ name = "odp", text = "", fg = "{{primary-hash}}" },
+	{ name = "ods", text = "", fg = "{{primary-hash}}" },
+	{ name = "odt", text = "", fg = "{{primary-hash}}" },
+	{ name = "oga", text = "", fg = "{{primary-hash}}" },
+	{ name = "ogg", text = "", fg = "{{primary-hash}}" },
+	{ name = "ogv", text = "", fg = "{{primary-hash}}" },
+	{ name = "ogx", text = "", fg = "{{primary-hash}}" },
+	{ name = "opus", text = "", fg = "{{primary-hash}}" },
+	{ name = "org", text = "", fg = "{{primary-hash}}" },
+	{ name = "otf", text = "", fg = "{{primary-hash}}" },
+	{ name = "out", text = "", fg = "{{primary-hash}}" },
+	{ name = "part", text = "", fg = "{{primary-hash}}" },
+	{ name = "patch", text = "", fg = "{{primary-hash}}" },
+	{ name = "pck", text = "", fg = "{{primary-hash}}" },
+	{ name = "pcm", text = "", fg = "{{primary-hash}}" },
+	{ name = "pdf", text = "", fg = "{{primary-hash}}" },
+	{ name = "php", text = "", fg = "{{primary-hash}}" },
+	{ name = "pl", text = "", fg = "{{primary-hash}}" },
+	{ name = "pls", text = "󰲹", fg = "{{primary-hash}}" },
+	{ name = "ply", text = "󰆧", fg = "{{primary-hash}}" },
+	{ name = "pm", text = "", fg = "{{primary-hash}}" },
+	{ name = "png", text = "", fg = "{{primary-hash}}" },
+	{ name = "po", text = "", fg = "{{primary-hash}}" },
+	{ name = "pot", text = "", fg = "{{primary-hash}}" },
+	{ name = "pp", text = "", fg = "{{primary-hash}}" },
+	{ name = "ppt", text = "󰈧", fg = "{{primary-hash}}" },
+	{ name = "pptx", text = "󰈧", fg = "{{primary-hash}}" },
+	{ name = "prisma", text = "", fg = "{{primary-hash}}" },
+	{ name = "pro", text = "", fg = "{{primary-hash}}" },
+	{ name = "ps1", text = "󰨊", fg = "{{primary-hash}}" },
+	{ name = "psb", text = "", fg = "{{primary-hash}}" },
+	{ name = "psd", text = "", fg = "{{primary-hash}}" },
+	{ name = "psd1", text = "󰨊", fg = "{{primary-hash}}" },
+	{ name = "psm1", text = "󰨊", fg = "{{primary-hash}}" },
+	{ name = "pub", text = "󰷖", fg = "{{primary-hash}}" },
+	{ name = "pxd", text = "", fg = "{{primary-hash}}" },
+	{ name = "pxi", text = "", fg = "{{primary-hash}}" },
+	{ name = "py", text = "", fg = "{{primary-hash}}" },
+	{ name = "pyc", text = "", fg = "{{primary-hash}}" },
+	{ name = "pyd", text = "", fg = "{{primary-hash}}" },
+	{ name = "pyi", text = "", fg = "{{primary-hash}}" },
+	{ name = "pyo", text = "", fg = "{{primary-hash}}" },
+	{ name = "pyw", text = "", fg = "{{primary-hash}}" },
+	{ name = "pyx", text = "", fg = "{{primary-hash}}" },
+	{ name = "qm", text = "", fg = "{{primary-hash}}" },
+	{ name = "qml", text = "", fg = "{{primary-hash}}" },
+	{ name = "qrc", text = "", fg = "{{primary-hash}}" },
+	{ name = "qss", text = "", fg = "{{primary-hash}}" },
+	{ name = "query", text = "", fg = "{{primary-hash}}" },
+	{ name = "R", text = "󰟔", fg = "{{primary-hash}}" },
+	{ name = "r", text = "󰟔", fg = "{{primary-hash}}" },
+	{ name = "rake", text = "", fg = "{{primary-hash}}" },
+	{ name = "rar", text = "", fg = "{{primary-hash}}" },
+	{ name = "rasi", text = "", fg = "{{primary-hash}}" },
+	{ name = "razor", text = "󱦘", fg = "{{primary-hash}}" },
+	{ name = "rb", text = "", fg = "{{primary-hash}}" },
+	{ name = "res", text = "", fg = "{{primary-hash}}" },
+	{ name = "resi", text = "", fg = "{{primary-hash}}" },
+	{ name = "rlib", text = "", fg = "{{primary-hash}}" },
+	{ name = "rmd", text = "", fg = "{{primary-hash}}" },
+	{ name = "rproj", text = "󰗆", fg = "{{primary-hash}}" },
+	{ name = "rs", text = "", fg = "{{primary-hash}}" },
+	{ name = "rss", text = "", fg = "{{primary-hash}}" },
+	{ name = "s", text = "", fg = "{{primary-hash}}" },
+	{ name = "sass", text = "", fg = "{{primary-hash}}" },
+	{ name = "sbt", text = "", fg = "{{primary-hash}}" },
+	{ name = "sc", text = "", fg = "{{primary-hash}}" },
+	{ name = "scad", text = "", fg = "{{primary-hash}}" },
+	{ name = "scala", text = "", fg = "{{primary-hash}}" },
+	{ name = "scm", text = "󰘧", fg = "{{primary-hash}}" },
+	{ name = "scss", text = "", fg = "{{primary-hash}}" },
+	{ name = "sh", text = "", fg = "{{primary-hash}}" },
+	{ name = "sha1", text = "󰕥", fg = "{{primary-hash}}" },
+	{ name = "sha224", text = "󰕥", fg = "{{primary-hash}}" },
+	{ name = "sha256", text = "󰕥", fg = "{{primary-hash}}" },
+	{ name = "sha384", text = "󰕥", fg = "{{primary-hash}}" },
+	{ name = "sha512", text = "󰕥", fg = "{{primary-hash}}" },
+	{ name = "sig", text = "󰘧", fg = "{{primary-hash}}" },
+	{ name = "signature", text = "󰘧", fg = "{{primary-hash}}" },
+	{ name = "skp", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "sldasm", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "sldprt", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "slim", text = "", fg = "{{primary-hash}}" },
+	{ name = "sln", text = "", fg = "{{primary-hash}}" },
+	{ name = "slnx", text = "", fg = "{{primary-hash}}" },
+	{ name = "slvs", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "sml", text = "󰘧", fg = "{{primary-hash}}" },
+	{ name = "so", text = "", fg = "{{primary-hash}}" },
+	{ name = "sol", text = "", fg = "{{primary-hash}}" },
+	{ name = "spec.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "spec.jsx", text = "", fg = "{{primary-hash}}" },
+	{ name = "spec.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "spec.tsx", text = "", fg = "{{primary-hash}}" },
+	{ name = "spx", text = "", fg = "{{primary-hash}}" },
+	{ name = "sql", text = "", fg = "{{primary-hash}}" },
+	{ name = "sqlite", text = "", fg = "{{primary-hash}}" },
+	{ name = "sqlite3", text = "", fg = "{{primary-hash}}" },
+	{ name = "srt", text = "󰨖", fg = "{{primary-hash}}" },
+	{ name = "ssa", text = "󰨖", fg = "{{primary-hash}}" },
+	{ name = "ste", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "step", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "stl", text = "󰆧", fg = "{{primary-hash}}" },
+	{ name = "stories.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "stories.jsx", text = "", fg = "{{primary-hash}}" },
+	{ name = "stories.mjs", text = "", fg = "{{primary-hash}}" },
+	{ name = "stories.svelte", text = "", fg = "{{primary-hash}}" },
+	{ name = "stories.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "stories.tsx", text = "", fg = "{{primary-hash}}" },
+	{ name = "stories.vue", text = "", fg = "{{primary-hash}}" },
+	{ name = "stp", text = "󰻫", fg = "{{primary-hash}}" },
+	{ name = "strings", text = "", fg = "{{primary-hash}}" },
+	{ name = "styl", text = "", fg = "{{primary-hash}}" },
+	{ name = "sub", text = "󰨖", fg = "{{primary-hash}}" },
+	{ name = "sublime", text = "", fg = "{{primary-hash}}" },
+	{ name = "suo", text = "", fg = "{{primary-hash}}" },
+	{ name = "sv", text = "󰍛", fg = "{{primary-hash}}" },
+	{ name = "svelte", text = "", fg = "{{primary-hash}}" },
+	{ name = "svg", text = "󰜡", fg = "{{primary-hash}}" },
+	{ name = "svgz", text = "󰜡", fg = "{{primary-hash}}" },
+	{ name = "svh", text = "󰍛", fg = "{{primary-hash}}" },
+	{ name = "swift", text = "", fg = "{{primary-hash}}" },
+	{ name = "t", text = "", fg = "{{primary-hash}}" },
+	{ name = "tbc", text = "󰛓", fg = "{{primary-hash}}" },
+	{ name = "tcl", text = "󰛓", fg = "{{primary-hash}}" },
+	{ name = "templ", text = "", fg = "{{primary-hash}}" },
+	{ name = "terminal", text = "", fg = "{{primary-hash}}" },
+	{ name = "test.js", text = "", fg = "{{primary-hash}}" },
+	{ name = "test.jsx", text = "", fg = "{{primary-hash}}" },
+	{ name = "test.ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "test.tsx", text = "", fg = "{{primary-hash}}" },
+	{ name = "tex", text = "", fg = "{{primary-hash}}" },
+	{ name = "tf", text = "", fg = "{{primary-hash}}" },
+	{ name = "tfvars", text = "", fg = "{{primary-hash}}" },
+	{ name = "tgz", text = "", fg = "{{primary-hash}}" },
+	{ name = "tmpl", text = "", fg = "{{primary-hash}}" },
+	{ name = "tmux", text = "", fg = "{{primary-hash}}" },
+	{ name = "toml", text = "", fg = "{{primary-hash}}" },
+	{ name = "torrent", text = "", fg = "{{primary-hash}}" },
+	{ name = "tres", text = "", fg = "{{primary-hash}}" },
+	{ name = "ts", text = "", fg = "{{primary-hash}}" },
+	{ name = "tscn", text = "", fg = "{{primary-hash}}" },
+	{ name = "tsconfig", text = "", fg = "{{primary-hash}}" },
+	{ name = "tsx", text = "", fg = "{{primary-hash}}" },
+	{ name = "ttf", text = "", fg = "{{primary-hash}}" },
+	{ name = "twig", text = "", fg = "{{primary-hash}}" },
+	{ name = "txt", text = "󰈙", fg = "{{primary-hash}}" },
+	{ name = "txz", text = "", fg = "{{primary-hash}}" },
+	{ name = "typ", text = "", fg = "{{primary-hash}}" },
+	{ name = "typoscript", text = "", fg = "{{primary-hash}}" },
+	{ name = "ui", text = "", fg = "{{primary-hash}}" },
+	{ name = "v", text = "󰍛", fg = "{{primary-hash}}" },
+	{ name = "vala", text = "", fg = "{{primary-hash}}" },
+	{ name = "vert", text = "", fg = "{{primary-hash}}" },
+	{ name = "vh", text = "󰍛", fg = "{{primary-hash}}" },
+	{ name = "vhd", text = "󰍛", fg = "{{primary-hash}}" },
+	{ name = "vhdl", text = "󰍛", fg = "{{primary-hash}}" },
+	{ name = "vi", text = "", fg = "{{primary-hash}}" },
+	{ name = "vim", text = "", fg = "{{primary-hash}}" },
+	{ name = "vsh", text = "", fg = "{{primary-hash}}" },
+	{ name = "vsix", text = "", fg = "{{primary-hash}}" },
+	{ name = "vue", text = "", fg = "{{primary-hash}}" },
+	{ name = "wasm", text = "", fg = "{{primary-hash}}" },
+	{ name = "wav", text = "", fg = "{{primary-hash}}" },
+	{ name = "webm", text = "", fg = "{{primary-hash}}" },
+	{ name = "webmanifest", text = "", fg = "{{primary-hash}}" },
+	{ name = "webp", text = "", fg = "{{primary-hash}}" },
+	{ name = "webpack", text = "󰜫", fg = "{{primary-hash}}" },
+	{ name = "wma", text = "", fg = "{{primary-hash}}" },
+	{ name = "wmv", text = "", fg = "{{primary-hash}}" },
+	{ name = "woff", text = "", fg = "{{primary-hash}}" },
+	{ name = "woff2", text = "", fg = "{{primary-hash}}" },
+	{ name = "wrl", text = "󰆧", fg = "{{primary-hash}}" },
+	{ name = "wrz", text = "󰆧", fg = "{{primary-hash}}" },
+	{ name = "wv", text = "", fg = "{{primary-hash}}" },
+	{ name = "wvc", text = "", fg = "{{primary-hash}}" },
+	{ name = "x", text = "", fg = "{{primary-hash}}" },
+	{ name = "xaml", text = "󰙳", fg = "{{primary-hash}}" },
+	{ name = "xcf", text = "", fg = "{{primary-hash}}" },
+	{ name = "xcplayground", text = "", fg = "{{primary-hash}}" },
+	{ name = "xcstrings", text = "", fg = "{{primary-hash}}" },
+	{ name = "xls", text = "󰈛", fg = "{{primary-hash}}" },
+	{ name = "xlsx", text = "󰈛", fg = "{{primary-hash}}" },
+	{ name = "xm", text = "", fg = "{{primary-hash}}" },
+	{ name = "xml", text = "󰗀", fg = "{{primary-hash}}" },
+	{ name = "xpi", text = "", fg = "{{primary-hash}}" },
+	{ name = "xslt", text = "󰗀", fg = "{{primary-hash}}" },
+	{ name = "xul", text = "", fg = "{{primary-hash}}" },
+	{ name = "xz", text = "", fg = "{{primary-hash}}" },
+	{ name = "yaml", text = "", fg = "{{primary-hash}}" },
+	{ name = "yml", text = "", fg = "{{primary-hash}}" },
+	{ name = "zig", text = "", fg = "{{primary-hash}}" },
+	{ name = "zip", text = "", fg = "{{primary-hash}}" },
+	{ name = "zsh", text = "", fg = "{{primary-hash}}" },
+	{ name = "zst", text = "", fg = "{{primary-hash}}" },
+	{ name = "🔥", text = "", fg = "{{primary-hash}}" },
+]
+conds = [
+	# Special files
+	{ if = "orphan", text = "", fg = "{{primary-hash}}" },
+	{ if = "link", text = "", fg = "{{primary-hash}}" },
+	{ if = "block", text = "", fg = "{{primary-hash}}" },
+	{ if = "char", text = "", fg = "{{primary-hash}}" },
+	{ if = "fifo", text = "", fg = "{{primary-hash}}" },
+	{ if = "sock", text = "", fg = "{{primary-hash}}" },
+	{ if = "sticky", text = "", fg = "{{primary-hash}}" },
+	{ if = "dummy", text = "", fg = "{{primary-hash}}" },
+
+	# Fallback
+	{ if = "dir", text = "", fg = "{{primary-hash}}" },
+	{ if = "exec", text = "", fg = "{{primary-hash}}" },
+	{ if = "!dir", text = "", fg = "{{primary-hash}}" },
+]
+

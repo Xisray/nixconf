@@ -16,14 +16,9 @@
           else
             kittyWrapper.wrap {
               inherit pkgs;
-              extraConfig = "include ${config.appearance.colors {
-                template =
-                  ./${
-                    if config.appearance.base24
-                    then "base24"
-                    else "base16"
-                  }.conf.mustache;
-                extension = ".conf";
+              settings.background_opacity = config.appearance.opacity.terminal;
+              extraConfig = lib.mkIf (config.appearance.scheme != null) "include ${config.appearance.colors {
+                src = ./kitty.conf.mustache;
               }}";
             }
         );

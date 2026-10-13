@@ -7,17 +7,16 @@
   }: {
     options.appearance = with lib; {
       scheme = mkOption {
-        type = with types; oneOf [path lines attrs];
+        type = with types; oneOf [path attrs];
         default = null;
         example = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
-        description = "Base16 scheme (path to yaml, yaml string, or attrs)";
+        description = "Base16/24 scheme (path to yaml, path to json, or attrs)";
       };
       colors = mkOption {
         type = types.attrs;
         readOnly = true;
         description = "Processed scheme with base00..base0F, withHashtag, etc.";
       };
-      base24 = mkEnableOption "Use base24 instead base16";
       polarity = mkOption {
         type = types.enum ["dark" "light"];
         default = "dark";
@@ -139,7 +138,7 @@
     config = let
       cfg = config.appearance;
     in {
-      appearance.colors = lib.mkIf (cfg.scheme != null) ((pkgs.callPackage inputs.base16.lib {}).mkSchemeAttrs cfg.scheme);
+      appearance.colors = lib.mkIf (cfg.scheme != null) (inputs.palette.lib.mkPalette cfg.scheme);
       environment.systemPackages = lib.optional (cfg.icons != null) cfg.icons.package ++ lib.optional (cfg.cursor != null) cfg.cursor.package;
       environment.sessionVariables = lib.mkIf (cfg.cursor != null) {
         XCURSOR_THEME = cfg.cursor.name;

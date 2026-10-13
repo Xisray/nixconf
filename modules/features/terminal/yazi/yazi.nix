@@ -6,23 +6,18 @@
     ...
   }: let
     yazi = self.wrappers.yazi or null;
-    variant =
-      if appearance.base24
-      then "base24"
-      else "base16";
-    flavor = pkgs.linkFarm "yazi-flavor-${variant}" [
+    flavor = pkgs.linkFarm "yazi-flavor-nix" [
       {
         name = "flavor.toml";
         path = appearance.colors {
-          template = ./base16.toml.mustache;
-          extension = ".toml";
+          src = ./yazi.toml.mustache;
         };
       }
       {
         name = "tmtheme.xml";
         path = appearance.colors {
-          template = ../bat/${variant}.tmTheme.mustache;
-          extension = ".xml";
+          src = ../bat/bat.tmTheme.mustache;
+          ext = ".xml";
         };
       }
     ];
@@ -45,11 +40,11 @@
         status.sep_right = block;
         indicator.padding = block;
         flavor = lib.mkIf (appearance.scheme != null) {
-          dark = variant;
-          light = variant;
+          dark = "nix";
+          light = "nix";
         };
       };
-      flavors.${variant} = lib.mkIf (appearance.scheme != null) flavor;
+      flavors.nix = lib.mkIf (appearance.scheme != null) flavor;
     });
   };
 }

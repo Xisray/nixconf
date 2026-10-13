@@ -71,6 +71,10 @@
         inherit pkgs;
         settings =
           {
+            cursor = lib.mkIf (style.cursor != null) {
+              xcursor-theme = style.cursor.name;
+              xcursor-size = style.cursor.size;
+            };
             outputs = lib.mapAttrs toNiriOutput cfg.monitors;
             binds = lib.mapAttrs (_: toNiriBind) cfg.binds;
             window-rules =
@@ -102,29 +106,23 @@
               }
               else {off = _: {};};
           }
-          // lib.optionalAttrs (style.colors != null) (with style.colors.withHashtag; {
-            layout = {
-              focus-ring = {
-                active-color = base0E;
+          // lib.optionalAttrs (style.scheme != null) (with style.colors.withHashtag; {
+            layout = let
+              colors = {
+                active-color = primary;
                 inactive-color = base00;
                 urgent-color = base08;
               };
-              border = {
-                active-color = base0E;
-                inactive-color = base00;
-                urgent-color = base08;
-              };
-              tab-indicator = {
-                active-color = base0E;
-                inactive-color = base00;
-                urgent-color = base08;
-              };
+            in {
+              focus-ring = colors;
+              border = colors;
+              tab-indicator = colors;
               insert-hint = {
-                color = base0E;
+                color = primary;
               };
             };
             recent-windows.highlight = {
-              active-color = base0E;
+              active-color = primary;
               urgent-color = base08;
             };
           });
