@@ -21,7 +21,9 @@
           keys = "blue";
         };
         separator = "";
-        constants = [
+        constants = let
+          esc = builtins.fromJSON ''"\u001b"'';
+        in [
           "───────────────"
           "──────────────────────────────────────────────────────"
           (
@@ -47,13 +49,13 @@
           "┬"
           "┴"
           "│"
-          "\\u001b[1m"
-          "\\u001b[54D"
-          "\\u001b[54C"
-          "\\u001b[11C"
-          "\\u001b[s"
-          "\\u001b[u"
-          "\\u001b[44D"
+          "${esc}[1m"
+          "${esc}[54D"
+          "${esc}[54C"
+          "${esc}[11C"
+          "${esc}[s"
+          "${esc}[u"
+          "${esc}[44D"
         ];
         brightColor = false;
       };
