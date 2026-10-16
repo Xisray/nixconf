@@ -1,4 +1,4 @@
-{self, ...}: {
+{
   flake.wrappers.niri = {
     pkgs,
     wlib,
@@ -41,9 +41,6 @@
       };
       binds = let
         playerCtl = lib.getExe pkgs.playerctl;
-        hyprpicker = lib.getExe (self.packages.${pkgs.stdenv.hostPlatform.system}.hyprpicker or pkgs.hyprpicker);
-        ocr = self.packages.${pkgs.stdenv.hostPlatform.system}.ocr or null;
-        sshot = self.packages.${pkgs.stdenv.hostPlatform.system}.sshot or null;
       in {
         "Mod+Q".close-window = _: {};
         "Mod+F".maximize-column = _: {};
@@ -148,20 +145,12 @@
           content.spawn = [playerCtl "previous"];
         };
 
-        "Print".spawn = ["niri" "msg" "action" "screenshot-screen"];
-        "Alt+Print".spawn = ["niri" "msg" "action" "screenshot-window"];
-        "Ctrl+Print".spawn =
-          if (sshot == null)
-          then ["niri" "msg" "action" "screenshot"]
-          else [(lib.getExe sshot) "-a" "niri"];
-        "Mod+Shift+S".spawn =
-          if (sshot == null)
-          then ["niri" "msg" "action" "screenshot"]
-          else [(lib.getExe sshot) "-a" "niri"];
+        "Print".spawn = lib.mkDefault ["niri" "msg" "action" "screenshot-screen"];
+        "Alt+Print".spawn = lib.mkDefault ["niri" "msg" "action" "screenshot-window"];
+        "Ctrl+Print".spawn = lib.mkDefault ["niri" "msg" "action" "screenshot"];
+        "Mod+Shift+S".spawn = lib.mkDefault ["niri" "msg" "action" "screenshot"];
 
-        "Mod+Shift+E".spawn-sh = "${pkgs.wl-clipboard}/bin/wl-paste | ${lib.getExe pkgs.swappy} -f -";
-        "Mod+Shift+C".spawn = [hyprpicker "-a" "-n" "--scale=2.0" "--radius=100"];
-        "Mod+Shift+X" = lib.mkIf (ocr != null) {spawn = [(lib.getExe ocr) "-a" "niri"];};
+        "Mod+Shift+E".spawn-sh = lib.mkDefault "${pkgs.wl-clipboard}/bin/wl-paste | ${lib.getExe pkgs.swappy} -f -";
       };
       extraConfig = ''
         animations {
