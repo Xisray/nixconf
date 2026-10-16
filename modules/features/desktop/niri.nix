@@ -51,7 +51,6 @@
           else [rule.matches]
         else [];
 
-      # Добавляем match, если он есть
       matches =
         if rule ? match
         then existingMatches ++ [rule.match]
