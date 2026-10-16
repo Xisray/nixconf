@@ -33,7 +33,10 @@
         {
           settings."org/gnome/desktop/interface" =
             {
-              gtk-theme = "adw-gtk3";
+              gtk-theme =
+                if style.polarity == "dark"
+                then "adw-gtk3-dark"
+                else "adw-gtk3";
               font-name = "${style.fonts.sansSerif.name} ${toString style.fonts.sizes.applications}";
               color-scheme = "prefer-${style.polarity}";
             }
