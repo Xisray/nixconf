@@ -218,6 +218,19 @@
             "brightness-down"
           ];
         };
+        "Mod+Shift+E" = {
+          action = let
+            annotateClipboard = pkgs.writeShellScript "annotate-clipboard" ''
+              f="$(mktemp --suffix=.png -p "''${XDG_RUNTIME_DIR:-/tmp}" screenshot-XXXXXX)"
+              if ! ${pkgs.wl-clipboard}/bin/wl-paste --type image/png > "$f" || [ ! -s "$f" ]; then
+                rm -f "$f"
+                exit 1
+              fi
+              exec ${noctaliaBin} msg annotate "$f"
+            '';
+          in "${annotateClipboard}";
+          shell = true;
+        };
       };
       wm.rules = {
         windows = [
