@@ -1,0 +1,154 @@
+@-moz-document url-prefix("about:") {
+  :root {
+    /* --- палитра --- */
+    --base00: #{{base00-hex}};
+    --base01: #{{base01-hex}};
+    --base02: #{{base02-hex}};
+    --base03: #{{base03-hex}};
+    --base04: #{{base04-hex}};
+    --base05: #{{base05-hex}};
+    --base07: #{{base07-hex}};
+    --base08: #{{base08-hex}};
+    --base0A: #{{base0A-hex}};
+    --base0B: #{{base0B-hex}};
+    --base0E: #{{base0E-hex}};
+    --base11: #{{base11-hex}};
+    --base15: #{{base15-hex}};
+
+    --primary:   #{{primary-hex}};
+    --secondary: #{{secondary-hex}};
+    --tertiary:  #{{tertiary-hex}};
+    /* ======================================== */
+
+    /* --- переменные about:preferences и др. --- */
+    --in-content-page-background: var(--base00) !important;             /* base00 */
+    --in-content-page-color: var(--base05) !important;                  /* base05 */
+    --in-content-text-color: var(--base05) !important;                  /* base05 */
+    --in-content-deemphasized-text: var(--base04) !important;           /* base04 */
+    --in-content-box-background: var(--base01) !important;              /* base01 */
+    --in-content-box-background-hover: var(--base02) !important;        /* base02 */
+    --in-content-box-background-active: var(--base03) !important;       /* base03 */
+    --in-content-box-border-color: var(--base03) !important;            /* base03 */
+    --in-content-border-color: var(--base03) !important;                /* base03 */
+    --in-content-border-hover: var(--base04) !important;                /* base04 */
+    --in-content-border-active: var(--primary) !important;               /* primary */
+    --in-content-border-focus: var(--primary) !important;                /* primary */
+    --in-content-focus-outline-color: var(--primary) !important;         /* primary */
+    --in-content-link-color: var(--tertiary) !important;                  /* tertiary */
+    --in-content-link-color-hover: var(--secondary) !important;            /* secondary */
+    --in-content-link-color-active: var(--primary) !important;           /* primary */
+    --in-content-link-color-visited: var(--primary) !important;          /* primary */
+    --in-content-accent-color: var(--primary) !important;                /* primary */
+    --in-content-accent-color-active: var(--secondary) !important;         /* secondary */
+    --in-content-primary-button-background: var(--primary) !important;   /* primary */
+    --in-content-primary-button-background-hover: var(--secondary) !important; /* secondary */
+    --in-content-primary-button-background-active: var(--tertiary) !important; /* tertiary */
+    --in-content-primary-button-text-color: var(--base11) !important;   /* base11 */
+    --in-content-primary-button-text-color-hover: var(--base11) !important; /* base11 */
+    --in-content-button-background: var(--base02) !important;           /* base02 */
+    --in-content-button-background-hover: var(--base03) !important;     /* base03 */
+    --in-content-button-background-active: var(--base04) !important;    /* base04 */
+    --in-content-button-text-color: var(--base05) !important;           /* base05 */
+    --in-content-button-text-color-hover: var(--base05) !important;     /* base05 */
+    --in-content-table-background: var(--base01) !important;            /* base01 */
+    --in-content-table-border-color: var(--base03) !important;          /* base03 */
+    --in-content-selected-text: var(--base11) !important;               /* base11 */
+    --in-content-item-hover: var(--base02) !important;                  /* base02 */
+    --in-content-item-hover-text: var(--base05) !important;             /* base05 */
+    --in-content-item-selected: var(--primary) !important;               /* primary */
+    --in-content-item-selected-text: var(--base11) !important;          /* base11 */
+    --in-content-category-outline-focus: 2px solid var(--primary) !important; /* primary */
+    --in-content-danger-button-background: var(--base08) !important;    /* base08 */
+    --in-content-warning-icon-color: var(--base0A) !important;          /* base0A */
+    --in-content-success-icon-color: var(--base0B) !important;          /* base0B */
+    --in-content-error-icon-color: var(--base08) !important;            /* base08 */
+
+    /* --- общие переменные --- */
+    --background-color-canvas: var(--base00) !important;                /* base00 */
+    --background-color-box: var(--base01) !important;                   /* base01 */
+    --text-color: var(--base05) !important;                             /* base05 */
+    --link-color: var(--tertiary) !important;                             /* tertiary */
+    --link-color-hover: var(--secondary) !important;                       /* secondary */
+    --focus-outline-color: var(--primary) !important;                    /* primary */
+    --color-accent-primary: var(--primary) !important;                   /* primary */
+    --color-accent-primary-hover: var(--secondary) !important;             /* secondary */
+    --color-accent-primary-active: var(--tertiary) !important;            /* tertiary */
+  }
+
+  html,
+  body {
+    background-color: var(--base00) !important;  /* base00 */
+    color: var(--base05) !important;             /* base05 */
+  }
+
+  /* Поля ввода */
+  input,
+  textarea,
+  select,
+  menulist {
+    background-color: var(--base02) !important;  /* base02 */
+    color: var(--base05) !important;             /* base05 */
+    border-color: var(--base03) !important;      /* base03 */
+  }
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--primary) !important;      /* primary */
+    outline-color: var(--primary) !important;     /* primary */
+  }
+
+  /* Выделение текста */
+  ::selection {
+    background-color: var(--primary);             /* primary */
+    color: var(--base11);                        /* base11 */
+  }
+
+  /* Скроллбары */
+  * {
+    scrollbar-color: var(--base03) var(--base01); /* thumb: base03, track: base01 */
+  }
+}
+
+/* ---------- Новая вкладка (about:newtab, about:home) ---------- */
+@-moz-document url("about:newtab"), url("about:home"), url("about:blank") {
+  :root {
+    --newtab-background-color: var(--base00) !important;            /* base00 */
+    --newtab-background-color-secondary: var(--base01) !important;  /* base01 */
+    --newtab-text-primary-color: var(--base05) !important;          /* base05 */
+    --newtab-text-secondary-color: var(--base04) !important;        /* base04 */
+    --newtab-primary-action-background: var(--primary) !important;   /* primary */
+    --newtab-element-hover-color: var(--base02) !important;         /* base02 */
+    --newtab-element-active-color: var(--base03) !important;        /* base03 */
+    --newtab-border-color: var(--base03) !important;                /* base03 */
+    --newtab-search-border-color: var(--base02) !important;         /* base02 */
+    --newtab-search-dropdown-color: var(--base01) !important;       /* base01 */
+    --newtab-card-background-color: var(--base01) !important;       /* base01 */
+    --newtab-contextual-text-primary-color: var(--base05) !important; /* base05 */
+  }
+
+  body {
+    background-color: var(--base00) !important;                     /* base00 */
+  }
+
+  /* Поиск на новой вкладке */
+  .search-handoff-button,
+  .search-wrapper input {
+    background-color: var(--base01) !important;                     /* base01 */
+    color: var(--base05) !important;                                /* base05 */
+    border: 1px solid var(--base02) !important;                     /* base02 */
+  }
+  .search-handoff-button:hover,
+  .search-wrapper input:focus {
+    border-color: var(--primary) !important;                         /* primary */
+  }
+
+  /* Плитки сайтов */
+  .top-site-outer:hover,
+  .top-site-outer:focus {
+    background-color: var(--base02) !important;                     /* base02 */
+  }
+  .top-site-outer .tile {
+    background-color: var(--base01) !important;                     /* base01 */
+    box-shadow: none !important;
+  }
+}
