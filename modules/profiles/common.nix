@@ -14,6 +14,7 @@
       self.nixosModules.qt
       self.nixosModules.niri
       self.nixosModules.noctalia
+      self.nixosModules.usb
       self.nixosModules.qbittorrent
       self.nixosModules.syncthing
       self.nixosModules.firefox
@@ -21,7 +22,9 @@
       self.nixosModules.keepassxc
       self.nixosModules.kitty
       self.nixosModules.shell
+      self.nixosModules.yazi
       self.nixosModules.telegram
+      self.nixosModules.utils
     ];
     preferences.persistence.data.directories = [
       "Downloads"
