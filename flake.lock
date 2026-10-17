@@ -194,11 +194,11 @@
         "nixpkgs-lib": "nixpkgs-lib_2"
       },
       "locked": {
-        "lastModified": 1791885115,
+        "lastModified": 1792152161,
         "narHash": "sha256-dWVQMAUDk6UkqwJIJTcfJogxuHPe/npEjwttnZQdRQM=",
         "owner": "xisray",
         "repo": "palette.nix",
-        "rev": "308ab81d6f7ac5153515a71a84bf519e348c6644",
+        "rev": "91bf27035ce3705fa6ee6ff71c25938b91f6187b",
         "type": "github"
       },
       "original": {

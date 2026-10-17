@@ -17,7 +17,6 @@
       wm.rules.windows = [
         {
           match = {
-            app-id = "^KeePassXC$";
             title = "^Unlock Database - KeePassXC$";
           };
           open-floating = true;

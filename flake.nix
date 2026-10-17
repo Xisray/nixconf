@@ -25,6 +25,10 @@
     };
 
     cliamp.url = "github:bjarneo/cliamp";
+    # opencode = {
+    #   url = "github:anomalyco/opencode";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs = inputs:
