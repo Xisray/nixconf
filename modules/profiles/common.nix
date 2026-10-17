@@ -25,6 +25,7 @@
       self.nixosModules.yazi
       self.nixosModules.telegram
       self.nixosModules.utils
+      self.nixosModules.voxtype
     ];
     preferences.persistence.data.directories = [
       "Downloads"
