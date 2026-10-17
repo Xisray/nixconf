@@ -6,7 +6,7 @@
       pkgs,
       ...
     }: {
-      packages.opencode = inputs.wrappers.wrapperModules.opencode.wrap {
+      packages.opencode = inputs.wrappers.wrappers.opencode.wrap {
         inherit pkgs;
         tui-settings = lib.optionalAttrs (appearance.scheme != null) {
           theme = "nix";
