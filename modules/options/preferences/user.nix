@@ -4,6 +4,7 @@
     config,
     ...
   }: {
+    imports = [(lib.mkAliasOptionModule ["user"] ["users" "users" config.preferences.user.name])];
     options.preferences.user = with lib; {
       name = mkOption {
         type = types.str;
@@ -18,15 +19,17 @@
         default = "fish";
       };
     };
-    config.users.users.${config.preferences.user.name} = {
-      isNormalUser = true;
-      extraGroups = [
-        "wheel"
-        "networkmanager"
-        "input"
-      ];
-      hashedPasswordFile = "/persist/passwd";
-      packages = config.preferences.user.packages;
+    config = {
+      user = {
+        isNormalUser = true;
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+          "input"
+        ];
+        hashedPasswordFile = "/persist/passwd";
+        packages = config.preferences.user.packages;
+      };
     };
   };
 }
