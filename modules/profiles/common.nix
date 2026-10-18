@@ -26,6 +26,9 @@
       self.nixosModules.telegram
       self.nixosModules.utils
       self.nixosModules.voxtype
+      self.nixosModules.podman
+      self.nixosModules.libvirtd
+      self.nixosModules.libreoffice
     ];
     preferences.persistence.data.directories = [
       "Downloads"
