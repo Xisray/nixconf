@@ -94,6 +94,7 @@
             shadow = false;
           };
           app_icon_colorize = true;
+          app_icon_color = "on_surface";
           setup_wizard_enabled = false;
           launcher.providers.session.global = true;
         };
