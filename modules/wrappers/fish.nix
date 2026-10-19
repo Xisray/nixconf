@@ -14,7 +14,7 @@
           default = self.packages.${pkgs.stdenv.hostPlatform.system}.${name} or pkgs.${name} or (throw "Package '${name}' not found in self.packages.${pkgs.stdenv.hostPlatform.system} or pkgs!");
           description = "Package for ${name}";
         };
-      packageNames = ["tealdeer" "fzf" "ripgrep" "lsd" "fd" "btop" "fastfetch" "bat" "zoxide" "devenv" "wl-clipboard" "jq" "lazygit" "git" "neovim" "starship" "cliamp" "opencode"];
+      packageNames = ["tealdeer" "fzf" "ripgrep" "lsd" "fd" "btop" "fastfetch" "bat" "zoxide" "devenv" "wl-clipboard" "jq" "lazygit" "git" "neovim" "starship" "cliamp" "opencode" "yazi"];
     in {
       packages = lib.genAttrs packageNames mkPackageOption;
     };
