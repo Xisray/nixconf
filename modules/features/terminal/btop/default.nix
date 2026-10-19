@@ -1,16 +1,15 @@
 {self, ...}: {
   flake.shellModules.btop = {
     pkgs,
-    wlib,
     lib,
     appearance,
     ...
   }: let
-    btop = self.wrappers.btop or (wlib.wrapModule wlib.wrapperModules.btop);
+    btop = self.wrappers.btop or null;
     hasScheme = appearance.scheme != null;
     flat = appearance.rounding == 0;
   in {
-    packages.btop = lib.mkIf (hasScheme || flat) (
+    packages.btop = lib.mkIf (btop != null && (hasScheme || flat)) (
       btop.wrap {
         inherit pkgs;
         themes.nix = lib.mkIf hasScheme (appearance.colors {
