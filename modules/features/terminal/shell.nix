@@ -40,26 +40,35 @@ in {
   }: let
     user = config.preferences.user;
     entries = lib.attrValues self.shellModules;
-    shell = self.wrappers.${user.shell}.wrap {
+    shellEval = self.wrappers.${user.shell}.eval {
       inherit pkgs;
       imports = map (e: e.module) entries;
       _module.args.appearance = config.appearance;
     };
+    shell = shellEval.config.wrapper;
+    # shell = self.wrappers.${user.shell}.wrap {
+    #   inherit pkgs;
+    #   imports = map (e: e.module) entries;
+    #   _module.args.appearance = config.appearance;
+    # };
   in {
-    imports =
-      lib.filter (m: m != null) (map (e: e.nixos) entries);
+    imports = lib.filter (m: m != null) (map (e: e.nixos) entries);
+    _module.args.shellPackages = shellEval.config.packages;
     users.users.${user.name}.shell = shell;
     programs.${user.shell} = {
       enable = true;
       package = shell;
     };
+    preferences.user.packages = [pkgs.ffmpeg];
     preferences.persistence = {
       data.directories = [
         ".local/state/lazygit"
         ".local/share/devenv"
+        ".local/share/zoxide"
       ];
       cache.directories = [
         ".cache/nix"
+        ".cache/tealdeer/tldr-pages"
       ];
     };
   };
