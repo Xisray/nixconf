@@ -22,7 +22,6 @@
       self.nixosModules.keepassxc
       self.nixosModules.kitty
       self.nixosModules.shell
-      self.nixosModules.yazi
       self.nixosModules.telegram
       self.nixosModules.utils
       self.nixosModules.voxtype
