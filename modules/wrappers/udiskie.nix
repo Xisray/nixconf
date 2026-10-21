@@ -26,6 +26,7 @@
       flags."-c" = config.constructFiles.udiskie-config.path;
 
       systemd.user.service.udiskie = {
+        enable = true;
         Unit = {
           Description = "UDiskie mount daemon";
           PartOf = ["graphical-session.target"];
