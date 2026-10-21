@@ -86,11 +86,77 @@
       languages = {
         nixd = {
           cmd = "nixd";
-          packages = pkgs.nixd;
+          # packages = pkgs.nixd;
           settings = {
             nixd = {
               nixpkgs.expr = "import <nixpkgs> { }";
               formatting.command = [(lib.getExe pkgs.alejandra)];
+            };
+          };
+        };
+        pyright = {
+          cmd = ["pyright-langserver" "--stdio"];
+          filetypes = ["python"];
+          root_markers = [
+            "pyproject.toml"
+            "setup.py"
+            "setup.cfg"
+            "requirements.txt"
+            "Pipfile"
+            "pyrightconfig.json"
+            ".git"
+          ];
+        };
+        ruff = {
+          cmd = ["ruff" "server"];
+          filetypes = ["python"];
+          root_markers = ["pyproject.toml" "ruff.toml" ".ruff.toml" ".git"];
+        };
+        bashls = {
+          cmd = ["bash-language-server" "start"];
+          packages = [
+            pkgs.bash-language-server
+            pkgs.shellcheck
+          ];
+          filetypes = ["sh" "bash"];
+          root_markers = [".git"];
+          settings = {
+            bashIde = {
+              shfmt = {
+                path = lib.getExe pkgs.shfmt;
+              };
+            };
+          };
+        };
+        jsonls = {
+          cmd = ["vscode-json-language-server" "--stdio"];
+          packages = pkgs.vscode-langservers-extracted;
+          filetypes = ["json" "jsonc"];
+          root_markers = [".git" "package.json"];
+          settings = {
+            json = {
+              validate.enable = true;
+              format.enable = true;
+            };
+          };
+        };
+        yamlls = {
+          cmd = ["yaml-language-server" "--stdio"];
+          packages = pkgs.yaml-language-server;
+          filetypes = ["yaml" "yml"];
+          root_markers = [".git"];
+          settings = {
+            yaml = {
+              schemaStore = {
+                enable = true;
+                url = "https://www.schemastore.org/api/json/catalog.json";
+              };
+              validate = true;
+              format = {
+                enable = true;
+              };
+              hover = true;
+              completion = true;
             };
           };
         };
