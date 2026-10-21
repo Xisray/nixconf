@@ -47,10 +47,10 @@
       };
       persistence = {
         data.directories = [
-         ".local/share/io.github.clash-verge-rev.clash-verge-rev"
+          ".local/share/io.github.clash-verge-rev.clash-verge-rev"
         ];
         cache.directories = [
-         ".cache/io.github.clash-verge-rev.clash-verge-rev"
+          ".cache/io.github.clash-verge-rev.clash-verge-rev"
         ];
       };
     };
