@@ -98,7 +98,6 @@
         fi
       '';
 
-      # свой shell-код (sed, awk и т.д.), $file доступен
       custom = {script, ...}: script;
     };
     mkScript = name: e: let
@@ -107,12 +106,14 @@
     in
       pkgs.writeShellApplication {
         name = "fpatcher-${name}";
-        runtimeInputs = with pkgs; [coreutils gawk gnused gnugrep jq yq-go];
+        runtimeInputs = with pkgs; [coreutils gawk gnused gnugrep jq yq-go procps];
         text = ''
           file=${lib.escapeShellArg file}
+          ${e.before}
           mkdir -p "$(dirname "$file")"
           [ -e "$file" ] || touch "$file"
           ${formats.${e.format} e}
+          ${e.after}
         '';
       };
   in {
@@ -142,6 +143,16 @@
             type = lib.types.lines;
             default = "";
             description = "Shell-код для format = \"custom\"; переменная $file указывает на файл.";
+          };
+          before = lib.mkOption {
+            type = lib.types.lines;
+            default = "";
+            description = "Shell-код, выполняемый перед правкой файла (от имени user); $file указывает на файл.";
+          };
+          after = lib.mkOption {
+            type = lib.types.lines;
+            default = "";
+            description = "Shell-код, выполняемый после правки файла (от имени user); $file указывает на файл.";
           };
         };
       });
