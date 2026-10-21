@@ -1,7 +1,6 @@
 {
   flake.nixosModules.preferences = {lib, config, ...}: {
     options.preferences.proxy = lib.mkOption {
-      default = null;
       type = lib.types.nullOr (lib.types.submodule ({config, ...}: {
         options = {
           http = lib.mkOption { type = lib.types.str; };
