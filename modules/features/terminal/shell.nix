@@ -47,11 +47,6 @@ in {
       _module.args.preferences = config.preferences;
     };
     shell = shellEval.config.wrapper;
-    # shell = self.wrappers.${user.shell}.wrap {
-    #   inherit pkgs;
-    #   imports = map (e: e.module) entries;
-    #   _module.args.appearance = config.appearance;
-    # };
   in {
     imports = lib.filter (m: m != null) (map (e: e.nixos) entries);
     _module.args.shellPackages = shellEval.config.packages;
@@ -63,12 +58,9 @@ in {
     preferences.user.packages = [pkgs.ffmpeg];
     preferences.persistence = {
       data.directories = [
-        ".local/state/lazygit"
-        ".local/share/devenv"
         ".local/share/zoxide"
       ];
       cache.directories = [
-        ".cache/nix"
         ".cache/tealdeer/tldr-pages"
       ];
     };
