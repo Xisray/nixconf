@@ -54,8 +54,8 @@
       };
       configFile.content = ''
         starship init fish | source
-        zoxide init fish --cmd cd | source
         fzf --fish | source
+        devenv hook fish -- --no-tui | source
         if test -f /etc/fish/nixos-env-preinit.fish
           source /etc/fish/nixos-env-preinit.fish
         end
@@ -67,6 +67,7 @@
             source $f
           end
         end
+        zoxide init fish --cmd cd | source
       '';
     };
   };
