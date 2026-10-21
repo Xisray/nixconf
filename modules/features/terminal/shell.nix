@@ -44,6 +44,7 @@ in {
       inherit pkgs;
       imports = map (e: e.module) entries;
       _module.args.appearance = config.appearance;
+      _module.args.preferences = config.preferences;
     };
     shell = shellEval.config.wrapper;
     # shell = self.wrappers.${user.shell}.wrap {
