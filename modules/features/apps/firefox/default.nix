@@ -127,32 +127,18 @@
             };
           }));
 
-      dir = d: "d ${d} 0700 - - -";
-      link = dst: src: "L+ ${dst} - - - - ${src}";
+      link = dst: src: rem:
+        if rem
+        then "r ${dst}"
+        else "L+ ${dst} - - - - ${src}";
     in {
-      systemd.user.tmpfiles.rules = lib.mkIf (hasStylesheets || hasColors) (
-        (map dir [
-          "%h/.mozilla"
-          "%h/.mozilla/firefox"
-          "%h/.mozilla/firefox/${profileName}"
-        ])
-        ++ [
-          "C %h/.mozilla/firefox/profiles.ini 0600 - - - ${profilesIni}"
+      systemd.user.tmpfiles.rules =
+        [
+          (link "%h/.mozilla/firefox/${profileName}/chrome/userChrome.css" userChrome (userChrome == null))
+          (link "%h/.mozilla/firefox/${profileName}/chrome/userContent.css" userContent (userContent == null))
+          (link "%h/.mozilla/firefox/${profileName}/browser-extension-data/${addonId}/storage.js" storageJs (!hasColors))
         ]
-        ++ (lib.optionals hasStylesheets [
-          (dir "%h/.mozilla/firefox/${profileName}/chrome")
-        ])
-        ++ (lib.optionals (userChrome != null) [
-          (link "%h/.mozilla/firefox/${profileName}/chrome/userChrome.css" userChrome)
-        ])
-        ++ (lib.optionals (userContent != null) [
-          (link "%h/.mozilla/firefox/${profileName}/chrome/userContent.css" userContent)
-        ])
-        ++ (lib.optionals hasColors [
-          (dir "%h/.mozilla/firefox/${profileName}/browser-extension-data/${addonId}")
-          (link "%h/.mozilla/firefox/${profileName}/browser-extension-data/${addonId}/storage.js" storageJs)
-        ])
-      );
+        ++ lib.optional (hasColors || hasStylesheets) "C %h/.mozilla/firefox/profiles.ini 0600 - - - ${profilesIni}";
 
       programs.firefox = {
         userChrome = lib.mkIf (style.rounding == 0) ''
@@ -170,7 +156,6 @@
           (lib.mkIf hasColors ''
             lockPref("extensions.webextensions.ExtensionStorageIDB.enabled", false);
           '')
-          # lockPref("extensions.webextensions.ExtensionStorageIDB.migrated.${addonId}", false);
         ];
         policies = {
           ExtensionSettings.${addonId} = lib.mkIf (style.scheme != null) {
