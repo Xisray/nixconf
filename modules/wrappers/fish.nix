@@ -53,9 +53,13 @@
         EDITOR = lib.getExe config.packages.neovim;
       };
       configFile.content = ''
-        starship init fish | source
+        if status is-interactive
+          and not string match -qr '^/dev/tty[0-9]*$' (tty 2>/dev/null; or echo)
+          starship init fish | source
+          devenv hook fish -- --no-tui | source
+          zoxide init fish --cmd cd | source
+        end
         fzf --fish | source
-        devenv hook fish -- --no-tui | source
         if test -f /etc/fish/nixos-env-preinit.fish
           source /etc/fish/nixos-env-preinit.fish
         end
@@ -67,7 +71,6 @@
             source $f
           end
         end
-        zoxide init fish --cmd cd | source
       '';
     };
   };
