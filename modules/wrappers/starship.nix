@@ -90,9 +90,9 @@
         "$php"
         "$docker_context"
         "$cmd_duration"
-        (lib.optionalString modern "[${close}─](fg:prev_bg)")
+        (lib.optionalString modern "[${close}](fg:prev_bg)")
         "\n"
-        (lib.optionalString config.frame "[${bot}](fg:primary)")
+        (lib.optionalString config.frame "[${bot}─](fg:primary)")
         "$character"
       ];
       character = {
