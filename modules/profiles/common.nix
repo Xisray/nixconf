@@ -12,8 +12,6 @@
       self.nixosModules.sops
       self.nixosModules.homefs
       self.nixosModules.xdg
-      self.nixosModules.gtk
-      self.nixosModules.qt
       self.nixosModules.niri
       self.nixosModules.noctalia
       self.nixosModules.usb
