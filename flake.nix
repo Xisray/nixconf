@@ -23,6 +23,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    devenv.url = "github:cachix/devenv";
 
     cliamp.url = "github:bjarneo/cliamp";
     # opencode = {
@@ -35,6 +36,7 @@
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
         inputs.wrappers.flakeModules.wrappers
+        inputs.devenv.flakeModule
         (inputs.import-tree ./modules)
         ./hosts
       ];
