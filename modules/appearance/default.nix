@@ -155,7 +155,6 @@
     in {
       appearance.hasScheme = cfg.scheme != null;
       appearance.colors = lib.mkIf cfg.hasScheme (inputs.palette.lib.mkPalette cfg.scheme);
-      console.colors = lib.mkIf cfg.hasScheme (with cfg.colors; [base00 base08 base0B base0A base0D base0E base0C base05 base03 base12 base14 base13 base16 base17 base15 base07]);
       environment.systemPackages =
         lib.optional (cfg.icons != null) cfg.icons.package
         ++ lib.optional (cfg.cursor != null) cfg.cursor.package;
