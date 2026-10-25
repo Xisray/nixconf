@@ -1,7 +1,6 @@
 {moduleWithSystem, ...}: {
   flake.nixosModules.utils = moduleWithSystem (
     {self', ...}: {
-      config,
       lib,
       pkgs,
       ...
@@ -15,13 +14,6 @@
       ocr = self'.packages.ocr;
       sshot = self'.packages.sshot;
     in {
-      homefs.files.".config/slurp/config.json" = lib.mkIf (config.appearance.scheme != null) {
-        value = with config.appearance.colors.withHashtag; {
-          borderColor = primary;
-          selectionColor = "${primary}11";
-        };
-        generator = builtins.toJSON;
-      };
       preferences.binds = {
         "Mod+Shift+C".action = colorpicker;
         "Mod+Shift+X" = {action = [(lib.getExe ocr)];};

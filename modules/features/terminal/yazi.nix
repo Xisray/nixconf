@@ -1,24 +1,10 @@
 {
   flake.nixosModules.yazi = {
-    config,
     lib,
     pkgs,
     ...
-  }: let
-    style = config.appearance;
-    hasScheme = style.scheme != null;
-  in {
+  }: {
     homefs.files = let
-      block = {
-        open =
-          if (style.rounding == 0)
-          then "█"
-          else "";
-        close =
-          if (style.rounding == 0)
-          then "█"
-          else "";
-      };
       toTOML = pkgs.formats.toml {};
     in {
       ".config/yazi/init.lua".text = ''
@@ -49,24 +35,6 @@
           mgr.linemode = "size_and_mtime";
         };
         generator = toTOML.generate "yazi.toml";
-      };
-      ".config/yazi/flavors/nix.yazi/flavor.toml" = lib.mkIf hasScheme (
-        style.colors {src = ./yazi.toml.mustache;}
-      );
-      ".config/yazi/flavors/nix.yazi/tmtheme.xml" = lib.mkIf hasScheme (
-        style.colors {src = ../bat/bat.tmTheme.mustache;}
-      );
-      ".config/yazi/theme.toml" = {
-        value = {
-          flavor = lib.mkIf hasScheme {
-            dark = "nix";
-            light = "nix";
-          };
-          status.sep_left = block;
-          status.sep_right = block;
-          indicator.padding = block;
-        };
-        generator = toTOML.generate "theme.toml";
       };
     };
     xdg = {

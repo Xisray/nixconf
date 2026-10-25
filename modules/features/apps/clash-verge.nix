@@ -20,7 +20,7 @@
         enable_auto_launch = false;
         enable_silent_start = true;
         theme_setting =
-          if (config.appearance.scheme != null)
+          if config.appearance.hasScheme
           then
             (with config.appearance.colors.withHashtag; {
               primary_color = primary;

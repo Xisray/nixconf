@@ -14,56 +14,6 @@
     showSecondaryBar = builtins.length monitors > 1;
     noctalia = self'.packages.noctalia or pkgs.noctalia;
   in {
-    environment.etc."noctalia/palettes/nix.json" = lib.mkIf (style.scheme != null) {
-      text = builtins.toJSON {
-        ${style.polarity} = with style.colors.withHashtag; {
-          mPrimary = primary;
-          mOnPrimary = base00;
-          mSecondary = secondary;
-          mOnSecondary = base00;
-          mTertiary = tertiary;
-          mOnTertiary = base00;
-          mError = base08;
-          mOnError = base00;
-          mSurface = base00;
-          mOnSurface = base05;
-          mSurfaceVariant = base01;
-          mOnSurfaceVariant = base06;
-          mHover = base02;
-          mOnHover = base05;
-          mOutline = base03;
-          mShadow = base11;
-          terminal = {
-            foreground = base05;
-            background = base00;
-            cursor = base05;
-            cursorText = base00;
-            selectionFg = base05;
-            selectionBg = base02;
-            normal = {
-              black = base01;
-              red = base08;
-              yellow = base0A;
-              green = base0B;
-              cyan = base0C;
-              blue = base0D;
-              magenta = base0E;
-              white = base05;
-            };
-            bright = {
-              black = base03;
-              red = base12;
-              yellow = base13;
-              green = base14;
-              cyan = base15;
-              blue = base16;
-              magenta = base17;
-              white = base07;
-            };
-          };
-        };
-      };
-    };
     homefs.files.".config/noctalia/config.toml" = let
       merge = lib.foldl' lib.recursiveUpdate {};
       translucent = style.opacity.desktop < 1.0;
@@ -71,13 +21,6 @@
       loginBox = "lockscreen_login_box@${monitorPort}";
       base = {
         wallpaper.directory = "~/Pictures/Wallpapers";
-        osd.background_opacity = style.opacity.popups;
-        notification.background_opacity = style.opacity.popups;
-        shell.corner_radius_scale = lib.max 0.0 (lib.min 2.0 (style.rounding / 12.0));
-        shell.panel.transparency_mode =
-          if translucent
-          then "soft"
-          else "solid";
         bar.default = {
           background_opacity = style.opacity.desktop;
           radius_bottom_left = style.rounding;
@@ -162,15 +105,8 @@
             // lib.optionalAttrs square {capsule_radius = 0;};
         };
       };
-      theme = lib.optionalAttrs (style.scheme != null) {
-        theme = {
-          source = "custom";
-          custom_palette = "nix";
-          mode = style.polarity;
-        };
-      };
     in
-      (pkgs.formats.toml {}).generate "noctalia.toml" (merge [base squareCorners translucency secondaryBar theme]);
+      (pkgs.formats.toml {}).generate "noctalia.toml" (merge [base squareCorners translucency secondaryBar]);
     programs.noctalia = {
       enable = true;
       systemd.enable = true;

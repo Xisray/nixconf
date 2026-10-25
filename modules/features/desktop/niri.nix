@@ -110,69 +110,22 @@
         }
       else rule;
     cfg = config.preferences;
-    style = config.appearance;
 
     outputs = lib.mapAttrs toNiriOutput cfg.monitors;
-    window-rules =
-      (lib.optional (style.rounding > 0) {
-        geometry-corner-radius = style.rounding;
-        clip-to-geometry = true;
-      })
-      ++ (lib.optional style.blur.enable {
-        background-effect.blur = true;
-      })
-      ++ (map transformRule cfg.wm.rules.windows);
+    window-rules = map transformRule cfg.wm.rules.windows;
     layer-rules = map transformRule cfg.wm.rules.layers;
-    settings =
-      {
-        binds = lib.mapAttrs (_: toNiriBind) cfg.binds;
-        input.mouse = lib.filterAttrs (_: v: v != null) {
-          accel-profile = cfg.mouse.accelProfile;
-          accel-speed = cfg.mouse.accelSpeed;
-          scroll-factor = cfg.mouse.scrollFactor;
-          natural-scroll =
-            if cfg.mouse.naturalScroll == true
-            then _: {}
-            else null;
-        };
-        blur =
-          if style.blur.enable
-          then {
-            passes = style.blur.passes;
-            offset = style.blur.size;
-            noise = style.blur.noise;
-            saturation = style.blur.saturation;
-          }
-          else {off = _: {};};
-      }
-      // lib.optionalAttrs (style.cursor != null) {
-        cursor = {
-          xcursor-theme = style.cursor.name;
-          xcursor-size = style.cursor.size;
-        };
-      }
-      // lib.optionalAttrs (style.scheme != null) (
-        with style.colors.withHashtag; {
-          layout = let
-            colors = {
-              active-color = primary;
-              inactive-color = base00;
-              urgent-color = base08;
-            };
-          in {
-            focus-ring = colors;
-            border = colors;
-            tab-indicator = colors;
-            insert-hint = {
-              color = primary;
-            };
-          };
-          recent-windows.highlight = {
-            active-color = primary;
-            urgent-color = base08;
-          };
-        }
-      );
+    settings = {
+      binds = lib.mapAttrs (_: toNiriBind) cfg.binds;
+      input.mouse = lib.filterAttrs (_: v: v != null) {
+        accel-profile = cfg.mouse.accelProfile;
+        accel-speed = cfg.mouse.accelSpeed;
+        scroll-factor = cfg.mouse.scrollFactor;
+        natural-scroll =
+          if cfg.mouse.naturalScroll == true
+          then _: {}
+          else null;
+      };
+    };
   in {
     programs.niri = {
       enable = true;

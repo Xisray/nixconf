@@ -18,13 +18,8 @@
   in {
     imports = [
       self.nixosModules.yazi
-      self.nixosModules.bat
-      self.nixosModules.btop
       self.nixosModules.opencode
       self.nixosModules.devenv
-      # self.nixosModules.fastfetch
-      self.nixosModules.fzf
-      self.nixosModules.lazygit
       self.nixosModules.nvim
       self.nixosModules.starship
     ];
@@ -33,19 +28,20 @@
       default = {};
     };
     config = {
+      appearance.targets.bat.package = self.packages.${pkgs.stdenv.hostPlatform.system}.bat;
       environment.shellAliases = {
         ls = null;
         ll = null;
         l = null;
       };
-      users.users.${user.name}.shell = "/run/current-system/sw/bin/${user.shell}";
+      users.users.${user.name}.shell = shell;
       programs.${user.shell} = {
         enable = true;
         package = shell;
       };
       preferences.persistence = {
-        data.directories = [".local/share/zoxide"];
-        cache.directories = [".cache/tealdeer/tldr-pages"];
+        data.directories = [".local/share/zoxide" ".local/share/lazygit"];
+        cache.directories = [".cache/tealdeer/tldr-pages" ".cache/bat"];
       };
     };
   };

@@ -149,8 +149,8 @@
     config = let
       cfg = config.appearance;
     in {
-      appearance.colors = lib.mkIf (cfg.scheme != null) (inputs.palette.lib.mkPalette cfg.scheme);
-      console.colors = lib.mkIf (cfg.scheme != null) (
+      appearance.colors = lib.mkIf (cfg.hasScheme) (inputs.palette.lib.mkPalette cfg.scheme);
+      console.colors = lib.mkIf (cfg.hasScheme) (
         with cfg.colors; [
           base00
           base08

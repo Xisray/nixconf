@@ -21,6 +21,7 @@
     preferences.persistence = {
       data.directories = [
         ".local/share/devenv"
+        ".local/share/direnv"
       ];
       cache.directories = [
         ".cache/nix"

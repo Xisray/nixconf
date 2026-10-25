@@ -16,7 +16,7 @@
       ];
       wm.rules.windows = [
         {
-          match.            title = "^Unlock Database - KeePassXC$";
+          match.title = "^Unlock Database - KeePassXC$";
           open-floating = true;
         }
       ];

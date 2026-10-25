@@ -8,11 +8,7 @@
   }: {
     imports = [wlib.modules.default];
     options = {
-      theme = lib.mkOption {
-        type = lib.types.nullOr lib.types.path;
-        default = null;
-      };
-      background = lib.mkOption {
+      processName = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
         default = null;
       };
@@ -20,8 +16,8 @@
         type = lib.types.str;
         default = ".local/share/TelegramDesktop/tdata";
       };
-      processName = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
+      theme = lib.mkOption {
+        type = lib.types.nullOr (lib.types.either lib.types.str lib.types.path);
         default = null;
       };
     };
@@ -31,27 +27,8 @@
         then config.processName
         else config.package.meta.mainProgram or (lib.getName config.package);
       python = pkgs.python3.withPackages (ps: [ps.cryptography]);
-      themeFile =
-        if config.theme == null
-        then null
-        else if config.background == null
-        then config.theme
-        else
-          pkgs.runCommand "telegram.tdesktop-theme"
-          {
-            nativeBuildInputs = [
-              pkgs.zip
-              pkgs.imagemagick
-            ];
-          }
-          ''
-            mkdir t && cd t
-            cp ${config.theme} colors.tdesktop-theme
-            magick -size 64x64 xc:'#${config.background}' background.png
-            zip -X "$out" colors.tdesktop-theme background.png
-          '';
       applyTheme =
-        if themeFile == null
+        if config.theme == null
         then null
         else
           (pkgs.writeShellApplication {
@@ -62,7 +39,7 @@
             ];
             text = ''
               export PYTHONPATH=${./.}
-              export TG_THEME=${lib.escapeShellArg "${themeFile}"}
+              export TG_THEME=${lib.escapeShellArg config.theme}
               export TG_TDATA=${lib.escapeShellArg config.tdata}
               export TG_PROCESS=${lib.escapeShellArg processName}
               python - <<'EOF' || true
@@ -71,7 +48,7 @@
               from tg_config.theme import apply_theme
 
               apply_theme(
-                Path(os.environ["TG_THEME"]),
+                Path(os.path.expandvars(os.environ["TG_THEME"])),
                 Path.home() / os.environ["TG_TDATA"],
                 app=os.environ["TG_PROCESS"],
               )
