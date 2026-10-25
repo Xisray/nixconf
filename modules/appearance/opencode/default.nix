@@ -12,7 +12,7 @@
     };
     config = lib.mkIf (cfg.hasScheme && cfg.targets.opencode.enable) {
       homefs.directories.".config/opencode".files = {
-        "themes/nix.json" = cfg.colors {};
+        "themes/nix.json" = cfg.colors {src = ./nix.json.mustache;};
         "tui.json" = {
           value = {
             theme = "nix";
