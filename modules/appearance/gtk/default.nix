@@ -41,7 +41,7 @@
               }
               // lib.optionalAttrs (cfg.cursor != null) {
                 cursor-theme = cfg.cursor.name;
-                cursor-size = lib.gvariant.mkUint32 cfg.cursor.size;
+                cursor-size = lib.gvariant.mkInt32 cfg.cursor.size;
               };
           }
         ];
