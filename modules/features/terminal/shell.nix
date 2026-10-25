@@ -28,7 +28,6 @@
       default = {};
     };
     config = {
-      appearance.targets.bat.package = self.packages.${pkgs.stdenv.hostPlatform.system}.bat;
       environment.shellAliases = {
         ls = null;
         ll = null;
