@@ -28,7 +28,7 @@
         backgroundColor = base00;
         font = toString (mkGrubFont cfg.fonts.monospace cfg.fonts.sizes.applications "mono");
         theme = let
-          fontSize = style.fonts.sizes.applications;
+          fontSize = cfg.fonts.sizes.applications;
           fontName = "nixsans";
           itemHeight = 36;
           themeTxt = pkgs.writeText "theme.txt" ''
@@ -69,7 +69,7 @@
               color = "${base05}"
             }
           '';
-          r = style.rounding;
+          r = cfg.rounding;
           script =
             ''
               mkdir $out
