@@ -39,8 +39,8 @@
         }
         ${lib.optionalString (cfg.cursor != null) ''
           cursor {
-            xcursor-theme ${cfg.cursor.name}
-            xcursor-size ${cfg.cursor.size}
+            xcursor-theme "${cfg.cursor.name}"
+            xcursor-size ${toString cfg.cursor.size}
           }
         ''}
         ${lib.optionalString (cfg.hasScheme) ''
