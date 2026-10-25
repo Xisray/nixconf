@@ -33,6 +33,11 @@
       default = {};
     };
     config = {
+      environment.shellAliases = {
+        ls = null;
+        ll = null;
+        l = null;
+      };
       users.users.${user.name}.shell = "/run/current-system/sw/bin/${user.shell}";
       programs.${user.shell} = {
         enable = true;
