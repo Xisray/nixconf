@@ -16,7 +16,7 @@
           "themes/nix.theme" = cfg.colors {src = ./btop.theme.mustache;};
         })
         {
-          "btop.conf" = ''
+          "btop.conf".text = ''
             ${lib.optionalString (cfg.hasScheme) "color_theme = \"nix\""}
             rounded_corners = "${
               if cfg.rounding > 0
