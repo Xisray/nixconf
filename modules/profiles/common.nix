@@ -1,6 +1,7 @@
 {self, ...}: {
   flake.nixosModules.common = {pkgs, ...}: {
     imports = [
+      self.nixosModules.appearance
       self.nixosModules.preferences
       self.nixosModules.boot
       self.nixosModules.network
