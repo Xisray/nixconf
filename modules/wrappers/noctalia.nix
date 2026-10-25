@@ -13,12 +13,10 @@
         name = "noctalia/config.toml";
         path = tomlFormat.generate "config.toml" config.settings;
       }
-      ++ [
-        {
-          name = "noctalia/palettes";
-          path = "/etc/noctalia/palettes";
-        }
-      ]
+      ++ lib.optional (config.palettesDir != null) {
+        name = "noctalia/palettes";
+        path = config.palettesDir;
+      }
     );
   in {
     imports = [wlib.modules.default];
@@ -27,6 +25,10 @@
       settings = lib.mkOption {
         type = tomlFormat.type;
         default = {};
+      };
+      palettesDir = lib.mkOption {
+        type = lib.types.nullOr (lib.types.either lib.types.path lib.types.str);
+        default = "/etc/noctalia/palettes";
       };
     };
 
