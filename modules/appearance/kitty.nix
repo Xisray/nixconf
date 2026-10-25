@@ -11,18 +11,18 @@
       default = true;
     };
     config = lib.mkIf (cfg.targets.kitty.enable) {
-      homefs.files.".config/kitty/kitty.conf" = ''
+      homefs.files.".config/kitty/kitty.conf".text = ''
         background_opacity ${toString cfg.opacity.terminal}
         font_family ${cfg.fonts.monospace.name}
         font_size ${toString cfg.fonts.sizes.terminal}
         ${lib.optionalString (cfg.hasScheme) ''
           color0 #${cfg.colors.base01}
           color1 #${cfg.colors.base08}
-          color2 #${cfg.colors.base0b}
-          color3 #${cfg.colors.base0a}
-          color4 #${cfg.colors.base0d}
-          color5 #${cfg.colors.base0e}
-          color6 #${cfg.colors.base0c}
+          color2 #${cfg.colors.base0B}
+          color3 #${cfg.colors.base0A}
+          color4 #${cfg.colors.base0D}
+          color5 #${cfg.colors.base0E}
+          color6 #${cfg.colors.base0C}
           color7 #${cfg.colors.base05}
           color8 #${cfg.colors.base03}
           color9 #${cfg.colors.base12}
