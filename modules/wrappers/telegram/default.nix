@@ -33,6 +33,7 @@
         else
           (pkgs.writeShellApplication {
             name = "${processName}-apply-theme";
+            excludeShellChecks = ["SC2016"];
             runtimeInputs = [
               python
               pkgs.procps
