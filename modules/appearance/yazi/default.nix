@@ -17,30 +17,29 @@
           "flavor.toml" = cfg.colors {src = ./yazi.toml.mustache;};
           "tmtheme.xml" = cfg.colors {src = ../bat/bat.tmTheme.mustache;};
         };
-        files."theme.toml" = (pkgs.formats.toml {}).generate "yazi-theme.toml" lib.mkMerge [
-          (let
-            block = {
-              open =
-                if (cfg.rounding == 0)
-                then "█"
-                else "";
-              close =
-                if (cfg.rounding == 0)
-                then "█"
-                else "";
-            };
-          in {
+        files."theme.toml" = (pkgs.formats.toml {}).generate "yazi-theme.toml" (let
+          block = {
+            open =
+              if (cfg.rounding == 0)
+              then "█"
+              else "";
+            close =
+              if (cfg.rounding == 0)
+              then "█"
+              else "";
+          };
+        in
+          {
             status.sep_left = block;
             status.sep_right = block;
             indicator.padding = block;
-          })
-          (lib.mkIf (cfg.hasScheme) {
+          }
+          // lib.optionalAttrs cfg.hasScheme {
             flavor = {
               dark = "nix";
               light = "nix";
             };
-          })
-        ];
+          });
       };
     };
   };
