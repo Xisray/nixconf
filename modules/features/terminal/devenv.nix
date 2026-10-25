@@ -13,6 +13,11 @@
         env = config.preferences.proxy.env;
       }
     );
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      silent = true;
+    };
     preferences.persistence = {
       data.directories = [
         ".local/share/devenv"
@@ -20,6 +25,14 @@
       cache.directories = [
         ".cache/nix"
       ];
+    };
+  };
+  perSystem = {...}: {
+    devenv.shells = {
+      nix = {
+        languages.nix.enable = true;
+        git-hooks.hooks.alejandra.enable = true;
+      };
     };
   };
 }
