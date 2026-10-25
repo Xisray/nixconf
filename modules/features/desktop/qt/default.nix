@@ -2,7 +2,6 @@
   flake.nixosModules.qt = {
     lib,
     config,
-    pkgs,
     ...
   }: let
     style = config.appearance;
@@ -35,14 +34,16 @@
       platformTheme = "qt5ct";
       style = "kvantum";
     };
-    systemd.user.tmpfiles.rules = lib.mkIf (style.scheme != null) [
-      "L+ %h/.config/Kvantum/nix/nix.kvconfig - - - - ${style.colors {src = ./kvantum.kvconfig.mustache;}}"
-      "L+ %h/.config/Kvantum/nix/nix.svg - - - - ${style.colors {src = ./kvantum.svg.mustache;}}"
-      "L+ %h/.config/Kvantum/kvantum.kvconfig - - - - ${pkgs.writeText "kvantum.kvconfig" ''
+    homefs.directories.".config/Kvantum" = lib.mkIf (style.scheme != null) {
+      directories.nix.files = {
+        "nix.kvconfig" = style.colors {src = ./kvantum.kvconfig.mustache;};
+        "nix.svg" = style.colors {src = ./kvantum.svg.mustache;};
+      };
+      files."kvantum.kvconfig".text = ''
         [General]
         theme=nix
-      ''}"
-    ];
+      '';
+    };
     environment = {
       sessionVariables = {
         QT_QPA_PLATFORMTHEME = "qt5ct";

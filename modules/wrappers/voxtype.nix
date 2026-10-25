@@ -19,13 +19,18 @@
       "large-v3-turbo" = "sha256-H8cPd0046xaZk6w5Huo1fvR8iHV+9y7llDh5t+jivGk=";
     };
   in {
-    imports = [wlib.modules.default wlib.modules.systemd];
+    imports = [
+      wlib.modules.default
+      wlib.modules.systemd
+    ];
     options = {
       settings = lib.mkOption {
-        type = lib.types.attrsOf (wlib.types.structuredValueWith {
-          nullable = false;
-          typeName = "TOML";
-        });
+        type = lib.types.attrsOf (
+          wlib.types.structuredValueWith {
+            nullable = false;
+            typeName = "TOML";
+          }
+        );
         default = {};
       };
     };
@@ -52,7 +57,12 @@
         else lib.recursiveUpdate config.settings {whisper.model = resolveModel model;};
     in {
       package = lib.mkDefault pkgs.voxtype;
-      runtimePkgs = [pkgs.coreutils pkgs.which pkgs.wl-clipboard pkgs.wtype];
+      runtimePkgs = [
+        pkgs.coreutils
+        pkgs.which
+        pkgs.wl-clipboard
+        pkgs.wtype
+      ];
       settings = {
         state_file = lib.mkDefault "auto";
         hotkey.enabled = lib.mkDefault false;

@@ -1,5 +1,9 @@
 {
-  flake.nixosModules.libvirtd = {pkgs, config, ...}: {
+  flake.nixosModules.libvirtd = {
+    pkgs,
+    config,
+    ...
+  }: {
     virtualisation = {
       libvirtd = {
         enable = true;
@@ -12,7 +16,10 @@
       spiceUSBRedirection.enable = true;
     };
     programs.virt-manager.enable = true;
-    user.extraGroups = ["libvirtd" "kvm"];
+    user.extraGroups = [
+      "libvirtd"
+      "kvm"
+    ];
     preferences.persistence.directories = [
       "/var/lib/libvirt"
     ];

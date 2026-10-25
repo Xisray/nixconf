@@ -37,9 +37,14 @@
         else if config.background == null
         then config.theme
         else
-          pkgs.runCommand "telegram.tdesktop-theme" {
-            nativeBuildInputs = [pkgs.zip pkgs.imagemagick];
-          } ''
+          pkgs.runCommand "telegram.tdesktop-theme"
+          {
+            nativeBuildInputs = [
+              pkgs.zip
+              pkgs.imagemagick
+            ];
+          }
+          ''
             mkdir t && cd t
             cp ${config.theme} colors.tdesktop-theme
             magick -size 64x64 xc:'#${config.background}' background.png
@@ -51,7 +56,10 @@
         else
           (pkgs.writeShellApplication {
             name = "${processName}-apply-theme";
-            runtimeInputs = [python pkgs.procps];
+            runtimeInputs = [
+              python
+              pkgs.procps
+            ];
             text = ''
               export PYTHONPATH=${./.}
               export TG_THEME=${lib.escapeShellArg "${themeFile}"}

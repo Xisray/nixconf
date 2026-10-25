@@ -26,6 +26,7 @@
         }
       else lib.warn "wrappers.telegram not found, theme will not be applied" package;
   in {
+    # homefs.files."xuy.txt".text = "test";
     preferences = {
       user.packages = [
         telegram

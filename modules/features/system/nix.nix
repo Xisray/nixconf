@@ -20,7 +20,10 @@
       # keep-outputs = true;
       # keep-derivations = true;
 
-      trusted-users = ["root" "@wheel"];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
 
       substituters = [
         "https://cache.nixos.org"

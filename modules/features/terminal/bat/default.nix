@@ -1,23 +1,39 @@
-{self, ...}: {
-  flake.shellModules.bat = {
+{
+  flake.nixosModules.bat = {
     lib,
-    appearance,
+    config,
     pkgs,
     ...
   }: let
-    bat = self.wrappers.bat or null;
-    hasScheme = appearance.scheme != null;
+    hasScheme = config.appearance.scheme != null;
   in {
-    packages.bat = lib.mkIf (bat != null && hasScheme) (
-      bat.wrap {
-        inherit pkgs;
-        themes.nix = appearance.colors {
-          src = ./bat.tmTheme.mustache;
-        };
-        settings = ''
-          --theme="nix"
-        '';
+    config = lib.mkMerge [
+      {
+        preferences.persistence.cache.directories = [
+          ".cache/bat"
+        ];
       }
-    );
+      (lib.mkIf hasScheme (
+        let
+          theme = config.appearance.colors {src = ./bat.tmTheme.mustache;};
+        in {
+          homefs.directories.".config/bat".files = {
+            "config".text = "--theme=nix";
+            "themes/nix.tmTheme" = theme;
+          };
+
+          systemd.user.services.bat-cache-build = {
+            description = "Rebuild bat cache after theme change";
+            wantedBy = ["default.target"];
+            restartTriggers = [theme];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+              ExecStart = "${pkgs.bat}/bin/bat cache --build";
+            };
+          };
+        }
+      ))
+    ];
   };
 }

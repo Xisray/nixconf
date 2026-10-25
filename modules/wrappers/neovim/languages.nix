@@ -6,7 +6,9 @@
     ...
   }: let
     typeOrListOfType = type: lib.types.either type (lib.types.listOf type);
-    rootMarkersType = lib.types.either lib.types.str (lib.types.listOf (typeOrListOfType lib.types.str));
+    rootMarkersType = lib.types.either lib.types.str (
+      lib.types.listOf (typeOrListOfType lib.types.str)
+    );
 
     languageType = lib.types.submodule {
       freeformType = lib.types.attrsOf lib.types.anything;
@@ -34,7 +36,10 @@
       };
     };
 
-    metaKeys = ["packages" "extra_config"];
+    metaKeys = [
+      "packages"
+      "extra_config"
+    ];
     mkLspConfig = name: lang: let
       raw = removeAttrs lang metaKeys;
       normalized =
@@ -46,9 +51,11 @@
         };
       nonEmpty = lib.filterAttrs (_: v: v != [] && v != null) normalized;
     in ''
-      ${lib.optionalString (nonEmpty != {}) ''
-        vim.lsp.config["${name}"] = ${lib.generators.toLua {} nonEmpty}
-      ''}${lib.optionalString (lang.extra_config != null) "${lang.extra_config}\n"}vim.lsp.enable("${name}")
+      ${
+        lib.optionalString (nonEmpty != {}) ''
+          vim.lsp.config["${name}"] = ${lib.generators.toLua {} nonEmpty}
+        ''
+      }${lib.optionalString (lang.extra_config != null) "${lang.extra_config}\n"}vim.lsp.enable("${name}")
     '';
   in {
     options.languages = lib.mkOption {

@@ -1,11 +1,54 @@
-{self, ...}: {
-  flake.nixosModules.niri = {
+{moduleWithSystem, ...}: {
+  flake.nixosModules.niri = moduleWithSystem ({self', ...}: {
     pkgs,
     config,
-    wlib,
     lib,
+    inputs,
     ...
   }: let
+    mkRule = node: r: let
+      matches = map (m: {match = _: {props = m;};}) (r.matches or []);
+      excludes = map (m: {exclude = _: {props = m;};}) (r.excludes or []);
+      other = lib.mapAttrsToList (n: v: {${n} = v;}) (
+        lib.attrsets.removeAttrs r [
+          "matches"
+          "excludes"
+        ]
+      );
+    in {
+      ${node} = matches ++ excludes ++ other;
+    };
+    attrAsArg = node:
+      lib.mapAttrsToList (
+        n: v: {
+          ${node} = s:
+            if lib.isFunction v
+            then let
+              res = v s;
+            in
+              res
+              // {
+                props =
+                  if res ? props
+                  then
+                    if builtins.isAttrs res.props
+                    then [
+                      n
+                      res.props
+                    ]
+                    else if builtins.isList res.props
+                    then [n] ++ res.props
+                    else n
+                  else n;
+              }
+            else if builtins.isAttrs v
+            then {
+              content = v;
+              props = n;
+            }
+            else {props = n;};
+        }
+      );
     toNiriBind = {
       action,
       shell,
@@ -57,75 +100,96 @@
         else existingMatches;
     in
       if rule ? match || rule ? matches
-      then (removeAttrs rule ["match" "matches"]) // {inherit matches;}
+      then
+        (removeAttrs rule [
+          "match"
+          "matches"
+        ])
+        // {
+          inherit matches;
+        }
       else rule;
     cfg = config.preferences;
     style = config.appearance;
-    niri = self.wrappers.niri or (wlib.wrapModule wlib.wrapperModules.btop);
+
+    outputs = lib.mapAttrs toNiriOutput cfg.monitors;
+    window-rules =
+      (lib.optional (style.rounding > 0) {
+        geometry-corner-radius = style.rounding;
+        clip-to-geometry = true;
+      })
+      ++ (lib.optional style.blur.enable {
+        background-effect.blur = true;
+      })
+      ++ (map transformRule cfg.wm.rules.windows);
+    layer-rules = map transformRule cfg.wm.rules.layers;
+    settings =
+      {
+        binds = lib.mapAttrs (_: toNiriBind) cfg.binds;
+        input.mouse = lib.filterAttrs (_: v: v != null) {
+          accel-profile = cfg.mouse.accelProfile;
+          accel-speed = cfg.mouse.accelSpeed;
+          scroll-factor = cfg.mouse.scrollFactor;
+          natural-scroll =
+            if cfg.mouse.naturalScroll == true
+            then _: {}
+            else null;
+        };
+        blur =
+          if style.blur.enable
+          then {
+            passes = style.blur.passes;
+            offset = style.blur.size;
+            noise = style.blur.noise;
+            saturation = style.blur.saturation;
+          }
+          else {off = _: {};};
+      }
+      // lib.optionalAttrs (style.cursor != null) {
+        cursor = {
+          xcursor-theme = style.cursor.name;
+          xcursor-size = style.cursor.size;
+        };
+      }
+      // lib.optionalAttrs (style.scheme != null) (
+        with style.colors.withHashtag; {
+          layout = let
+            colors = {
+              active-color = primary;
+              inactive-color = base00;
+              urgent-color = base08;
+            };
+          in {
+            focus-ring = colors;
+            border = colors;
+            tab-indicator = colors;
+            insert-hint = {
+              color = primary;
+            };
+          };
+          recent-windows.highlight = {
+            active-color = primary;
+            urgent-color = base08;
+          };
+        }
+      );
   in {
     programs.niri = {
       enable = true;
       useNautilus = false;
-      package = niri.wrap {
-        inherit pkgs;
-        settings =
-          {
-            cursor = lib.mkIf (style.cursor != null) {
-              xcursor-theme = style.cursor.name;
-              xcursor-size = style.cursor.size;
-            };
-            outputs = lib.mapAttrs toNiriOutput cfg.monitors;
-            binds = lib.mapAttrs (_: toNiriBind) cfg.binds;
-            window-rules =
-              (lib.optional (style.rounding > 0) {
-                geometry-corner-radius = style.rounding;
-                clip-to-geometry = true;
-              })
-              ++ (lib.optional style.blur.enable {
-                background-effect.blur = true;
-              })
-              ++ (map transformRule cfg.wm.rules.windows);
-            layer-rules = map transformRule cfg.wm.rules.layers;
-            input.mouse = lib.filterAttrs (_: v: v != null) {
-              accel-profile = cfg.mouse.accelProfile;
-              accel-speed = cfg.mouse.accelSpeed;
-              scroll-factor = cfg.mouse.scrollFactor;
-              natural-scroll =
-                if cfg.mouse.naturalScroll == true
-                then _: {}
-                else null;
-            };
-            blur =
-              if style.blur.enable
-              then {
-                passes = style.blur.passes;
-                offset = style.blur.size;
-                noise = style.blur.noise;
-                saturation = style.blur.saturation;
-              }
-              else {off = _: {};};
-          }
-          // lib.optionalAttrs (style.scheme != null) (with style.colors.withHashtag; {
-            layout = let
-              colors = {
-                active-color = primary;
-                inactive-color = base00;
-                urgent-color = base08;
-              };
-            in {
-              focus-ring = colors;
-              border = colors;
-              tab-indicator = colors;
-              insert-hint = {
-                color = primary;
-              };
-            };
-            recent-windows.highlight = {
-              active-color = primary;
-              urgent-color = base08;
-            };
-          });
-      };
+      package = self'.packages.niri or pkgs.niri;
     };
-  };
+    homefs.files.".config/niri/config.kdl".text = let
+      toKdl = value:
+        inputs.wrappers.lib.toKdl (_: {
+          version = 1;
+          content = value;
+        });
+    in ''
+      ${toKdl (attrAsArg "output" outputs)}
+      ${toKdl settings}
+      ${toKdl (map (mkRule "window-rule") window-rules)}
+      ${toKdl (map (mkRule "layer-rule") layer-rules)}
+    '';
+  });
 }

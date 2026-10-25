@@ -15,7 +15,10 @@
       };
       languages = lib.mkOption {
         type = lib.types.listOf lib.types.str;
-        default = ["rus" "eng"];
+        default = [
+          "rus"
+          "eng"
+        ];
         description = "Языки tesseract: ставятся в пакет и передаются в --lang";
       };
       appName = lib.mkOption {
@@ -35,7 +38,12 @@
             cfg.slurp
             (pkgs.tesseract.override {enableLanguages = cfg.languages;})
           ]
-          ++ (with pkgs; [grim wl-clipboard libnotify coreutils]);
+          ++ (with pkgs; [
+            grim
+            wl-clipboard
+            libnotify
+            coreutils
+          ]);
         text = ''
           app=""
           lang="eng"

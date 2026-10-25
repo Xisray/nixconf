@@ -1,7 +1,11 @@
 {
-  flake.nixosModules.nvidia = { config, pkgs, ... }: {
+  flake.nixosModules.nvidia = {
+    config,
+    pkgs,
+    ...
+  }: {
     nixpkgs.config.allowUnfree = true;
-    services.xserver.videoDrivers = [ "nvidia" ];
+    services.xserver.videoDrivers = ["nvidia"];
 
     hardware.graphics = {
       enable = true;

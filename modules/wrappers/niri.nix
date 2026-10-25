@@ -105,54 +105,116 @@
 
         "XF86AudioRaiseVolume" = _: {
           props.allow-when-locked = true;
-          content.spawn = ["wpctl" "set-volume" "-l" "1.4" "@DEFAULT_AUDIO_SINK@" "5%+"];
+          content.spawn = [
+            "wpctl"
+            "set-volume"
+            "-l"
+            "1.4"
+            "@DEFAULT_AUDIO_SINK@"
+            "5%+"
+          ];
         };
         "XF86AudioLowerVolume" = _: {
           props.allow-when-locked = true;
-          content.spawn = ["wpctl" "set-volume" "-l" "1.4" "@DEFAULT_AUDIO_SINK@" "5%-"];
+          content.spawn = [
+            "wpctl"
+            "set-volume"
+            "-l"
+            "1.4"
+            "@DEFAULT_AUDIO_SINK@"
+            "5%-"
+          ];
         };
         "XF86AudioMute" = _: {
           props.allow-when-locked = true;
-          content.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"];
+          content.spawn = [
+            "wpctl"
+            "set-mute"
+            "@DEFAULT_AUDIO_SINK@"
+            "toggle"
+          ];
         };
 
         "XF86AudioPlay" = _: {
           props.allow-when-locked = true;
-          content.spawn = [playerCtl "play"];
+          content.spawn = [
+            playerCtl
+            "play"
+          ];
         };
         "XF86AudioPause" = _: {
           props.allow-when-locked = true;
-          content.spawn = [playerCtl "pause"];
+          content.spawn = [
+            playerCtl
+            "pause"
+          ];
         };
         "XF86AudioNext" = _: {
           props.allow-when-locked = true;
-          content.spawn = [playerCtl "next"];
+          content.spawn = [
+            playerCtl
+            "next"
+          ];
         };
         "XF86AudioPrev" = _: {
           props.allow-when-locked = true;
-          content.spawn = [playerCtl "previous"];
+          content.spawn = [
+            playerCtl
+            "previous"
+          ];
         };
         "Mod+Shift+Space" = _: {
           props.allow-when-locked = true;
-          content.spawn = [playerCtl "play-pause"];
+          content.spawn = [
+            playerCtl
+            "play-pause"
+          ];
         };
         "Mod+Shift+period" = _: {
           props.allow-when-locked = true;
-          content.spawn = [playerCtl "next"];
+          content.spawn = [
+            playerCtl
+            "next"
+          ];
         };
         "Mod+Shift+comma" = _: {
           props.allow-when-locked = true;
-          content.spawn = [playerCtl "previous"];
+          content.spawn = [
+            playerCtl
+            "previous"
+          ];
         };
 
-        "Print".spawn = lib.mkDefault ["niri" "msg" "action" "screenshot-screen"];
-        "Alt+Print".spawn = lib.mkDefault ["niri" "msg" "action" "screenshot-window"];
-        "Ctrl+Print".spawn = lib.mkDefault ["niri" "msg" "action" "screenshot"];
-        "Mod+Shift+S".spawn = lib.mkDefault ["niri" "msg" "action" "screenshot"];
+        "Print".spawn = lib.mkDefault [
+          "niri"
+          "msg"
+          "action"
+          "screenshot-screen"
+        ];
+        "Alt+Print".spawn = lib.mkDefault [
+          "niri"
+          "msg"
+          "action"
+          "screenshot-window"
+        ];
+        "Ctrl+Print".spawn = lib.mkDefault [
+          "niri"
+          "msg"
+          "action"
+          "screenshot"
+        ];
+        "Mod+Shift+S".spawn = lib.mkDefault [
+          "niri"
+          "msg"
+          "action"
+          "screenshot"
+        ];
 
-        "Mod+Shift+E".spawn-sh = lib.mkDefault "${pkgs.wl-clipboard}/bin/wl-paste | ${lib.getExe pkgs.swappy} -f -";
+        "Mod+Shift+E".spawn-sh =
+          lib.mkDefault "${pkgs.wl-clipboard}/bin/wl-paste | ${lib.getExe pkgs.swappy} -f -";
       };
       extraConfig = ''
+        include optional=true "~/.config/niri/config.kdl"
         animations {
           workspace-switch {
             spring damping-ratio=1.0 stiffness=1600 epsilon=0.0001

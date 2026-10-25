@@ -1,10 +1,6 @@
-{self, ...}: {
-  flake.nixosModules.voxtype = {
-    pkgs,
-    lib,
-    ...
-  }: let
-    voxtype = self.packages.${pkgs.stdenv.hostPlatform.system}.voxtype or null;
+{moduleWithSystem, ...}: {
+  flake.nixosModules.voxtype = moduleWithSystem ({self', ...}: {lib, ...}: let
+    voxtype = self'.packages.voxtype;
   in {
     systemd.packages = lib.mkIf (voxtype != null) [voxtype];
     preferences = lib.mkIf (voxtype != null) {
@@ -15,5 +11,5 @@
         "toggle"
       ];
     };
-  };
+  });
 }

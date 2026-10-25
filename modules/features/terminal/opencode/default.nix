@@ -1,31 +1,28 @@
-{inputs, ...}: {
-  flake.shellModules.opencode = {
-    module = {
-      lib,
-      appearance,
-      pkgs,
-      ...
-    }: {
-      packages.opencode = inputs.wrappers.wrappers.opencode.wrap {
+{
+  flake.nixosModules.opencode = {
+    config,
+    lib,
+    inputs,
+    pkgs,
+    ...
+  }: let
+    style = config.appearance;
+  in {
+    shell.packages.opencode = lib.mkIf (config.preferences.proxy != null) (
+      inputs.wrappers.lib.wrapPackage {
         inherit pkgs;
-        tui-settings = lib.optionalAttrs (appearance.scheme != null) {
+        package = pkgs.opencode;
+        env = config.preferences.proxy.env;
+      }
+    );
+    homefs.files = lib.mkIf (style.scheme != null) {
+      ".config/opencode/themes/nix.json" = style.colors {src = ./nix.json.mustache;};
+      ".config/opencode/tui.json" = {
+        value = {
           theme = "nix";
         };
+        generator = builtins.toJSON;
       };
-    };
-    nixos = {
-      lib,
-      config,
-      ...
-    }: let
-      theme =
-        if (config.appearance == null)
-        then null
-        else (config.appearance.colors {src = ./nix.json.mustache;});
-    in {
-      systemd.user.tmpfiles.rules = lib.mkIf (theme != null) [
-        "L+ %h/.config/opencode/themes/nix.json - - - - ${theme}"
-      ];
     };
   };
 }

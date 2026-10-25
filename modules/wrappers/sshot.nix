@@ -31,7 +31,16 @@
     in {
       package = pkgs.writeShellApplication {
         name = "sshot";
-        runtimeInputs = [cfg.slurp] ++ (with pkgs; [grim wl-clipboard libnotify coreutils]);
+        runtimeInputs =
+          [
+            cfg.slurp
+          ]
+          ++ (with pkgs; [
+            grim
+            wl-clipboard
+            libnotify
+            coreutils
+          ]);
         text = ''
           app=""
           format="%Y-%m-%d_%H-%M-%S"
@@ -45,7 +54,7 @@
               *) echo "sshot: unknown argument: $1" >&2; exit 2 ;;
             esac
           done
-          
+
           dir="''${dir/#\~/$HOME}"
           dir="''${dir/#\$HOME/$HOME}"
           dir="''${dir/#\$\{HOME\}/$HOME}"

@@ -1,195 +1,184 @@
-{self, ...}: {
-  flake.nixosModules.noctalia = {
+{moduleWithSystem, ...}: {
+  flake.nixosModules.noctalia = moduleWithSystem ({self', ...}: {
     pkgs,
     config,
     lib,
     ...
   }: let
     style = config.appearance;
-    monitors = builtins.filter (mon: mon.enable) (lib.mapAttrsToList (port: mon: mon // {port = port;}) config.preferences.monitors);
+    monitors = builtins.filter (mon: mon.enable) (
+      lib.mapAttrsToList (port: mon: mon // {port = port;}) config.preferences.monitors
+    );
     monitor = lib.findFirst (m: m.primary) (builtins.head monitors) monitors;
     monitorPort = monitor.port;
     showSecondaryBar = builtins.length monitors > 1;
-    noctalia = self.wrappers.noctalia or null;
+    noctalia = self'.packages.noctalia or pkgs.noctalia;
   in {
-    programs.noctalia =
-      {
-        enable = true;
-        systemd.enable = true;
-      }
-      // lib.optionalAttrs (noctalia != null) {
-        package = noctalia.wrap {
-          inherit pkgs;
-          colors = lib.mkIf (style.scheme != null) (with style.colors.withHashtag; {
-            mPrimary = primary;
-            mOnPrimary = base00;
-            mSecondary = secondary;
-            mOnSecondary = base00;
-            mTertiary = tertiary;
-            mOnTertiary = base00;
-            mError = base08;
-            mOnError = base00;
-            mSurface = base00;
-            mOnSurface = base05;
-            mSurfaceVariant = base01;
-            mOnSurfaceVariant = base06;
-            mHover = base02;
-            mOnHover = base05;
-            mOutline = base03;
-            mShadow = base11;
-            terminal = {
-              foreground = base05;
-              background = base00;
-              cursor = base05;
-              cursorText = base00;
-              selectionFg = base05;
-              selectionBg = base02;
-              normal = {
-                black = base01;
-                red = base08;
-                yellow = base0A;
-                green = base0B;
-                cyan = base0C;
-                blue = base0D;
-                magenta = base0E;
-                white = base05;
-              };
-              bright = {
-                black = base03;
-                red = base12;
-                yellow = base13;
-                green = base14;
-                cyan = base15;
-                blue = base16;
-                magenta = base17;
-                white = base07;
-              };
+    environment.etc."noctalia/palettes/nix.json" = lib.mkIf (style.scheme != null) {
+      text = builtins.toJSON {
+        ${style.polarity} = with style.colors.withHashtag; {
+          mPrimary = primary;
+          mOnPrimary = base00;
+          mSecondary = secondary;
+          mOnSecondary = base00;
+          mTertiary = tertiary;
+          mOnTertiary = base00;
+          mError = base08;
+          mOnError = base00;
+          mSurface = base00;
+          mOnSurface = base05;
+          mSurfaceVariant = base01;
+          mOnSurfaceVariant = base06;
+          mHover = base02;
+          mOnHover = base05;
+          mOutline = base03;
+          mShadow = base11;
+          terminal = {
+            foreground = base05;
+            background = base00;
+            cursor = base05;
+            cursorText = base00;
+            selectionFg = base05;
+            selectionBg = base02;
+            normal = {
+              black = base01;
+              red = base08;
+              yellow = base0A;
+              green = base0B;
+              cyan = base0C;
+              blue = base0D;
+              magenta = base0E;
+              white = base05;
             };
-          });
-          settings =
-            {
-              osd =
-                {
-                  background_opacity = style.opacity.popups;
-                }
-                // lib.optionalAttrs showSecondaryBar {
-                  monitors = [monitorPort];
-                };
-              notification =
-                {
-                  background_opacity = style.opacity.popups;
-                }
-                // lib.optionalAttrs showSecondaryBar {
-                  monitors = [monitorPort];
-                };
-
-              shell.corner_radius_scale = lib.max 0.0 (lib.min 2.0 (style.rounding / 12.0));
-              shell.panel.transparency_mode =
-                if style.opacity.desktop < 1.0
-                then "soft"
-                else "solid";
-              bar =
-                {
-                  default =
-                    {
-                      background_opacity = style.opacity.desktop;
-                      radius_bottom_left = style.rounding;
-                      radius_bottom_right = style.rounding;
-                    }
-                    // lib.optionalAttrs (style.rounding == 0) {
-                      capsule_radius = 0;
-                    }
-                    // lib.optionalAttrs showSecondaryBar {
-                      enabled = false;
-                      monitor.${monitorPort}.enabled = true;
-                    };
-                }
-                // lib.optionalAttrs showSecondaryBar {
-                  order = [
-                    "default"
-                    "secondary"
-                  ];
-                  secondary =
-                    {
-                      background_opacity = 0.0;
-                      capsule = true;
-                      capsule_fill = "on_primary";
-                      capsule_padding = 12.0;
-                      center = ["workspaces"];
-                      concave_edge_corners = false;
-                      end = [];
-                      margin_ends = 0;
-                      radius = 0;
-                      shadow = false;
-                      start = [];
-                      dead_zone.actions.right = "none";
-                      monitor.${monitorPort}.enabled = false;
-                    }
-                    // lib.optionalAttrs (style.opacity.desktop < 1.0) {
-                      capsule_opacity = style.opacity.desktop;
-                    }
-                    // lib.optionalAttrs (style.rounding == 0) {
-                      capsule_radius = 0;
-                    };
-                };
-              lockscreen_widgets = {
-                enabled = true;
-                widget_order = [
-                  "lockscreen_login_box@${monitorPort}"
-                  "lockscreen_widget_clock"
-                ];
-                widget = {
-                  "lockscreen_login_box@${monitorPort}" = {
-                    box_height = 70.0;
-                    box_width = 400.0;
-                    cx = monitor.width / 2;
-                    cy = monitor.height / 2;
-                    placement_height = monitor.height;
-                    placement_width = monitor.width;
-                    output = monitorPort;
-                    type = "login_box";
-                    settings =
-                      {
-                        background_opacity = 0.0;
-                        center_password_text = true;
-                        layout = "compact";
-                        show_caps_lock = true;
-                        show_keyboard_layout = true;
-                        show_login_button = false;
-                        show_media = true;
-                        show_session_buttons = true;
-                        show_unlock_hint = false;
-                        show_weather = false;
-                      }
-                      // lib.optionalAttrs (style.opacity.desktop < 1.0) {
-                        input_opacity = style.opacity.desktop;
-                      };
-                  };
-                  lockscreen_widget_clock = {
-                    box_height = 112.0;
-                    box_width = 288.0;
-                    cx = monitor.width / 2;
-                    cy = monitor.height * 0.3 - 112.0;
-                    placement_height = monitor.height;
-                    placement_width = monitor.width;
-                    output = monitorPort;
-                    type = "clock";
-                    settings = {
-                      background = false;
-                      shadow = false;
-                    };
-                  };
-                };
-              };
-            }
-            // lib.optionalAttrs showSecondaryBar {
-              lockscreen.monitors = [monitorPort];
+            bright = {
+              black = base03;
+              red = base12;
+              yellow = base13;
+              green = base14;
+              cyan = base15;
+              blue = base16;
+              magenta = base17;
+              white = base07;
             };
+          };
         };
       };
+    };
+    homefs.files.".config/noctalia/config.toml" = let
+      merge = lib.foldl' lib.recursiveUpdate {};
+      translucent = style.opacity.desktop < 1.0;
+      square = style.rounding == 0;
+      loginBox = "lockscreen_login_box@${monitorPort}";
+      base = {
+        wallpaper.directory = "~/Pictures/Wallpapers";
+        osd.background_opacity = style.opacity.popups;
+        notification.background_opacity = style.opacity.popups;
+        shell.corner_radius_scale = lib.max 0.0 (lib.min 2.0 (style.rounding / 12.0));
+        shell.panel.transparency_mode =
+          if translucent
+          then "soft"
+          else "solid";
+        bar.default = {
+          background_opacity = style.opacity.desktop;
+          radius_bottom_left = style.rounding;
+          radius_bottom_right = style.rounding;
+        };
+        lockscreen_widgets = {
+          enabled = true;
+          widget_order = [loginBox "lockscreen_widget_clock"];
+          widget = {
+            ${loginBox} = {
+              box_height = 70.0;
+              box_width = 400.0;
+              cx = monitor.width / 2;
+              cy = monitor.height / 2;
+              placement_height = monitor.height;
+              placement_width = monitor.width;
+              output = monitorPort;
+              type = "login_box";
+              settings = {
+                background_opacity = 0.0;
+                center_password_text = true;
+                layout = "compact";
+                show_caps_lock = true;
+                show_keyboard_layout = true;
+                show_login_button = false;
+                show_media = true;
+                show_session_buttons = true;
+                show_unlock_hint = false;
+                show_weather = false;
+              };
+            };
+            lockscreen_widget_clock = {
+              box_height = 112.0;
+              box_width = 288.0;
+              cx = monitor.width / 2;
+              cy = monitor.height * 0.3 - 112.0;
+              placement_height = monitor.height;
+              placement_width = monitor.width;
+              output = monitorPort;
+              type = "clock";
+              settings = {
+                background = false;
+                shadow = false;
+              };
+            };
+          };
+        };
+      };
+      squareCorners = lib.optionalAttrs square {
+        bar.default.capsule_radius = 0;
+      };
+      translucency = lib.optionalAttrs translucent {
+        lockscreen_widgets.widget.${loginBox}.settings.input_opacity = style.opacity.desktop;
+      };
+      secondaryBar = lib.optionalAttrs showSecondaryBar {
+        osd.monitors = [monitorPort];
+        notification.monitors = [monitorPort];
+        lockscreen.monitors = [monitorPort];
+        bar = {
+          order = ["default" "secondary"];
+          default = {
+            enabled = false;
+            monitor.${monitorPort}.enabled = true;
+          };
+          secondary =
+            {
+              background_opacity = 0.0;
+              capsule = true;
+              capsule_fill = "on_primary";
+              capsule_padding = 12.0;
+              center = ["workspaces"];
+              concave_edge_corners = false;
+              end = [];
+              margin_ends = 0;
+              radius = 0;
+              shadow = false;
+              start = [];
+              dead_zone.actions.right = "none";
+              monitor.${monitorPort}.enabled = false;
+            }
+            // lib.optionalAttrs translucent {capsule_opacity = style.opacity.desktop;}
+            // lib.optionalAttrs square {capsule_radius = 0;};
+        };
+      };
+      theme = lib.optionalAttrs (style.scheme != null) {
+        theme = {
+          source = "custom";
+          custom_palette = "nix";
+          mode = style.polarity;
+        };
+      };
+    in
+      (pkgs.formats.toml {}).generate "noctalia.toml" (merge [base squareCorners translucency secondaryBar theme]);
+    programs.noctalia = {
+      enable = true;
+      systemd.enable = true;
+      package = noctalia;
+    };
     preferences = {
       binds = let
-        noctaliaBin = lib.getExe config.programs.noctalia.package;
+        noctaliaBin = lib.getExe noctalia;
       in {
         "Mod+S".action = [
           noctaliaBin
@@ -262,5 +251,5 @@
         ".cache/noctalia"
       ];
     };
-  };
+  });
 }

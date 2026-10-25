@@ -1,23 +1,39 @@
-{self, ...}: {
-  flake.shellModules.btop = {
-    pkgs,
+{
+  flake.nixosModules.btop = {
+    config,
     lib,
-    appearance,
     ...
   }: let
-    btop = self.wrappers.btop or null;
+    appearance = config.appearance;
     hasScheme = appearance.scheme != null;
-    flat = appearance.rounding == 0;
+    toBtopConf = lib.generators.toKeyValue {
+      listsAsDuplicateKeys = true;
+      mkKeyValue = lib.generators.mkKeyValueDefault {
+        mkValueString = v:
+          if builtins.isBool v
+          then
+            (
+              if v
+              then "True"
+              else "False"
+            )
+          else if builtins.isString v
+          then ''"${v}"''
+          else lib.generators.mkValueStringDefault {} v;
+      } " = ";
+    };
   in {
-    packages.btop = lib.mkIf (btop != null && (hasScheme || flat)) (
-      btop.wrap {
-        inherit pkgs;
-        themes.nix = lib.mkIf hasScheme (appearance.colors {
-          src = ./btop.theme.mustache;
-        });
-        settings.color_theme = lib.mkIf hasScheme (lib.mkForce "nix");
-        settings.rounded_corners = lib.mkIf flat (lib.mkForce false);
-      }
-    );
+    homefs.directories.".config/btop".files = {
+      "themes/nix.theme" = lib.mkIf hasScheme (
+        appearance.colors {src = ./btop.theme.mustache;}
+      );
+      "btop.conf" = {
+        value = {
+          rounded_corners = appearance.rounding > 0;
+          color_theme = lib.mkIf hasScheme "nix";
+        };
+        generator = toBtopConf;
+      };
+    };
   };
 }

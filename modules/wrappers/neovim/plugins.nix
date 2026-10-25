@@ -37,24 +37,26 @@
       };
     };
 
-    eventType = lib.types.either strOrListOfStrType (lib.types.submodule {
-      options = {
-        event = mkNullOption strOrListOfStrType;
-        pattern = mkNullOption strOrListOfStrType;
-      };
-    });
+    eventType = lib.types.either strOrListOfStrType (
+      lib.types.submodule {
+        options = {
+          event = mkNullOption strOrListOfStrType;
+          pattern = mkNullOption strOrListOfStrType;
+        };
+      }
+    );
 
     keyType = lib.types.listOf (
-      lib.types.coercedTo lib.types.str
-      (key: {inherit key;})
-      (lib.types.submodule {
-        options = {
-          key = lib.mkOption {type = lib.types.str;};
-          action = mkNullOption lib.types.str;
-          description = mkNullOption lib.types.str;
-          mode = mkNullOption strOrListOfStrType;
-        };
-      })
+      lib.types.coercedTo lib.types.str (key: {inherit key;}) (
+        lib.types.submodule {
+          options = {
+            key = lib.mkOption {type = lib.types.str;};
+            action = mkNullOption lib.types.str;
+            description = mkNullOption lib.types.str;
+            mode = mkNullOption strOrListOfStrType;
+          };
+        }
+      )
     );
 
     pluginType = lib.types.submodule {
@@ -65,7 +67,9 @@
         before = mkNullOption beforeFnType;
         after = lib.mkOption {
           type = lib.types.nullOr afterFnType;
-          default = {setup = {};};
+          default = {
+            setup = {};
+          };
         };
         event = mkNullOption eventType;
         cmd = mkNullOption strOrListOfStrType;
@@ -104,7 +108,9 @@
 
         namedSetups = lib.mapAttrsToList (name: v: mkSetupCall name (v.setup or null)) namedEntries;
 
-        parts = lib.filter (s: s != null && s != "") ([selfSetup] ++ namedSetups ++ [(fn.extraConfig or null)]);
+        parts = lib.filter (s: s != null && s != "") (
+          [selfSetup] ++ namedSetups ++ [(fn.extraConfig or null)]
+        );
       in
         if parts == []
         then null
@@ -152,7 +158,15 @@
 
     mkPluginSpec = name: plugin: let
       simple = lib.filterAttrs (_: v: v != null) {
-        inherit (plugin) enabled cmd ft colorscheme lazy priority;
+        inherit
+          (plugin)
+          enabled
+          cmd
+          ft
+          colorscheme
+          lazy
+          priority
+          ;
       };
       simpleFields = lib.mapAttrs (_: v: lib.generators.toLua {} v) simple;
 
@@ -202,7 +216,9 @@
         };
     in {
       specs =
-        {lz-n.data = [pkgs.vimPlugins.lz-n];}
+        {
+          lz-n.data = [pkgs.vimPlugins.lz-n];
+        }
         // mkPluginSpecs "plugins" {} config.plugins
         // mkPluginSpecs "lazyPlugins" {lazy = true;} config.lazyPlugins;
     };

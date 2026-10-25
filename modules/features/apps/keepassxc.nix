@@ -1,8 +1,8 @@
-{self, ...}: {
-  flake.nixosModules.keepassxc = {pkgs, ...}: let
-    keepassxc = self.packages.${pkgs.stdenv.hostPlatform.system}.keepassxc or pkgs.keepassxc;
+{moduleWithSystem, ...}: {
+  flake.nixosModules.keepassxc = moduleWithSystem ({self', ...}: {pkgs, ...}: let
+    keepassxc = self'.packages.keepassxc or pkgs.keepassxc;
   in {
-    users.users.xisray.packages = [
+    user.packages = [
       keepassxc
       (pkgs.makeAutostartItem {
         name = "org.keepassxc.KeePassXC";
@@ -16,12 +16,10 @@
       ];
       wm.rules.windows = [
         {
-          match = {
-            title = "^Unlock Database - KeePassXC$";
-          };
+          match.            title = "^Unlock Database - KeePassXC$";
           open-floating = true;
         }
       ];
     };
-  };
+  });
 }

@@ -6,7 +6,10 @@
     pkgs,
     ...
   }: {
-    imports = [wlib.modules.default wlib.modules.systemd];
+    imports = [
+      wlib.modules.default
+      wlib.modules.systemd
+    ];
     options.settings = lib.mkOption {
       type = wlib.types.structuredValueWith {typeName = "YAML";};
       default = null;
@@ -34,12 +37,14 @@
         };
         Install.WantedBy = ["graphical-session.target"];
         Service = {
+          Type = "exec";
           ExecStart = "${placeholder "out"}/bin/udiskie";
           Environment = [
             "PATH=%h/.nix-profile/bin:/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/run/current-system/sw/bin"
             "XDG_DATA_DIRS=%h/.local/share:%h/.nix-profile/share:/etc/profiles/per-user/%u/share:/run/current-system/sw/share"
           ];
           Restart = "on-failure";
+          RestartSec = "5s";
         };
       };
     };

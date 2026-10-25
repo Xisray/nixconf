@@ -6,14 +6,6 @@
     ...
   }: let
     style = config.appearance;
-    css =
-      if style.scheme == null
-      then null
-      else
-        lib.genAttrs ["3.0" "4.0"] (v:
-          style.colors {
-            src = ./. + "/gtk${builtins.head (lib.splitString "." v)}.css.mustache";
-          });
   in {
     environment.systemPackages = [
       pkgs.adw-gtk3
@@ -25,8 +17,9 @@
       ];
       config.common.default = ["gtk"];
     };
+    homefs.files.".config/gtk-3.0/gtk.css" = lib.mkIf (style.scheme != null) (style.colors {src = ./gtk3.css.mustache;});
+    homefs.files.".config/gtk-4.0/gtk.css" = lib.mkIf (style.scheme != null) (style.colors {src = ./gtk4.css.mustache;});
 
-    systemd.user.tmpfiles.rules = lib.mkIf (css != null) (lib.mapAttrsToList (v: path: "L+ %h/.config/gtk-${v}/gtk.css - - - - ${path}") css);
     programs.dconf = {
       enable = true;
       profiles.user.databases = [

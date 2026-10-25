@@ -1,27 +1,25 @@
 {
-  flake.shellModules.devenv = {
-    module = {
-      lib,
-      preferences,
-      pkgs,
-      wlib,
-      ...
-    }: {
-      packages.devenv = lib.mkIf (preferences.proxy != null) (wlib.wrapPackage {
+  flake.nixosModules.devenv = {
+    config,
+    lib,
+    pkgs,
+    inputs,
+    ...
+  }: {
+    shell.packages.devenv = lib.mkIf (config.preferences.proxy != null) (
+      inputs.wrappers.lib.wrapPackage {
         inherit pkgs;
         package = pkgs.devenv;
-        env = preferences.proxy.env;
-      });
-    };
-    nixos = {
-      preferences.persistence = {
-        data.directories = [
-          ".local/share/devenv"
-        ];
-        cache.directories = [
-          ".cache/nix"
-        ];
-      };
+        env = config.preferences.proxy.env;
+      }
+    );
+    preferences.persistence = {
+      data.directories = [
+        ".local/share/devenv"
+      ];
+      cache.directories = [
+        ".cache/nix"
+      ];
     };
   };
 }

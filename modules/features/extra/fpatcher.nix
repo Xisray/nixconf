@@ -106,7 +106,15 @@
     in
       pkgs.writeShellApplication {
         name = "fpatcher-${name}";
-        runtimeInputs = with pkgs; [coreutils gawk gnused gnugrep jq yq-go procps];
+        runtimeInputs = with pkgs; [
+          coreutils
+          gawk
+          gnused
+          gnugrep
+          jq
+          yq-go
+          procps
+        ];
         text = ''
           file=${lib.escapeShellArg file}
           ${e.before}
@@ -120,55 +128,58 @@
     options.fpatcher = lib.mkOption {
       default = {};
       description = "Правка файлов конфигурации при активации системы (без симлинков).";
-      type = lib.types.attrsOf (lib.types.submodule {
-        options = {
-          user = lib.mkOption {
-            type = lib.types.str;
-            description = "Владелец файла, правка выполняется от его имени.";
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options = {
+            user = lib.mkOption {
+              type = lib.types.str;
+              description = "Владелец файла, правка выполняется от его имени.";
+            };
+            path = lib.mkOption {
+              type = lib.types.str;
+              description = "Путь к файлу относительно домашней директории.";
+            };
+            format = lib.mkOption {
+              type = lib.types.enum (builtins.attrNames formats);
+              description = "Формат файла.";
+            };
+            content = lib.mkOption {
+              type = jsonFmt.type;
+              default = {};
+              description = "Что вливается в файл (для ini: секция -> ключ -> значение).";
+            };
+            script = lib.mkOption {
+              type = lib.types.lines;
+              default = "";
+              description = "Shell-код для format = \"custom\"; переменная $file указывает на файл.";
+            };
+            before = lib.mkOption {
+              type = lib.types.lines;
+              default = "";
+              description = "Shell-код, выполняемый перед правкой файла (от имени user); $file указывает на файл.";
+            };
+            after = lib.mkOption {
+              type = lib.types.lines;
+              default = "";
+              description = "Shell-код, выполняемый после правки файла (от имени user); $file указывает на файл.";
+            };
           };
-          path = lib.mkOption {
-            type = lib.types.str;
-            description = "Путь к файлу относительно домашней директории.";
-          };
-          format = lib.mkOption {
-            type = lib.types.enum (builtins.attrNames formats);
-            description = "Формат файла.";
-          };
-          content = lib.mkOption {
-            type = jsonFmt.type;
-            default = {};
-            description = "Что вливается в файл (для ini: секция -> ключ -> значение).";
-          };
-          script = lib.mkOption {
-            type = lib.types.lines;
-            default = "";
-            description = "Shell-код для format = \"custom\"; переменная $file указывает на файл.";
-          };
-          before = lib.mkOption {
-            type = lib.types.lines;
-            default = "";
-            description = "Shell-код, выполняемый перед правкой файла (от имени user); $file указывает на файл.";
-          };
-          after = lib.mkOption {
-            type = lib.types.lines;
-            default = "";
-            description = "Shell-код, выполняемый после правки файла (от имени user); $file указывает на файл.";
-          };
-        };
-      });
+        }
+      );
     };
     config.system.activationScripts =
-      lib.mapAttrs'
-      (name: e:
-        lib.nameValuePair "fpatcher-${name}" {
-          deps = ["users"];
-          text = ''
-            if [ -d ${lib.escapeShellArg config.users.users.${e.user}.home} ]; then
-              ${pkgs.util-linux}/bin/runuser -u ${e.user} -- \
-                ${mkScript name e}/bin/fpatcher-${name}
-            fi
-          '';
-        })
+      lib.mapAttrs' (
+        name: e:
+          lib.nameValuePair "fpatcher-${name}" {
+            deps = ["users"];
+            text = ''
+              if [ -d ${lib.escapeShellArg config.users.users.${e.user}.home} ]; then
+                ${pkgs.util-linux}/bin/runuser -u ${e.user} -- \
+                  ${mkScript name e}/bin/fpatcher-${name}
+              fi
+            '';
+          }
+      )
       cfg;
   };
 }

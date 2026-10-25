@@ -7,18 +7,18 @@
     ...
   }: let
     tomlFormat = pkgs.formats.toml {};
-    jsonFormat = pkgs.formats.json {};
 
-    paletteName = "nix";
     configDir = pkgs.linkFarm "noctalia-config" (
       lib.optional (config.settings != {}) {
         name = "noctalia/config.toml";
         path = tomlFormat.generate "config.toml" config.settings;
       }
-      ++ lib.optional (config.colors != {}) {
-        name = "noctalia/palettes/${paletteName}.json";
-        path = jsonFormat.generate "${paletteName}.json" {dark = config.colors;};
-      }
+      ++ [
+        {
+          name = "noctalia/palettes";
+          path = "/etc/noctalia/palettes";
+        }
+      ]
     );
   in {
     imports = [wlib.modules.default];
@@ -26,10 +26,6 @@
     options = {
       settings = lib.mkOption {
         type = tomlFormat.type;
-        default = {};
-      };
-      colors = lib.mkOption {
-        type = jsonFormat.type;
         default = {};
       };
     };
@@ -41,7 +37,10 @@
         backdrop.enabled = true;
         lockscreen = {
           fingerprint = false;
-          transition = ["disc" "stripes"];
+          transition = [
+            "disc"
+            "stripes"
+          ];
           transition_duration = 800;
         };
         shell = {
@@ -169,19 +168,13 @@
           custom_schedule = true;
         };
         weather.enabled = false;
-        theme =
-          {
-            templates = {
-              enable_builtin_templates = false;
-              enable_community_templates = false;
-            };
-          }
-          // lib.optionalAttrs (config.colors != {}) {
-            source = lib.mkForce "custom";
-            custom_palette = lib.mkForce paletteName;
+        theme = {
+          templates = {
+            enable_builtin_templates = false;
+            enable_community_templates = false;
           };
+        };
         notification.offset_x = 8;
-        wallpaper.directory = "~/Pictures/Wallpapers";
         idle = {
           behavior_order = [
             "lock"
@@ -206,6 +199,7 @@
             };
           };
         };
+        include.files = ["~/.config/noctalia/"];
       };
     };
   };

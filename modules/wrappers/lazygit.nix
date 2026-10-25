@@ -34,7 +34,7 @@
         ]
         ++ lib.optional (lgaicm != null) lgaicm;
       env.LG_CONFIG_FILE = {
-        data = "${format.generate "lazygit-config.yml" config.settings}";
+        data = "${format.generate "lazygit-config.yml" config.settings},$HOME/.config/lazygit/config.yml";
         esc-fn = wlib.escapeShellArgWithEnv;
       };
       settings = {
@@ -51,8 +51,7 @@
                 key = "Type";
                 title = "Type of change";
                 options =
-                  lib.mapAttrsToList
-                  (name: description: {
+                  lib.mapAttrsToList (name: description: {
                     inherit name description;
                     value = name;
                   })

@@ -9,6 +9,7 @@
       self.nixosModules.nix
       self.nixosModules.impermanence
       self.nixosModules.sops
+      self.nixosModules.homefs
       self.nixosModules.xdg
       self.nixosModules.gtk
       self.nixosModules.qt

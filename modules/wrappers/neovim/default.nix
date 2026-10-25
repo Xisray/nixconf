@@ -8,7 +8,10 @@
   }: {
     imports = [wlib.wrapperModules.neovim];
     options.mode = lib.mkOption {
-      type = lib.types.enum ["dynamic" "static"];
+      type = lib.types.enum [
+        "dynamic"
+        "static"
+      ];
       default = "static";
     };
     config = let
@@ -17,21 +20,14 @@
       runtimePkgs = [
         pkgs.wl-clipboard
       ];
-      settings.config_directory = lib.mkIf dynamic (lib.generators.mkLuaInline "vim.uv.os_homedir() .. '/nixconf/modules/wrappers/neovim'");
+      settings.config_directory = lib.mkIf dynamic (
+        lib.generators.mkLuaInline "vim.uv.os_homedir() .. '/nixconf/modules/wrappers/neovim'"
+      );
       settings.compile_generated_lua = false;
       specs.init = lib.mkIf dynamic {
         data = null;
         before = ["MAIN_INIT"];
         config = "pcall(require, 'init')";
-      };
-      specs.extra_rtp = lib.mkIf dynamic {
-        data = null;
-        before = ["MAIN_INIT"];
-        config = ''
-          local home = vim.uv.os_homedir()
-          vim.opt.rtp:prepend(home .. "/.config/nvim")
-          vim.opt.rtp:append(home .. "/.config/nvim/after")
-        '';
       };
       plugins = {
         "blink.cmp" = {
@@ -41,17 +37,23 @@
             snippets.preset = "luasnip";
             keymap = {
               preset = "enter";
-              "<Tab>" = ["select_and_accept" "snippet_forward" "fallback"];
-              "<S-Tab>" = ["snippet_backward" "fallback"];
-              "<CR>" = ["accept" "fallback"];
+              "<Tab>" = [
+                "select_and_accept"
+                "snippet_forward"
+                "fallback"
+              ];
+              "<S-Tab>" = [
+                "snippet_backward"
+                "fallback"
+              ];
+              "<CR>" = [
+                "accept"
+                "fallback"
+              ];
             };
           };
         };
         "luasnip".package = pkgs.vimPlugins.luasnip;
-        "base16-nvim" = {
-          package = pkgs.vimPlugins.base16-nvim;
-          after = null;
-        };
         "mini.ai".package = pkgs.vimPlugins.mini-ai;
         "mini.icons" = {
           package = pkgs.vimPlugins.mini-icons;
@@ -95,7 +97,10 @@
           };
         };
         pyright = {
-          cmd = ["pyright-langserver" "--stdio"];
+          cmd = [
+            "pyright-langserver"
+            "--stdio"
+          ];
           filetypes = ["python"];
           root_markers = [
             "pyproject.toml"
@@ -108,17 +113,31 @@
           ];
         };
         ruff = {
-          cmd = ["ruff" "server"];
+          cmd = [
+            "ruff"
+            "server"
+          ];
           filetypes = ["python"];
-          root_markers = ["pyproject.toml" "ruff.toml" ".ruff.toml" ".git"];
+          root_markers = [
+            "pyproject.toml"
+            "ruff.toml"
+            ".ruff.toml"
+            ".git"
+          ];
         };
         bashls = {
-          cmd = ["bash-language-server" "start"];
+          cmd = [
+            "bash-language-server"
+            "start"
+          ];
           packages = [
             pkgs.bash-language-server
             pkgs.shellcheck
           ];
-          filetypes = ["sh" "bash"];
+          filetypes = [
+            "sh"
+            "bash"
+          ];
           root_markers = [".git"];
           settings = {
             bashIde = {
@@ -129,10 +148,19 @@
           };
         };
         jsonls = {
-          cmd = ["vscode-json-language-server" "--stdio"];
+          cmd = [
+            "vscode-json-language-server"
+            "--stdio"
+          ];
           packages = pkgs.vscode-langservers-extracted;
-          filetypes = ["json" "jsonc"];
-          root_markers = [".git" "package.json"];
+          filetypes = [
+            "json"
+            "jsonc"
+          ];
+          root_markers = [
+            ".git"
+            "package.json"
+          ];
           settings = {
             json = {
               validate.enable = true;
@@ -141,9 +169,15 @@
           };
         };
         yamlls = {
-          cmd = ["yaml-language-server" "--stdio"];
+          cmd = [
+            "yaml-language-server"
+            "--stdio"
+          ];
           packages = pkgs.yaml-language-server;
-          filetypes = ["yaml" "yml"];
+          filetypes = [
+            "yaml"
+            "yml"
+          ];
           root_markers = [".git"];
           settings = {
             yaml = {

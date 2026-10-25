@@ -4,9 +4,7 @@
   inputs,
   ...
 }: let
-  hosts = builtins.attrNames (
-    lib.filterAttrs (n: v: v == "directory") (builtins.readDir ./.)
-  );
+  hosts = builtins.attrNames (lib.filterAttrs (n: v: v == "directory") (builtins.readDir ./.));
   mkHost = hostname:
     inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {inherit self inputs;};

@@ -1,15 +1,17 @@
 {self, ...}: {
-  flake.shellModules.fastfetch = {
+  flake.nixosModules.fastfetch = {
+    config,
     lib,
-    appearance,
     pkgs,
     ...
   }: let
     fastfetch = self.wrappers.fastfetch or null;
   in {
-    packages.fastfetch = lib.mkIf (appearance.rounding > 0 && fastfetch != null) (fastfetch.wrap {
-      inherit pkgs;
-      border = "rounded";
-    });
+    shell.packages.fastfetch = lib.mkIf (config.appearance.rounding > 0 && fastfetch != null) (
+      fastfetch.wrap {
+        inherit pkgs;
+        border = "rounded";
+      }
+    );
   };
 }

@@ -1,4 +1,4 @@
-{self,...}:{
+{self, ...}: {
   flake.nixosModules.laptop = {
     imports = [
       self.nixosModules.common

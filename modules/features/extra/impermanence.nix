@@ -1,31 +1,33 @@
-{ inputs, ... }: {
-  flake.nixosModules.impermanence =
-    { lib, config, ... }:
-    let
-      cfg = config.preferences.persistence;
-      user = config.preferences.user.name;
-    in
-    {
-      imports = [
-        inputs.impermanence.nixosModules.impermanence
-      ];
-      config = {
-        fileSystems."/persist".neededForBoot = true;
-        programs.fuse.userAllowOther = true;
-        boot.tmp.cleanOnBoot = lib.mkDefault true;
-        environment.persistence = {
-          "/persist/userdata".users.${user} = {
-            directories = cfg.data.directories;
-            files = cfg.data.files;
-          };
+{inputs, ...}: {
+  flake.nixosModules.impermanence = {
+    lib,
+    config,
+    ...
+  }: let
+    cfg = config.preferences.persistence;
+    user = config.preferences.user.name;
+  in {
+    imports = [
+      inputs.impermanence.nixosModules.impermanence
+    ];
+    config = {
+      fileSystems."/persist".neededForBoot = true;
+      programs.fuse.userAllowOther = true;
+      boot.tmp.cleanOnBoot = lib.mkDefault true;
+      environment.persistence = {
+        "/persist/userdata".users.${user} = {
+          directories = cfg.data.directories;
+          files = cfg.data.files;
+        };
 
-          "/persist/usercache".users.${user} = {
-            directories = cfg.cache.directories;
-            files = cfg.cache.files;
-          };
-          "/persist/system" = {
-            hideMounts = true;
-            directories = [
+        "/persist/usercache".users.${user} = {
+          directories = cfg.cache.directories;
+          files = cfg.cache.files;
+        };
+        "/persist/system" = {
+          hideMounts = true;
+          directories =
+            [
               "/etc/nixos"
               "/var/log"
               "/var/lib/bluetooth"
@@ -35,7 +37,8 @@
               "/tmp"
             ]
             ++ cfg.directories;
-            files = [
+          files =
+            [
               "/etc/machine-id"
               {
                 file = "/var/keys/secret_file";
@@ -45,34 +48,34 @@
               }
             ]
             ++ cfg.files;
-          };
         };
-        boot.initrd.postDeviceCommands = lib.mkIf cfg.nukeRoot.enable (
-          lib.mkAfter ''
-            mkdir /btrfs_tmp
-            mount /dev/${cfg.volumeGroup}/root /btrfs_tmp
-            if [[ -e /btrfs_tmp/root ]]; then
-                mkdir -p /btrfs_tmp/old_roots
-                timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
-                mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
-            fi
-
-            delete_subvolume_recursively() {
-                IFS=$'\n'
-                for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-                    delete_subvolume_recursively "/btrfs_tmp/$i"
-                done
-                btrfs subvolume delete "$1"
-            }
-
-            for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
-                delete_subvolume_recursively "$i"
-            done
-
-            btrfs subvolume create /btrfs_tmp/root
-            umount /btrfs_tmp
-          ''
-        );
       };
+      boot.initrd.postDeviceCommands = lib.mkIf cfg.nukeRoot.enable (
+        lib.mkAfter ''
+          mkdir /btrfs_tmp
+          mount /dev/${cfg.volumeGroup}/root /btrfs_tmp
+          if [[ -e /btrfs_tmp/root ]]; then
+              mkdir -p /btrfs_tmp/old_roots
+              timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+              mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+          fi
+
+          delete_subvolume_recursively() {
+              IFS=$'\n'
+              for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+                  delete_subvolume_recursively "/btrfs_tmp/$i"
+              done
+              btrfs subvolume delete "$1"
+          }
+
+          for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+              delete_subvolume_recursively "$i"
+          done
+
+          btrfs subvolume create /btrfs_tmp/root
+          umount /btrfs_tmp
+        ''
+      );
     };
+  };
 }

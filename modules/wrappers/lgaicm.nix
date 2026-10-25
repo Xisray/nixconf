@@ -32,7 +32,13 @@
       };
     };
 
-    runtimePkgs = with pkgs; [bash git curl jq coreutils];
+    runtimePkgs = with pkgs; [
+      bash
+      git
+      curl
+      jq
+      coreutils
+    ];
 
     env = {
       GOOGLEAI_API_KEY = {

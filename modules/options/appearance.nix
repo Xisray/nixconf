@@ -7,7 +7,11 @@
   }: {
     options.appearance = with lib; {
       scheme = mkOption {
-        type = with types; oneOf [path attrs];
+        type = with types;
+          oneOf [
+            path
+            attrs
+          ];
         default = null;
         example = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
         description = "Base16/24 scheme (path to yaml, path to json, or attrs)";
@@ -18,24 +22,29 @@
         description = "Processed scheme with base00..base0F, withHashtag, etc.";
       };
       polarity = mkOption {
-        type = types.enum ["dark" "light"];
+        type = types.enum [
+          "dark"
+          "light"
+        ];
         default = "dark";
       };
       cursor = mkOption {
-        type = types.nullOr (types.submodule {
-          options = {
-            name = mkOption {
-              type = types.str;
+        type = types.nullOr (
+          types.submodule {
+            options = {
+              name = mkOption {
+                type = types.str;
+              };
+              package = mkOption {
+                type = types.package;
+              };
+              size = mkOption {
+                type = types.int;
+                default = 24;
+              };
             };
-            package = mkOption {
-              type = types.package;
-            };
-            size = mkOption {
-              type = types.int;
-              default = 24;
-            };
-          };
-        });
+          }
+        );
         default = null;
       };
       opacity = {
@@ -57,19 +66,21 @@
         };
       };
       icons = mkOption {
-        type = types.nullOr (types.submodule {
-          options = {
-            dark = mkOption {
-              type = types.str;
+        type = types.nullOr (
+          types.submodule {
+            options = {
+              dark = mkOption {
+                type = types.str;
+              };
+              light = mkOption {
+                type = types.str;
+              };
+              package = mkOption {
+                type = types.package;
+              };
             };
-            light = mkOption {
-              type = types.str;
-            };
-            package = mkOption {
-              type = types.package;
-            };
-          };
-        });
+          }
+        );
         default = null;
       };
       rounding = mkOption {
@@ -139,25 +150,29 @@
       cfg = config.appearance;
     in {
       appearance.colors = lib.mkIf (cfg.scheme != null) (inputs.palette.lib.mkPalette cfg.scheme);
-      console.colors = lib.mkIf (cfg.scheme != null) (with cfg.colors; [
-        base00
-        base08
-        base0B
-        base0A
-        base0D
-        base0E
-        base0C
-        base05
-        base03
-        base12
-        base14
-        base13
-        base16
-        base17
-        base15
-        base07
-      ]);
-      environment.systemPackages = lib.optional (cfg.icons != null) cfg.icons.package ++ lib.optional (cfg.cursor != null) cfg.cursor.package;
+      console.colors = lib.mkIf (cfg.scheme != null) (
+        with cfg.colors; [
+          base00
+          base08
+          base0B
+          base0A
+          base0D
+          base0E
+          base0C
+          base05
+          base03
+          base12
+          base14
+          base13
+          base16
+          base17
+          base15
+          base07
+        ]
+      );
+      environment.systemPackages =
+        lib.optional (cfg.icons != null) cfg.icons.package
+        ++ lib.optional (cfg.cursor != null) cfg.cursor.package;
       environment.sessionVariables = lib.mkIf (cfg.cursor != null) {
         XCURSOR_THEME = cfg.cursor.name;
         XCURSOR_SIZE = cfg.cursor.size;

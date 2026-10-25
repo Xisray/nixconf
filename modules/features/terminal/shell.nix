@@ -1,68 +1,47 @@
-{
-  self,
-  lib,
-  ...
-}: let
-  shellModuleEntry = lib.types.submodule {
-    options = {
-      module = lib.mkOption {
-        type = lib.types.deferredModule;
-        default = {};
-        description = "Module imported into the wrapped shell (packages, settings, …)";
-      };
-      nixos = lib.mkOption {
-        type = lib.types.nullOr lib.types.deferredModule;
-        default = null;
-        description = "Optional NixOS module merged into flake.nixosModules.shell";
-      };
-    };
-  };
-  normalizeShellModule = value:
-    if builtins.isAttrs value && value ? module
-    then {
-      module = value.module;
-      nixos = value.nixos or null;
-    }
-    else {
-      module = value;
-      nixos = null;
-    };
-in {
-  options.flake.shellModules = lib.mkOption {
-    type = lib.types.lazyAttrsOf (lib.types.coercedTo lib.types.raw normalizeShellModule shellModuleEntry);
-    default = {};
-  };
-  config.flake.nixosModules.shell = {
+{self, ...}: {
+  flake.nixosModules.shell = {
     config,
-    lib,
     pkgs,
+    lib,
     ...
   }: let
     user = config.preferences.user;
-    entries = lib.attrValues self.shellModules;
-    shellEval = self.wrappers.${user.shell}.eval {
-      inherit pkgs;
-      imports = map (e: e.module) entries;
-      _module.args.appearance = config.appearance;
-      _module.args.preferences = config.preferences;
-    };
-    shell = shellEval.config.wrapper;
+    shellWrapper = self.wrappers.${user.shell} or null;
+    shell =
+      if (shellWrapper == null || config.shell.packages == {})
+      then self.packages.${pkgs.stdenv.hostPlatform.system}.${user.shell} or pkgs.${user.shell}
+      else
+        shellWrapper.wrap {
+          inherit pkgs;
+          packages = config.shell.packages;
+        };
   in {
-    imports = lib.filter (m: m != null) (map (e: e.nixos) entries);
-    _module.args.shellPackages = shellEval.config.packages;
-    users.users.${user.name}.shell = shell;
-    programs.${user.shell} = {
-      enable = true;
-      package = shell;
+    imports = [
+      self.nixosModules.yazi
+      self.nixosModules.bat
+      self.nixosModules.btop
+      self.nixosModules.opencode
+      self.nixosModules.devenv
+      # self.nixosModules.fastfetch
+      self.nixosModules.fzf
+      self.nixosModules.lazygit
+      self.nixosModules.nvim
+      self.nixosModules.starship
+    ];
+    options.shell.packages = lib.mkOption {
+      type = lib.types.attrsOf lib.types.package;
+      default = {};
     };
-    preferences.user.packages = [pkgs.ffmpeg];
-    preferences.persistence = {
-      data.directories = [
-        ".local/share/zoxide"
-      ];
-      cache.directories = [
-        ".cache/tealdeer/tldr-pages"
-      ];
+    config = {
+      users.users.${user.name}.shell = "/run/current-system/sw/bin/${user.shell}";
+      programs.${user.shell} = {
+        enable = true;
+        package = shell;
+      };
+      preferences.persistence = {
+        data.directories = [".local/share/zoxide"];
+        cache.directories = [".cache/tealdeer/tldr-pages"];
+      };
     };
   };
 }

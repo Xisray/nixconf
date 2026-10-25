@@ -19,5 +19,6 @@
       "ctrl+8" = "goto_tab 8";
       "ctrl+9" = "goto_tab 9";
     };
+    extraConfig = "include ~/.config/kitty/kitty.conf";
   };
 }
