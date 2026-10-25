@@ -101,6 +101,7 @@
         description = "Remove ${moduleName} links that are no longer declared";
         wantedBy = ["default.target"];
         before = ["systemd-tmpfiles-setup.service"];
+        unitConfig.DefaultDependencies = false;
         restartTriggers = [manifest];
         path = [
           pkgs.coreutils
