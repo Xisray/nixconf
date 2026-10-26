@@ -140,6 +140,14 @@
         userContent = lib.mkIf hasColors (
           style.colors {
             src = ./userContent.css.mustache;
+            variables.extra =
+              if style.rounding == 0
+              then ''
+                * {
+                  border-radius: 0 !important;
+                }
+              ''
+              else "";
           }
         );
         autoConfig = lib.mkMerge [
