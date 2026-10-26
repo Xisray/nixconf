@@ -8,7 +8,6 @@
       pkgs.qview
     ];
     fpatcher.qview = {
-      user = config.preferences.user.name;
       path = ".config/qView/qView.conf";
       format = "ini";
       content = {
