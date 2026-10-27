@@ -10,7 +10,7 @@
     options.appearance.targets.bat = {
       enable = lib.mkOption {
         type = lib.types.bool;
-        default = true;
+        default = false;
       };
       package = lib.mkOption {
         type = lib.types.package;

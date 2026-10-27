@@ -8,7 +8,7 @@
   in {
     options.appearance.targets.fzf.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
     config = lib.mkIf (cfg.targets.fzf.enable) {
       homefs.files = let

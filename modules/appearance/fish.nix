@@ -8,7 +8,7 @@
   in {
     options.appearance.targets.fish.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = config.programs.fish.enable;
     };
     config = lib.mkIf (cfg.hasScheme && cfg.targets.fish.enable) {
       homefs.files.".config/fish/conf.d/theme.fish".text = ''

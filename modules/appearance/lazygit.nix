@@ -9,7 +9,7 @@
   in {
     options.appearance.targets.lazygit.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
     config = lib.mkIf (cfg.targets.lazygit.enable) {
       homefs.files.".config/lazygit/config.yml" = (pkgs.formats.yaml {}).generate "lazygit-config.yml" {

@@ -8,7 +8,7 @@
   in {
     options.appearance.targets.opencode.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
     config = lib.mkIf (cfg.hasScheme && cfg.targets.opencode.enable) {
       homefs.directories.".config/opencode".files = {

@@ -8,7 +8,7 @@
   in {
     options.appearance.targets.niri.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = config.programs.niri.enable;
     };
     config = lib.mkIf (cfg.targets.niri.enable) {
       homefs.files.".config/niri/config.kdl".text = ''

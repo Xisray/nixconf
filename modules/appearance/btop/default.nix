@@ -8,7 +8,7 @@
   in {
     options.appearance.targets.btop.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
     config = lib.mkIf (cfg.targets.btop.enable) {
       homefs.directories.".config/btop".files = lib.mkMerge [

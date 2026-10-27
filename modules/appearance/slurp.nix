@@ -8,7 +8,7 @@
   in {
     options.appearance.targets.slurp.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
     config = lib.mkIf (cfg.hasScheme && cfg.targets.slurp.enable) {
       homefs.files.".config/slurp/config.json" = lib.mkIf (config.appearance.hasScheme) {

@@ -9,7 +9,7 @@
   in {
     options.appearance.targets.yazi.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
     config = lib.mkIf (cfg.targets.yazi.enable) {
       homefs.directories.".config/yazi" = {
