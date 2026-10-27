@@ -25,7 +25,7 @@
     };
     devenv.url = "github:cachix/devenv";
 
-    cliamp.url = "github:bjarneo/cliamp";
+    # cliamp.url = "github:bjarneo/cliamp";
     # opencode = {
     #   url = "github:anomalyco/opencode";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -35,11 +35,12 @@
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
+        inputs.disko.flakeModules.default
         inputs.wrappers.flakeModules.wrappers
         inputs.flake-parts.flakeModules.modules
         inputs.devenv.flakeModule
         (inputs.import-tree ./modules)
-        ./hosts
+        # ./hosts
       ];
     };
 }
