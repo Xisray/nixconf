@@ -5,9 +5,9 @@
     pkgs,
     ...
   }: let
-    neovim = self.wrappers.neovim or null;
+    neovim = self.wrappers.neovim;
   in {
-    shell.packages.neovim = lib.mkIf (neovim != null && config.appearance.hasScheme) (
+    shell.packages.neovim = lib.mkIf (config.appearance.hasScheme) (
       neovim.wrap {
         inherit pkgs;
         mode = "dynamic";
