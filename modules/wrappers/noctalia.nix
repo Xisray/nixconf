@@ -19,8 +19,7 @@
       }
     );
   in {
-    imports = [wlib.modules.default];
-
+    imports = [wlib.modules.default wlib.modules.systemd];
     options = {
       settings = lib.mkOption {
         type = tomlFormat.type;
@@ -35,6 +34,20 @@
     config = {
       package = lib.mkDefault pkgs.noctalia;
       env.NOCTALIA_CONFIG_HOME = "${configDir}";
+      systemd.user.service.noctalia = {
+        Unit = {
+          Description = "Noctalia Wayland desktop shell";
+          Documentation = ["https://docs.noctalia.dev/v5/"];
+          PartOf = ["graphical-session.target"];
+          After = ["graphical-session.target"];
+        };
+        Install.WantedBy = ["graphical-session.target"];
+        # enableDefaultPath = false;
+        Service = {
+          ExecStart = "${placeholder "out"}/bin/noctalia";
+          Restart = "on-failure";
+        };
+      };
       settings = {
         backdrop.enabled = true;
         lockscreen = {

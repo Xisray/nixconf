@@ -14,6 +14,7 @@
     showSecondaryBar = builtins.length monitors > 1;
     noctalia = self'.packages.noctalia or pkgs.noctalia;
   in {
+    appearance.targets.noctalia.enable = true;
     homefs.files.".config/noctalia/config.toml" = let
       merge = lib.foldl' lib.recursiveUpdate {};
       translucent = style.opacity.desktop < 1.0;
@@ -107,11 +108,8 @@
       };
     in
       (pkgs.formats.toml {}).generate "noctalia.toml" (merge [base squareCorners translucency secondaryBar]);
-    programs.noctalia = {
-      enable = true;
-      systemd.enable = true;
-      package = noctalia;
-    };
+    user.packages = [noctalia];
+    systemd.packages = [noctalia];
     preferences = {
       binds = let
         noctaliaBin = lib.getExe noctalia;
