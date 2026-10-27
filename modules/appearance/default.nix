@@ -16,6 +16,18 @@
         example = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
         description = "Base16/24 scheme (path to yaml, path to json, or attrs)";
       };
+      schemeOverrides = mkOption {
+        type = types.attrsOf types.str;
+        default = {};
+        example = {
+          base00 = "#000000";
+          primary = "base12";
+        };
+      };
+      schemeHash = mkOption {
+        type = types.nullOr types.str;
+        readOnly = true;
+      };
       hasScheme = mkOption {
         type = types.bool;
         readOnly = true;
@@ -154,7 +166,11 @@
       cfg = config.appearance;
     in {
       appearance.hasScheme = cfg.scheme != null;
-      appearance.colors = lib.mkIf cfg.hasScheme (inputs.palette.lib.mkPalette cfg.scheme);
+      appearance.colors = lib.mkIf cfg.hasScheme ((inputs.palette.lib.mkPalette cfg.scheme).overrides cfg.schemeOverrides);
+      appearance.schemeHash =
+        if cfg.hasScheme
+        then builtins.hashString "sha256" (builtins.toJSON cfg.colors.withHashtag)
+        else null;
       environment.systemPackages =
         lib.optional (cfg.icons != null) cfg.icons.package
         ++ lib.optional (cfg.cursor != null) cfg.cursor.package;
