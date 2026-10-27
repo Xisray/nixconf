@@ -1,6 +1,7 @@
 {self, ...}: {
-  flake.nixosModules.common = {pkgs, ...}: {
+  flake.nixosModules.common = {pkgsUnfree, ...}: {
     imports = [
+      self.nixosModules.unfree
       self.nixosModules.appearance
       self.nixosModules.preferences
       self.nixosModules.boot
@@ -31,8 +32,7 @@
       self.nixosModules.fpatcher
       self.nixosModules.qview
     ];
-    nixpkgs.config.allowUnfree = true;
-    appearance.fonts.packages = [pkgs.corefonts];
+    appearance.fonts.packages = [pkgsUnfree.corefonts];
     preferences.persistence.data.directories = [
       "Downloads"
       "Documents"
