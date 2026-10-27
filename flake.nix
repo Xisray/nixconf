@@ -36,6 +36,7 @@
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
         inputs.wrappers.flakeModules.wrappers
+        inputs.flake-parts.flakeModules.modules
         inputs.devenv.flakeModule
         (inputs.import-tree ./modules)
         ./hosts
