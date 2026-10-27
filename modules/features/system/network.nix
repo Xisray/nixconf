@@ -1,5 +1,16 @@
 {
   flake.nixosModules.network = {
-    networking.networkmanager.enable = true;
+    networking = {
+      networkmanager = {
+        enable = true;
+        dns = "none";
+      };
+      nameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
+        "8.8.8.8"
+      ];
+    };
+    systemd.services.NetworkManager-wait-online.enable = false;
   };
 }
