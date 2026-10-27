@@ -20,15 +20,4 @@
     };
 in {
   flake.nixosConfigurations = lib.genAttrs hosts mkHost;
-  flake.nixosModules = lib.genAttrs hosts (hostname: {
-    imports = [
-      ./${hostname}/_configuration.nix
-      ./${hostname}/_hardware.nix
-    ];
-  });
-  flake.diskoConfigurations = lib.genAttrs hosts (hostname: {
-    imports = [
-      ./${hostname}/_disko.nix
-    ];
-  });
 }

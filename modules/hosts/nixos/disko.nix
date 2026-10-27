@@ -1,12 +1,14 @@
 {
-  flake.diskoConfigurations.main = {
+  flake.diskoConfigurations.nixos = {
     disko.devices = {
       disk.main = {
+        device = "/dev/disk/by-id/ata-KINGSTON_SA400S37240G_50026B7785A5A1EA";
         type = "disk";
         content = {
           type = "gpt";
           partitions = {
             efi = {
+              size = "2G";
               name = "SYSTEM";
               type = "EF00";
               content = {
@@ -16,12 +18,14 @@
               };
             };
             swap = {
+              size = "16G";
               content = {
                 type = "swap";
                 resumeDevice = true;
               };
             };
             root = {
+              size = "100%";
               name = "root";
               content = {
                 type = "lvm_pv";
