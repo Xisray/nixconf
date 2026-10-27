@@ -9,10 +9,15 @@
   in {
     options.appearance.targets.noctalia.enable = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = config.programs.noctalia.enable;
     };
-    config = lib.mkIf (cfg.targets.noctalia.enable) {
-      environment.etc."noctalia/palettes/nix.json".text = lib.mkIf cfg.hasScheme (builtins.toJSON {
+    config = lib.mkIf (cfg.targets.noctalia.enable) (let
+      paletteName =
+        if cfg.hasScheme
+        then "nix-${lib.substring 0 8 cfg.schemeHash}"
+        else null;
+    in {
+      environment.etc."noctalia/palettes/${paletteName}.json".text = lib.mkIf cfg.hasScheme (builtins.toJSON {
         ${cfg.polarity} = with cfg.colors.withHashtag; {
           mPrimary = primary;
           mOnPrimary = base00;
@@ -74,9 +79,9 @@
           }
           // lib.optionalAttrs cfg.hasScheme {
             source = "custom";
-            custom_palette = "nix";
+            custom_palette = paletteName;
           };
       };
-    };
+    });
   };
 }
