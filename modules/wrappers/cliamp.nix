@@ -6,7 +6,7 @@
     ...
   }: {
     imports = [wlib.modules.default];
-    package = inputs.cliamp.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    package = inputs.cliamp.packages.${pkgs.stdenv.hostPlatform.system}.default or pkgs.cliamp;
     constructFiles.config = {
       relPath = "share/cliamp/config.toml";
       content = ''
