@@ -87,6 +87,7 @@
         extraConfig.Version = "1.5";
       })
     ];
+    appearance.targets.yazi.enable = true;
     preferences.wm.rules.windows = [
       {
         match.app-id = "^termfilechooser$";

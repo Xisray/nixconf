@@ -6,6 +6,7 @@
     pkgs,
     ...
   }: {
+    appearance.targets.opencode.enable = true;
     shell.packages.opencode = lib.mkIf (config.preferences.proxy != null) (
       inputs.wrappers.lib.wrapPackage {
         inherit pkgs;

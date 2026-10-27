@@ -6,6 +6,7 @@
   }: let
     kitty = self'.packages.kitty or pkgs.kitty;
   in {
+    appearance.targets.kitty.enable = true;
     xdg.terminal-exec = {
       enable = true;
       settings.default = ["kitty.desktop"];

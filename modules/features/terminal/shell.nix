@@ -21,13 +21,19 @@
       self.nixosModules.opencode
       self.nixosModules.devenv
       self.nixosModules.nvim
-      self.nixosModules.starship
     ];
     options.shell.packages = lib.mkOption {
       type = lib.types.attrsOf lib.types.package;
       default = {};
     };
     config = {
+      appearance.targets = {
+        fzf.enable = true;
+        lazygit.enable = true;
+        starship.enable = true;
+        btop.enable = true;
+        bat.enable = true;
+      };
       environment.shellAliases = {
         ls = null;
         ll = null;

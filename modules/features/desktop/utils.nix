@@ -14,6 +14,7 @@
       ocr = self'.packages.ocr;
       sshot = self'.packages.sshot;
     in {
+      appearance.targets.slurp.enable = true;
       preferences.binds = {
         "Mod+Shift+C".action = colorpicker;
         "Mod+Shift+X" = {action = [(lib.getExe ocr)];};

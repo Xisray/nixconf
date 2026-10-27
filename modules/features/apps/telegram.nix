@@ -10,6 +10,7 @@
   in {
     user.packages = [telegram];
     preferences.persistence.data.directories = [dataDir];
+    appearance.targets.telegram.enable = true;
     appearance.targets.ayugram.enable = true;
   };
 }

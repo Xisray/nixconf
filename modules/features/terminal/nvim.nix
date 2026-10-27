@@ -7,6 +7,7 @@
   }: let
     neovim = self.wrappers.neovim;
   in {
+    appearance.targets.nvim.enable = true;
     shell.packages.neovim = lib.mkIf (config.appearance.hasScheme) (
       neovim.wrap {
         inherit pkgs;
