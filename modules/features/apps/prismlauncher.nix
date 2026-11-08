@@ -1,7 +1,12 @@
 {
   flake.nixosModules.prismlauncher = {pkgs, ...}: {
-    users.packages = [
+    user.packages = [
       pkgs.prismlauncher
+    ];
+    appearance.targets.prismlauncher.enable = true;
+
+    preferences.persistence.data.directories = [
+      ".local/share/PrismLauncher"
     ];
   };
 }
