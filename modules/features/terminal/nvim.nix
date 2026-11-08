@@ -13,8 +13,12 @@
         inherit pkgs;
         mode = "dynamic";
         plugins = {
-          "tinted-nvim" = {
-            package = pkgs.vimPlugins.tinted-nvim;
+          # "tinted-nvim" = {
+          #   package = pkgs.vimPlugins.tinted-nvim;
+          #   after.setup = null;
+          # };
+          "base16-nvim" = {
+            package = pkgs.vimPlugins.base16-nvim;
             after.setup = null;
           };
         };
