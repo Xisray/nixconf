@@ -20,56 +20,59 @@
       translucent = style.opacity.desktop < 1.0;
       square = style.rounding == 0;
       loginBox = "lockscreen_login_box@${monitorPort}";
-      base = {
-        wallpaper.directory = "~/Pictures/Wallpapers";
-        bar.default = {
-          background_opacity = style.opacity.desktop;
-          radius_bottom_left = style.rounding;
-          radius_bottom_right = style.rounding;
-        };
-        lockscreen_widgets = {
-          enabled = true;
-          widget_order = [loginBox "lockscreen_widget_clock"];
-          widget = {
-            ${loginBox} = {
-              box_height = 70.0;
-              box_width = 400.0;
-              cx = monitor.width / 2;
-              cy = monitor.height / 2;
-              placement_height = monitor.height;
-              placement_width = monitor.width;
-              output = monitorPort;
-              type = "login_box";
-              settings = {
-                background_opacity = 0.0;
-                center_password_text = true;
-                layout = "compact";
-                show_caps_lock = true;
-                show_keyboard_layout = true;
-                show_login_button = false;
-                show_media = true;
-                show_session_buttons = true;
-                show_unlock_hint = false;
-                show_weather = false;
+      base =
+        {
+          bar.default = {
+            background_opacity = style.opacity.desktop;
+            radius_bottom_left = style.rounding;
+            radius_bottom_right = style.rounding;
+          };
+          lockscreen_widgets = {
+            enabled = true;
+            widget_order = [loginBox "lockscreen_widget_clock"];
+            widget = {
+              ${loginBox} = {
+                box_height = 70.0;
+                box_width = 400.0;
+                cx = monitor.width / 2;
+                cy = monitor.height / 2;
+                placement_height = monitor.height;
+                placement_width = monitor.width;
+                output = monitorPort;
+                type = "login_box";
+                settings = {
+                  background_opacity = 0.0;
+                  center_password_text = true;
+                  layout = "compact";
+                  show_caps_lock = true;
+                  show_keyboard_layout = true;
+                  show_login_button = false;
+                  show_media = true;
+                  show_session_buttons = true;
+                  show_unlock_hint = false;
+                  show_weather = false;
+                };
               };
-            };
-            lockscreen_widget_clock = {
-              box_height = 112.0;
-              box_width = 288.0;
-              cx = monitor.width / 2;
-              cy = monitor.height * 0.3 - 112.0;
-              placement_height = monitor.height;
-              placement_width = monitor.width;
-              output = monitorPort;
-              type = "clock";
-              settings = {
-                background = false;
-                shadow = false;
+              lockscreen_widget_clock = {
+                box_height = 112.0;
+                box_width = 288.0;
+                cx = monitor.width / 2;
+                cy = monitor.height * 0.3 - 112.0;
+                placement_height = monitor.height;
+                placement_width = monitor.width;
+                output = monitorPort;
+                type = "clock";
+                settings = {
+                  background = false;
+                  shadow = false;
+                };
               };
             };
           };
+        }
+        // lib.optionalAttrs (style.wallpapers.final.path != null) {
+          wallpaper.directory = style.wallpapers.final.path;
         };
-      };
       squareCorners = lib.optionalAttrs square {
         bar.default.capsule_radius = 0;
       };
