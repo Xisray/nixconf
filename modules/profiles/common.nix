@@ -1,5 +1,9 @@
 {self, ...}: {
-  flake.nixosModules.common = {pkgsUnfree, ...}: {
+  flake.nixosModules.common = {
+    pkgsUnfree,
+    inputs,
+    ...
+  }: {
     imports = [
       self.nixosModules.unfree
       self.nixosModules.appearance
@@ -32,6 +36,7 @@
       self.nixosModules.fpatcher
       self.nixosModules.qview
     ];
+    appearance.wallpapers.source = inputs.wallpapers;
     appearance.fonts.packages = [pkgsUnfree.corefonts];
     preferences.persistence.data.directories = [
       "Downloads"
