@@ -30,6 +30,10 @@
     #   url = "github:anomalyco/opencode";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
+    wallpapers = {
+      url = "github:Xisray/wallpapers";
+      flake = false;
+    };
   };
 
   outputs = inputs:
