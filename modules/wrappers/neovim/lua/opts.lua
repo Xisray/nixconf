@@ -13,6 +13,7 @@ o.tabstop = 2
 o.softtabstop = 2
 o.shiftwidth = 2
 o.autoindent = true
+o.cindent = true
 o.smartindent = true
 o.expandtab = true
 o.signcolumn = "yes"
@@ -37,3 +38,4 @@ o.langmap =
 	[[ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz]]
 
 g.mapleader = " "
+
