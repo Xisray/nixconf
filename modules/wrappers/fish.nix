@@ -81,6 +81,7 @@
         if test -f /etc/fish/config.fish
           source /etc/fish/config.fish
         end
+        fish_add_path --path --append ${lib.concatMapStringsSep " " (p: "${p}/bin") (builtins.attrValues config.packages)}
         if status is-interactive
           zoxide init fish --cmd cd | source
           if not set -q IN_NIX_SHELL
