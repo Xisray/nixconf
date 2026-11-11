@@ -34,6 +34,20 @@
         languages.nix.enable = true;
         git-hooks.hooks.alejandra.enable = true;
       };
+      python = {
+        languages.python = {
+          enable = true;
+          # version = "3.12";
+          venv.enable = true;
+          uv = {
+            enable = true;
+            sync.enable = false;
+          };
+        };
+        git-hooks.hooks = {
+          ruff.enable = true;
+        };
+      };
     };
   };
 }
