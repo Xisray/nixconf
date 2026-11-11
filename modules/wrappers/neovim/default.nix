@@ -250,6 +250,10 @@
       languages = {
         nixd = {
           cmd = "nixd";
+          packages = [
+            pkgs.nixd
+            pkgs.alejandra
+          ];
           formatter_filetypes = "nix";
           formatters = "alejandra";
           treesitter = "nix";
