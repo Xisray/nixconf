@@ -2,6 +2,7 @@
   flake.nixosModules.yazi = {
     lib,
     pkgs,
+    pkgsUnfree,
     ...
   }: {
     homefs.files = let
@@ -65,6 +66,7 @@
       "d %h/.config/xdg-desktop-portal-termfilechooser 0755 - - -"
       "L+ %h/.config/xdg-desktop-portal-termfilechooser/config - - - - ${termfilechooserConfig}"
     ];
+    shell.packages.yazi = pkgs.yazi.override {_7zz = pkgsUnfree._7zz-rar;};
     user.packages = [
       (pkgs.makeDesktopItem {
         name = "yazi";
