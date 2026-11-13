@@ -35,6 +35,7 @@
       self.nixosModules.libreoffice
       self.nixosModules.fpatcher
       self.nixosModules.qview
+      self.nixosModules.mpv
     ];
     appearance.wallpapers.source = inputs.wallpapers;
     appearance.fonts.packages = [pkgsUnfree.corefonts];
