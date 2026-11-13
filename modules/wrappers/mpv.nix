@@ -54,6 +54,7 @@
 
       osd-font-size=28
       osd-duration=1500
+      include=~/.config/mpv/theme.conf
     '';
 
     "mpv.input".content = ''
